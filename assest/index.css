@@ -1,0 +1,72 @@
+@charset "utf-8";
+
+ul, ol, li { margin:0; padding:0; list-style:none; }
+
+body{
+    margin:0;
+    padding:0;
+    font-size:4.267vw;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+header{
+    position:relative;
+    padding:3vw 5%;
+    line-height:1;
+    text-align:center;
+    background-color:#ccc;
+}
+
+section{
+    margin:0 5%;
+}
+
+.app__title{
+    margin:0;
+    font-size:5.333vw;
+    color:#333;
+}
+
+.app__edit{
+    position:absolute;
+    top:0;
+    right:0;
+    border:none;
+    background:none;
+}
+
+
+.app__search{
+    padding:3vw 0;
+}
+
+.app__search:after{
+    content:'';
+    display:block;
+    clear:both;
+}
+
+.search__input{
+    float:left;
+    width:80%;
+    font-size:4.267vw;
+    
+    line-height:1;
+    border:1px solid #333;
+    box-sizing:border-box;
+}
+
+.search__button{
+    margin-left:2%;
+    float:left;
+    width:18%;
+    font-size:4.267vw;
+    line-height:1;
+    border:1px solid #333;
+    background:none;
+    box-sizing:border-box;
+}
+
+.app__mylist{
+    border:1px solid red;
+}
