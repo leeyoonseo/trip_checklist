@@ -1,6 +1,16 @@
 @charset "utf-8";
 
 ul, ol, li { margin:0; padding:0; list-style:none; }
+.hidden{
+    position:absolute; 
+    padding:0; 
+    margin:-1px;
+    width:1px; 
+    height:1px; 
+    border:0; 
+    clip:rect(0 0 0 0); 
+    overflow:hidden; 
+}
 
 body{
     margin:0;
@@ -66,7 +76,62 @@ section{
     background:none;
     box-sizing:border-box;
 }
+.list__wrap{
+ 
+}
 
-.app__mylist{
+.list__items{
+    display:inline;
+    position:relative;
+}
+
+.list__items + .list__items{
+    margin-left:20px;
+}
+
+.item__button{
+    padding:0;
+    position:absolute;
+    left:0;
+    width:100%;
+    height:100%;
+    /* border:none; */
+    background:none;
+    cursor:pointer;
+    outline:none;
+}
+
+.close__button{
+    /* position:absolute;
+    height:100%;
+    border:none;
+    background:none; */
+}
+/* .app__mylist{
     border:1px solid red;
 }
+
+.list__items{
+    position:relative;
+    display:inline-block;
+    padding:0.5vw 1vw;
+    background:red;
+}
+
+.list__items + .list__items{
+    margin-left:1vw;
+}
+
+.item__button{
+    text-align:center;
+    border:none;
+    background:none;
+}
+
+.close__button{
+    padding:0;
+    z-index:99;
+    border:1px solid #ccc;
+    border-radius:50%;
+    background:#fff;
+} */
