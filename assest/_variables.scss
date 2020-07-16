@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+
+$vw-viewport: 375;
+$vw-enable: true;
+
+@function get-vw($font){
+    @if($vw-enable){
+        $vw-context: $vw-viewport * 0.01 * 1px;
+        @return $font / $vw-context * 1vw;
+    }
+
+    @return $font
+}
+
+%clearfix{
+    content:'';
+    display:block;
+    clear:both;
+}

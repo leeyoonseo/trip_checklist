@@ -1,6 +1,8 @@
 @charset "utf-8";
+@import "_variables.scss";
 
 ul, ol, li { margin:0; padding:0; list-style:none; }
+button{ cursor:pointer; }
 .hidden{
     position:absolute; 
     padding:0; 
@@ -15,13 +17,14 @@ ul, ol, li { margin:0; padding:0; list-style:none; }
 body{
     margin:0;
     padding:0;
-    font-size:4.267vw;
+    font-size:get-vw(18px);
+    color:#333;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
 header{
     position:relative;
-    padding:3vw 5%;
+    padding:get-vw(10px) 5%;
     line-height:1;
     text-align:center;
     background-color:#ccc;
@@ -33,7 +36,7 @@ section{
 
 .app__title{
     margin:0;
-    font-size:5.333vw;
+    font-size:get-vw(20px);
     color:#333;
 }
 
@@ -47,91 +50,59 @@ section{
 
 
 .app__search{
-    padding:3vw 0;
+    margin:get-vw(30px) 0;
 }
 
 .app__search:after{
-    content:'';
-    display:block;
-    clear:both;
+    @extend %clearfix;
 }
 
 .search__input{
     float:left;
+    padding:get-vw(5px);
     width:80%;
-    font-size:4.267vw;
-    
+    font-size:get-vw(16px);
     line-height:1;
     border:1px solid #333;
     box-sizing:border-box;
 }
 
 .search__button{
-    margin-left:2%;
+    margin-left:4%;
     float:left;
-    width:18%;
-    font-size:4.267vw;
+    padding:get-vw(5px);
+    width:16%;
+    font-size:get-vw(16px);
     line-height:1;
     border:1px solid #333;
     background:none;
     box-sizing:border-box;
 }
+
 .list__wrap{
- 
+    margin:get-vw(5px) 0 get-vw(20px) 0;
+    padding:get-vw(10px) 0;
+    border:1px solid #333;
 }
 
 .list__items{
-    display:inline;
-    position:relative;
-}
-
-.list__items + .list__items{
-    margin-left:20px;
-}
-
-.item__button{
-    padding:0;
-    position:absolute;
-    left:0;
-    width:100%;
-    height:100%;
-    /* border:none; */
-    background:none;
-    cursor:pointer;
-    outline:none;
-}
-
-.close__button{
-    /* position:absolute;
-    height:100%;
-    border:none;
-    background:none; */
-}
-/* .app__mylist{
-    border:1px solid red;
-}
-
-.list__items{
-    position:relative;
     display:inline-block;
-    padding:0.5vw 1vw;
-    background:red;
-}
-
-.list__items + .list__items{
-    margin-left:1vw;
-}
-
-.item__button{
-    text-align:center;
-    border:none;
-    background:none;
+    padding:get-vw(3px) get-vw(5px);
+    line-height:1;
+    background:#ccc;
+    border-radius:get-vw(5px);
 }
 
 .close__button{
     padding:0;
-    z-index:99;
-    border:1px solid #ccc;
+    width:20px;
+    height:20px;
+    background:none;
     border-radius:50%;
-    background:#fff;
-} */
+    border:1px solid #333;
+}
+
+footer{
+    font-size:get-vw(14px);
+    text-align:center;
+}
