@@ -39,54 +39,78 @@ var TripCheckList = (function(){
             // 내꺼
             if(_data[i].checked){
                 // console.log('true');
-                myListArr.push(createMyListHTML(_data[i]));
+                // myListArr.push(createMyListHTML(_data[i]));
 
             // 리스트
             }else{
-                listArr.push(createListHTML(_data[i]));
+                list.append(createListHTML(_data[i]))
             }
         }
 
         // [TODO] 리스트들이 없을때, 있을때 안내
-        if(!myListArr.length){}else{
-            myList.innerHTML = myListArr;
-        }
-        if(!listArr.length){}else{
-            list.innerHTML = listArr;
-        }
+        // if(!myListArr.length){}else{
+        //     myList.innerHTML = myListArr;
+        // }
+        // if(!listArr.length){}else{
+        //     list.innerHTML = listArr;
+        // }
     };
 
     // [TODO] id값은 랜덤으로
 
     function createListHTML(data){
-        var id = '';
-        var item = '';
-        
-        item += '<div class="list__items" data-id="' + id + '">';
-        item +=     data.name;
+        // [TODO] id 추가할 것
+        var id = data.id;
 
-        item +=     '<button class="add__button">';
-        item +=         '<span class="hidden">추가버튼</span>';
-        item +=     '</button>';
+        var wrap = document.createElement('div');
+        var btn = document.createElement('button');
+        var span = document.createElement('span');
 
-        item += '</div>';
+        wrap.classList.add('list__items');
+        wrap.innerText = data.name;
 
-        return item;
+        btn.classList.add('add__button');
+
+        btn.addEventListener('click', function(){
+            data.checked = true;
+        });
+
+        span.classList.add('hidden');
+        span.innerText = '추가 버튼';
+
+        btn.append(span);
+        wrap.append(btn);
+
+        return wrap;    
     }
 
 
     function createMyListHTML(data){
+        // [TODO] id 추가할 것
         var id = data.id;
-        var item = '';
-        
-        item += '<div class="list__items" data-id="' + id + '">';
-        item +=     '텍스트';
-        item +=     '<button class="close__button">';
-        item +=         '<span class="hidden">삭제버튼</span>';
-        item +=     '</button>';
-        item += '</div>';
 
-        return item;
+        var wrap = document.createElement('div');
+        var btn = document.createElement('button');
+        var span = document.createElement('span');
+
+        wrap.classList.add('list__items');
+        wrap.innerText = data.name;
+
+        btn.classList.add('close__button');
+
+        btn.addEventListener('click', function(){
+            data.checked = false;
+            // [TODO]
+            
+        });
+
+        span.classList.add('hidden');
+        span.innerText = '삭제 버튼';
+
+        btn.append(span);
+        wrap.append(btn);
+
+        return wrap;    
     }
 
     return{
