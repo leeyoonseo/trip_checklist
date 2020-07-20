@@ -1,0 +1,169 @@
+@charset "utf-8";
+@import "_variables.scss";
+
+ul, ol, li { margin:0; padding:0; list-style:none; }
+button{ cursor:pointer; }
+
+.hidden{
+    position:absolute; 
+    padding:0; 
+    margin:-1px;
+    width:1px; 
+    height:1px; 
+    border:0; 
+    clip:rect(0 0 0 0); 
+    overflow:hidden; 
+}
+
+body{
+    margin:0;
+    padding:0;
+    font-size:get-vw(14px);
+    color:#333;
+    font-family:sans-serif, 'Noto Sans KR';
+}
+
+header{
+    position:relative;
+    padding:get-vw(10px) 5%;
+    line-height:1;
+    text-align:center;
+    background-color:#ccc;
+}
+
+section{
+    margin:0 5%;
+}
+
+.app__title{
+    margin:0;
+    font-size:get-vw(18px);
+    color:#333;
+}
+
+.menu__button{
+    padding:0;
+    position:absolute;
+    top:get-vw(8px);
+    right:get-vw(7px);
+    width:get-vw(20px);
+    height:get-vw(20px);
+    border:none;
+    background:url(../img/icon_menu.png)no-repeat;
+    background-size:100% 100%;
+}
+
+
+.app__search{
+    margin:get-vw(30px) 0;
+}
+
+.app__search:after{
+    @extend %clearfix;
+}
+
+.search__input{
+    float:left;
+    padding:get-vw(5px) get-vw(10px);
+    width:88%;
+    height:get-vw(30px);
+    line-height:1;
+    border:1px solid #666;
+    border-radius:get-vw(5px);
+    box-sizing:border-box;
+    outline:none;
+}
+
+.search__button{
+    margin-left:2%;
+    float:left;
+    padding:get-vw(5px);
+    width:10%;
+    height:get-vw(30px);
+    line-height:1;
+    color:#666;
+    border:1px solid #666;
+    border-radius:get-vw(5px);
+    background:url(../img/icon_search.png)no-repeat;
+    background-size:20px 20px;
+    background-position:center;
+    box-sizing:border-box;
+    outline:none;
+}
+
+.list__wrap{
+    margin:get-vw(5px) 0;
+    padding:get-vw(10px) 0;
+}
+
+.app__mylist{
+
+}
+
+.mylist__icon{
+    position:relative;
+    left:-(get-vw(7px));
+    display:block;
+    width:get-vw(40px);
+    height:get-vw(40px);
+    background:url(../../assest/img/icon_baggage.png)no-repeat;
+    background-size:100% 100%;
+}
+
+.app__list{
+    margin-top:get-vw(15px);
+}
+
+.list__icon{
+    position:relative;
+    left:-(get-vw(5px));
+    display:block;
+    width:get-vw(30px);
+    height:get-vw(30px);
+    background:url(../../assest/img/icon_list.png)no-repeat;
+    background-size:100% 100%;
+}
+
+.list__items{
+    position:relative;
+    margin:get-vw(2px) 0;
+    display:inline-block;
+    padding:get-vw(5px);
+    border:get-vw(1px) dashed #333;
+    border-radius:get-vw(5px);
+
+    &:hover{
+        color:#fff;
+        background:#666;
+    }
+}
+
+.add__button{
+    position:absolute;
+    top:0;
+    lefT:0;
+    width:100%;
+    height:100%;
+    background:none;
+    border:none;
+    outline:none;
+}
+
+.close__button{
+    padding:0;
+    position:relative;
+    top:get-vw(3px);
+    width:get-vw(17px);
+    height:get-vw(17px);
+    background:url(../img/icon_close.png)no-repeat;
+    background-size:100% 100%;
+    border:none;
+    outline:none;
+}
+
+footer{
+    margin-top:get-vw(20px);
+    text-align:center;
+    font-size:get-vw(12px);
+    color:#666;
+}

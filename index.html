@@ -6,7 +6,7 @@
     <title>trip checklist</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap">
-    <link rel="stylesheet" href="./assest/index.min.css">
+    <link rel="stylesheet" href="./assest/css/common.min.css">
 </head>
 <body>
     <header>
@@ -14,12 +14,7 @@
             Trip CheckList
         </h1>
         <div>
-            <button class="app__edit">
-                아이콘
-                <span class="hidden">
-                    아이콘
-                </span>
-            </button>
+            <button class="menu__button"><span class="hidden">메뉴</span></button>
         </div>
     </header>
 
@@ -27,82 +22,36 @@
         <div class="app__search">
             <label>
                 <input class="search__input" value="" placeholder="검색어를 입력하세요."/>
-                <button class="search__button">
-                    검색
-                    <span class="hidden">검색</span>
-                </button>
+                <button class="search__button"><span class="hidden">검색</span></button>
             </label>
         </div>
     
         <div class="app__mylist">
-            <div>
-                나
-            </div>
+            <span class="mylist__icon"><span class="hidden">내 아이콘</span></span>
 
-            <ul class="list__wrap">
-                <li class="list__items">
+            <div class="list__wrap">
+                <!-- <div class="list__items">
                     동백열차 
-                    <button class="close__button">
-                        x
-                        <span class="hidden">
-                            삭제
-                        </span>
-                    </button>
-                </li>
-                <li class="list__items">
-                    동백열차 
-                    <button class="close__button">
-                        x
-                        <span class="hidden">
-                            삭제
-                        </span>
-                    </button>
-                </li>
-                <li class="list__items">
-                    동백열차 
-                    <button class="close__button">
-                        x
-                        <span class="hidden">
-                            삭제
-                        </span>
-                    </button>
-                </li>
-                <li class="list__items">
-                    동백열차 
-                    <button class="close__button">
-                        x
-                        <span class="hidden">
-                            삭제
-                        </span>
-                    </button>
-                </li>
-                <li class="list__items">
-                    동백열차 
-                    <button class="close__button">
-                        x
-                        <span class="hidden">
-                            삭제
-                        </span>
-                    </button>
-                </li>
-            </ul>
+                    <button class="close__button"><span class="hidden">삭제</span></button>
+                </div> -->
+            </div>
         </div>
     
         <div class="app__list">
-            <div>
-                목록
+            <span class="list__icon"><span class="hidden">목록 아이콘</span></span>
+            
+            <div class="list__wrap">
+                <!-- <div class="list__items">
+                    동백열차
+                    <button class="add__button"></button>
+                </div> -->
             </div>
-
-            <ul class="list__wrap">
-                <li class="list__items">
-                </li>
-                
-            </ul>
         </div>
     </section>
 
     <footer>
-        카피
+        okayoon.lee@gmail.com
     </footer>
+<script src="./assest/js/index.js"></script>
 </body>
 </html>
