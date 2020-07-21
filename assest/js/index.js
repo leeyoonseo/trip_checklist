@@ -2,6 +2,13 @@
 
 var TripCheckList = (function(){
     console.log('TripCheckList');
+    var searchInput = document.querySelector('#searchInput');
+    var saveBtn = document.querySelector('#saveButton');
+
+    var myList = document.querySelector('.app__mylist .list__wrap');
+    var list = document.querySelector('.app__list .list__wrap');
+    var listData = [];
+    var myListData = [];
 
     // [TODO]
     // 1.starage에 저장
@@ -15,35 +22,24 @@ var TripCheckList = (function(){
         // 내림차순, 오름차순 정렬 만들기
         // return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
     });
-    
-    console.log(_data)
 
     var init = function(){
 
         // [TODO] 검색기능구현
-        var searchInput = document.querySelector('.search__input');
-        var myList = document.querySelector('.app__mylist .list__wrap');
-        var list = document.querySelector('.app__list .list__wrap');
-        var myListArr = [];
-        var listArr = [];
-
         searchInput.focus();
         
         // [TODO] 
         // 1.데이터 그리기
-
-        var myListIndex = 0;
-        var listIndex = 0;
-
         for(var i = 0; i < _data.length; i++){
             // 내꺼
             if(_data[i].checked){
-                // console.log('true');
-                // myListArr.push(createMyListHTML(_data[i]));
+                myList.append(createMyListHTML(_data[i]))
+                myListData.push(_data[i]);
 
             // 리스트
             }else{
                 list.append(createListHTML(_data[i]))
+                listData.push(_data[i]);
             }
         }
 
@@ -56,62 +52,98 @@ var TripCheckList = (function(){
         // }
     };
 
-    // [TODO] id값은 랜덤으로
-
     function createListHTML(data){
-        // [TODO] id 추가할 것
-        var id = data.id;
-
         var wrap = document.createElement('div');
         var btn = document.createElement('button');
         var span = document.createElement('span');
 
         wrap.classList.add('list__items');
         wrap.innerText = data.name;
-
-        btn.classList.add('add__button');
-
-        btn.addEventListener('click', function(){
-            data.checked = true;
-        });
+        // [TODO] id 추가한날짜시간초로 만들것
+        btn.data = data;             
+        btn.dataset.id = data.id;
 
         span.classList.add('hidden');
         span.innerText = '추가 버튼';
 
+        btn.addEventListener('click', handlerItem);
         btn.append(span);
         wrap.append(btn);
 
         return wrap;    
     }
 
+    function handlerItem(e){
+        var target = e.target;
+        var id = target.dataset.id;
+        var targetNode = target.parentNode;
+        var checked = target.data.checked;
 
+        if(checked){
+            for(var i = 0; i < myListData.length; i++){
+                if(myListData[i].id === id){
+                    listData.push(myListData.splice(i, 1)[0]);
+                    break;
+                }
+            }
+
+            list.append(targetNode);
+        }else{
+            for(var i = 0; i < listData.length; i++){
+                if(listData[i].id === id){
+                    myListData.push(listData.splice(i, 1)[0]);
+                    break;
+                }
+            }
+            myList.append(targetNode);
+        }
+
+        checked = !checked;
+    }
+    
     function createMyListHTML(data){
-        // [TODO] id 추가할 것
-        var id = data.id;
-
         var wrap = document.createElement('div');
         var btn = document.createElement('button');
         var span = document.createElement('span');
 
         wrap.classList.add('list__items');
         wrap.innerText = data.name;
-
-        btn.classList.add('close__button');
-
-        btn.addEventListener('click', function(){
-            data.checked = false;
-            // [TODO]
-            
-        });
+        btn.data = data;             
+        // [TODO] id 추가한날짜시간초로 만들것
+        btn.dataset.id = data.id;
 
         span.classList.add('hidden');
         span.innerText = '삭제 버튼';
 
+        btn.addEventListener('click', handlerItem);
         btn.append(span);
         wrap.append(btn);
 
         return wrap;    
     }
+
+    saveBtn.addEventListener('click', function(){
+        console.log('save');
+
+        myListData.sort(function(a, b){
+            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+        });
+
+        // [TODO] _data의 checked 수정 과정
+        for(var i = 0; i < _data.length; i++){
+            for(var j = 0; j < myListData.length; j++){
+                if(_data[i].id === myListData[j].id){
+                    _data[i].checked = true;
+                
+                }else{
+                    _data[i].checked = false;
+                }
+            }
+        }
+
+        console.log(_data)
+        // localStorage.setItem('tripChecklistData', _data);
+    });
 
     return{
         init

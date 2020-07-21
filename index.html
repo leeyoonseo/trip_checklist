@@ -21,13 +21,15 @@
     <section>
         <div class="app__search">
             <label>
-                <input class="search__input" value="" placeholder="검색어를 입력하세요."/>
-                <button class="search__button"><span class="hidden">검색</span></button>
+                <input id="searchInput" value="" placeholder="검색어를 입력하세요."/>
+                <button><span class="hidden">검색</span></button>
             </label>
         </div>
     
         <div class="app__mylist">
-            <span class="mylist__icon"><span class="hidden">내 아이콘</span></span>
+            <span class="list__icon"><span class="hidden">내 아이콘</span></span>
+
+            <button id="saveButton">저장</button>
 
             <div class="list__wrap">
                 <!-- <div class="list__items">
