@@ -1,6 +1,7 @@
 @charset "utf-8";
 @import "_variables.scss";
 
+// [TODO] scss 정리
 ul, ol, li { margin:0; padding:0; list-style:none; }
 button{ cursor:pointer; }
 
@@ -97,6 +98,10 @@ section{
 }
 
 .app__mylist{
+    button{
+        border:none;
+        outline:none;
+    }
 
     .list__icon{
         position:relative;
@@ -120,10 +125,15 @@ section{
             height:get-vw(17px);
             background:#fff url(../img/icon_close.png)no-repeat;
             background-size:100% 100%;
-            border:none;
             border-radius:50%;
-            outline:none;
         }
+    }
+
+    .sava__button{
+        width:get-vw(20px);
+        height:get-vw(20px);
+        background:url('../img/icon_save.png')no-repeat;
+        background-size:100% 100%;
     }
 }
 
@@ -136,7 +146,7 @@ section{
         display:block;
         width:get-vw(30px);
         height:get-vw(30px);
-        background:url(../../assest/img/icon_list.png)no-repeat;
+        background:url('../../assest/img/icon_list.png')no-repeat;
         background-size:100% 100%;
     }
 
@@ -154,8 +164,6 @@ section{
     }
 }
 
-
-
 .list__items{
     position:relative;
     margin:get-vw(4px);
@@ -170,6 +178,37 @@ section{
     }
 }
 
+.app__noti{
+    display:none;
+    position:fixed;
+    top:30%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:#fff;
+    padding:15px;
+    color:#333;
+    text-align:center;
+    border:1px solid #333;
+    border-radius:get-vw(5px);
+    box-sizing:border-box;
+
+    &.on{
+        display:block;
+    }
+
+    &:before{
+        content:'';
+        display:inline-block;
+        width:get-vw(20px);
+        height:get-vw(20px);
+        background:url('../img/icon_check.png')no-repeat;
+        background-size:100% 100%;
+    }
+
+    .inner{
+        display:block;
+    }
+}
 
 footer{
     margin-top:get-vw(20px);

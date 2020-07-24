@@ -11,6 +11,7 @@
 
     var myListEl = document.querySelector('.app__mylist .list__wrap');
     var listEl = document.querySelector('.app__list .list__wrap');
+    var searchInput = document.querySelector('#searchInput');
     var saveBtnEl = document.querySelector('#saveButton');
 
     var CheckItem = function(mode, data){
@@ -41,6 +42,7 @@
         wrapEl.append(btnEl);
 
         return wrapEl;   
+    
     };
 
     CheckItem.prototype.onClick = function(e){
@@ -62,43 +64,126 @@
         }
     };
 
-    var appendHTML = function(){
-        for(var i = 0; i < data.length; i++){
-            if(data[i].checked === "true"){
-                var item = new CheckItem('true', data[i]);
-                // myListEl.append(createItem('myList', data[i]));
-                myListEl.append(item);
-                myListArr.push(data[i]);
+    var Notification = function(opts){
+        this.options = Object.assign({},{
+            timer : 1,
+            text : '저장되었습니다.',
+            target : 'section' // id, class, tag 
+        }, opts);
 
-            }else{
-                var item = new CheckItem('false', data[i]);
-                listEl.append(item);
-                listArr.push(data[i]);
-            }
+        this.notiEl = this.createHtml();
+        var target = document.querySelector(this.options.target);
+        target.append(this.notiEl);
+    };
+
+    Notification.prototype.createHtml = function(){
+        var wrap = document.createElement('div');
+        var inner = document.createElement('div');
+
+        wrap.classList.add('app__noti');
+        inner.classList.add('inner');
+        inner.innerText = this.options.text;
+
+        wrap.append(inner);
+
+        return wrap;
+    }
+
+    Notification.prototype.open = function(newText){
+        var self = this;
+
+        if(newText) this.notiEl.childNodes[0].innerText = newText;
+        this.notiEl.classList.add('on');
+
+        setTimeout(function(){
+            self.close();
+        }, self.options.timer * 1000); // millisecond
+    };
+
+    Notification.prototype.close = function(){
+        this.notiEl.classList.remove('on');
+    };
+
+    var storageAvailable = function(type){
+        var storage;
+
+        try {
+            storage = window[type];
+            var x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch(e) {
+            return e instanceof DOMException && (
+                // Firefox를 제외한 모든 브라우저
+                e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // 코드가 존재하지 않을 수도 있기 떄문에 이름 필드도 확인합니다.
+                // Firefox를 제외한 모든 브라우저
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // 이미 저장된 것이있는 경우에만 QuotaExceededError를 확인하십시오.
+                (storage && storage.length !== 0);
         }
     };
 
+    var notification = new Notification();
+    
     data = JSON.parse(data).sort(function(a, b){
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
 
-    appendHTML();
+    for(var i = 0; i < data.length; i++){
+        if(data[i].checked === "true"){
+            var item = new CheckItem('true', data[i]);
+            // myListEl.append(createItem('myList', data[i]));
+            myListEl.append(item);
+            myListArr.push(data[i]);
+
+        }else{
+            var item = new CheckItem('false', data[i]);
+            listEl.append(item);
+            listArr.push(data[i]);
+        }
+    }        
+    
+    searchInput.focus();
 
     saveBtnEl.addEventListener('click', function(){
+        if(storageAvailable('localStorage')){
+            var newData = myListArr.concat(listArr);
 
-        var newData = myListArr.concat(listArr);
+            newData.sort(function(a, b){
+                return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+            });
 
-        newData.sort(function(a, b){
-            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-        });
-        console.log(newData)
-        localStorage.setItem(CHECK_LIST_DATA, JSON.stringify(newData));
+            localStorage.setItem(CHECK_LIST_DATA, JSON.stringify(newData));
+            
+            notification.open();
+        }else {
+            notification.open('Error');
+            // 슬픈 소식, localStorage를 사용할 수 없습니다.
+        }
     });
 
+    searchInput.addEventListener('input', function(e){
+        var val = e.target.value;
+        console.log(val)
+        
+        if(val !== ''){
+            console.log('검색');
+        }
+    });
+    
 
+    
 })();
 
 // [TODO]
+// 사용자 안내하는 dim 만들기
 // 검색기능, 포커싱
 // 오름차순, 내림차순 
 // true, false되는지 확인
