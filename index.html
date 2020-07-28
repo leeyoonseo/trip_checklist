@@ -9,44 +9,52 @@
     <link rel="stylesheet" href="./assest/css/common.min.css">
 </head>
 <body>
-    <header>
-        <h1 class="app__title">
-            Trip CheckList
-        </h1>
-        <div>
-            <button class="menu__button"><span class="hidden">메뉴</span></button>
-        </div>
-    </header>
-
-    <section>
-        <div class="app__search">
-            <label>
-                <input id="searchInput" value="" placeholder="검색어를 입력하세요."/>
-                <!-- <button id="searchButton"><span class="hidden">검색</span></button> -->
-            </label>
-        </div>
+    <!-- [TODO] BEM 네이밍에 대해 보고 수정할 것. -->
+    <div class="main__wrap">
+        <header>
+            <h1 class="app__title">
+                Trip CheckList
+            </h1>
+            <div>
+                <button class="menu__button"><span class="hidden">메뉴</span></button>
+            </div>
+        </header>
     
-        <div class="app__mylist">
-            <span class="list__icon"><span class="hidden">내 아이콘</span></span>
-
-            <button id="saveButton" class="sava__button">
-                <span class="hidden">저장 버튼</span>
-            </button>
-
-            <div class="list__wrap"></div>
-        </div>
+        <section>
+            <div class="app__search">
+                <label>
+                    <input id="searchInput" value="" placeholder="검색어를 입력하세요."/>
+                    <!-- <button id="searchButton"><span class="hidden">검색</span></button> -->
+                </label>
+            </div>
+        
+            <div class="app__mylist">
+                <span class="list__icon"><span class="hidden">내 아이콘</span></span>
     
-        <div class="app__list">
-            <span class="list__icon"><span class="hidden">목록 아이콘</span></span>
-            
-            <div class="list__wrap"></div>
-        </div>
-    </section>
+                <button id="saveButton" class="sava__button">
+                    <span class="hidden">저장 버튼</span>
+                </button>
+    
+                <div class="list__wrap"></div>
+            </div>
+        
+            <div class="app__list">
+                <span class="list__icon"><span class="hidden">목록 아이콘</span></span>
+                
+                <div class="list__wrap"></div>
+            </div>
+        </section>
+    
+        <footer>
+            author : okayoon.lee@gmail.com<br>
+            icon source : Icons made by <a href="https://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+        </footer>
+    </div>
 
-    <footer>
-        author : okayoon.lee@gmail.com<br>
-        icon source : Icons made by <a href="https://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-    </footer>
+    <div class="menu__wrap">
+
+    </div>
+    
 <script src="./assest/js/index.js"></script>
 </body>
 </html>

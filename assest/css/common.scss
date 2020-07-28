@@ -180,6 +180,10 @@ section{
     border:none;
     background:url(../img/icon_menu.png)no-repeat;
     background-size:100% 100%;
+    
+    &:focus{
+        outline:none;
+    }
 }
 
 

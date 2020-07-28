@@ -365,6 +365,15 @@
         }
     });
 
+
+    // menu
+    var menuBtnEl = document.querySelector('.menu__button');
+    var menuWrapEl = document.querySelector('.menu__wrap');
+
+    menuBtnEl.addEventListener('click', function(){
+        console.log('menu')
+    });
+
 })();
 
 // [TODO]
