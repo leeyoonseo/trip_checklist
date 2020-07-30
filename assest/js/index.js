@@ -9,6 +9,16 @@
         NOTI_TEXT_ERROR : '오류입니다.'
     };
 
+    // [TODO] flow 관리
+    var APP_FLOW = {
+        GUIDE : 'GUIDE',
+        MAIN : 'MAIN',
+        MENU_LIST : 'MENU',
+        LIST_EDIT : 'LIST_EDIT'
+    };
+
+    var currentFlow;
+
     // dev
     // localStorage.removeItem(TRIP_CHECK_LIST.CHECK_LIST_DATA);
     // db에 넣어야..
@@ -44,6 +54,7 @@
         return this.create();
     };
 
+    // [TODO] 추가, 삭제등.. 버튼에 관한 작업을 별도로 할 것.
     CheckItem.prototype = {
         create : function(){
             var self = this;
@@ -253,6 +264,8 @@
         var expiredBtn = document.createElement('button');
         var expiredText = document.createElement('span');
 
+        APP_FLOW.GUIDE;
+
         wrap.classList.add('app__guide');
         inner.classList.add('inner');
         expired.classList.add('expired');
@@ -334,8 +347,14 @@
         doc.prepend(guide);
     
         // localStorage.removeItem('expired');
-        if(expired) guide.remove();
-
+        if(expired) {
+            currentFlow = APP_FLOW.MAIN;
+            guide.remove();
+        
+        }else{
+            currentFlow = APP_FLOW.MAIN;
+        }
+        
         appendToBody(data);
         searchInput.focus();
     };
@@ -369,11 +388,38 @@
     // menu
     var menuBtnEl = document.querySelector('.menu__button');
     var menuWrapEl = document.querySelector('.menu__wrap');
+    var listEditButton = document.querySelector('.list__edit__button');
 
     menuBtnEl.addEventListener('click', function(){
         console.log('menu')
+
+        if(menuWrapEl.classList.contains('on')){
+            menuWrapEl.classList.remove('on');
+
+        }else{
+            menuWrapEl.classList.add('on');
+        }
     });
 
+    var editList = document.querySelector('.edit__list');
+
+    listEditButton.addEventListener('click', function(){
+        console.log('list', data);
+        setEditList(data);
+    });
+
+
+    function setEditList(data){
+        editList.innerHTML = '';
+
+        if(!data) return false;
+
+        for(var i = 0; i < data.length; i++){
+            var item = new CheckItem('true', data[i]);
+            editList.append(item);
+        }
+        
+    }
 })();
 
 // [TODO]
