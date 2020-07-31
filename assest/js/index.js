@@ -1,5 +1,94 @@
 (function(){
     'use strict';
+    
+    
+    class CheckItem {
+        constructor(data){
+            console.log(data)
+            this.data = data;
+
+            // return this.create();
+            this.setup();
+        }
+
+        setup() {
+            const wrapNode = document.createElement('div');
+            const btnNode = document.createElement('button');
+            // const textNode = document.createElement('span');
+
+            wrapNode.classList.add('list__items');
+            wrapNode.innerText = data.name;
+            wrapNode.dataset.id = data.id;
+            btnNode.data = data;
+            // textNode.classList.add('hidden');
+            // textNode.innerText = '아이템 버튼';
+            // btnNode.append(textNode);
+            // wrapNode.append(btnNode);  
+
+            this.wrapNode = wrapNode;
+
+            // this.attachEvent();
+            return this;
+        }
+
+        // setupOptions() {
+        //     if(this.mode){
+        //         //...
+        //         console.log('mode가 있다.')
+        //     }
+        // }
+
+        // attachEvent() {
+        //     console.log('attachEvent');
+        //     this.wrapNode.addEventListener('click', this.onClick);
+
+        //     return this;
+        //         // [TODO] 어떻게 처리할 지 생각
+        //         // setListEmpty();
+        // }
+
+        onClick(e) {
+            const { target } = e;
+            const { parentNode } = target;
+            const { id } = parentNode.dataset;
+            const { checked } = target.data;
+            const thisNode = document.querySelector('[data-id='+ id +']');
+    
+            if(checked.includes("true")){
+                thisNode.remove();
+                listEl.append(parentNode);
+                target.data.checked = "false";
+    
+            }else{
+                thisNode.remove();
+                myListEl.append(parentNode);
+                target.data.checked = "true";
+            }
+
+        }
+    }
+
+    class userItem extends CheckItem {
+        constructor(mode) {
+            super();
+            
+            // [TODO] mode? options?
+            this.mode = mode;
+            this.item = new CheckItem();
+
+            return this;
+        }
+
+        handler(e) {
+
+        }
+    } 
+
+    class totalItem extends CheckItem {
+        constructor(mode) {
+
+        }
+    }
 
     var TRIP_CHECK_LIST = {
         CHECK_LIST_DATA : 'CHECK_LIST_DATA',
@@ -47,61 +136,7 @@
         };
     };
 
-    var CheckItem = function(mode, data){
-        this.mode = mode;
-        this.data = data;
-        
-        return this.create();
-    };
-
-    // [TODO] 추가, 삭제등.. 버튼에 관한 작업을 별도로 할 것.
-    CheckItem.prototype = {
-        create : function(){
-            var self = this;
-            var data = this.data;
-            var wrapEl = document.createElement('div');
-            var btnEl = document.createElement('button');
-            var spanEl = document.createElement('span');
-
-            wrapEl.classList.add('list__items');
-            wrapEl.innerText = data.name;
-            
-            wrapEl.dataset.id = data.id;
-
-            btnEl.data = data;             
-            spanEl.classList.add('hidden');
-            spanEl.innerText = (this.mode) ? '추가 버튼' : '삭제 버튼';
-
-            btnEl.addEventListener('click', function(e){
-                self.onClick(e);
-                setListEmpty();
-            });
-
-            btnEl.append(spanEl);
-            wrapEl.append(btnEl);            
-
-            return wrapEl;  
-        },
-
-        onClick : function(e){
-            var target = e.target;
-            var parentNode = target.parentNode;
-            var id = parentNode.dataset.id;
-            var thisDOM = document.querySelector('[data-id='+ id +']');
-            var checked = target.data.checked;
-    
-            if(checked === "true"){
-                thisDOM.remove();
-                listEl.append(parentNode);
-                target.data.checked = "false";
-    
-            }else{
-                thisDOM.remove();
-                myListEl.append(parentNode);
-                target.data.checked = "true";
-            }
-        }
-    };
+   
   
     var Notification = function(opts){
         this.options = Object.assign({},{
@@ -182,7 +217,9 @@
 
         for(var i = 0; i < data.length; i++){
             if(data[i].checked === "true"){
-                var item = new CheckItem('true', data[i]);
+                var item = new CheckItem(data[i]);
+
+                console.log('item',item)
                 myListEl.append(item);
                 myListArr.push(data[i]);
 
