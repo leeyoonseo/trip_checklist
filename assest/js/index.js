@@ -39,16 +39,9 @@
         
         setup() {
             const wrapNode = document.createElement('div');
-            const btnNode = document.createElement('button');
-            // const textNode = document.createElement('span');
             wrapNode.classList.add('list__items');
             wrapNode.innerText = this.data.name;
             wrapNode.dataset.id = this.data.id;
-            btnNode.data = this.data;
-            // textNode.classList.add('hidden');
-            // textNode.innerText = '아이템 버튼';
-            // btnNode.append(textNode);
-            // wrapNode.append(btnNode);  
 
             this.node = wrapNode;
 
@@ -64,13 +57,26 @@
             this.data = data;
             // [TODO] mode? options?
             // this.item = new CheckItem(data);
+            this.setOptionUp();
+
             return this.item;
         }
 
-        onClick(e) {
-            console.log(e.target)
-            // this.remove();
+        setOptionUp(){
+            const buttonNode = document.createElement('button');
+            buttonNode.data = this.data;
 
+            buttonNode.addEventListener('click', proxy(this, this.onClick));
+            this.node.append(buttonNode);
+
+            return this;
+        }
+
+        onClick(e) {
+
+            console.log(this)
+
+            return this;
         }
     } 
 
@@ -99,8 +105,15 @@
         constructor(data) {
             super(data);
             this.data = data;
+            this.setOptionUp();
             // this.item = new CheckItem(data);
             return this.item;
+        }
+
+        setOptionUp(){
+            const buttonNode = document.createElement('button');
+            buttonNode.data = this.data;
+            this.node.append(buttonNode);
         }
 
         onClick(e) {
