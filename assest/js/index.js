@@ -25,7 +25,7 @@
     const listNode = document.querySelector('.app__list .list__wrap');
     const searchInputNode = document.querySelector('#searchInput');
     const saveBtnNode = document.querySelector('#saveButton');    
-    let data = localStorage.getItem(MESSAGE.CHECK_LIST_DATA) || '[{"id":"C01","checked":true,"name":"여벌 옷"},{"id":"C02","checked":false,"name":"실내 복"},{"id":"C03","checked":false,"name":"수영복"},{"id":"C04","checked":false,"name":"모자"},{"id":"C05","checked":false,"name":"슬리퍼"},{"id":"C06","checked":false,"name":"샴푸&린스"},{"id":"C07","checked":false,"name":"바디워시"},{"id":"C08","checked":false,"name":"클렌징"},{"id":"C09","checked":false,"name":"스킨케어"},{"id":"C010","checked":false,"name":"마스크팩"},{"id":"C011","checked":false,"name":"드라이기&고데기"},{"id":"C012","checked":false,"name":"수건"},{"id":"C013","checked":false,"name":"화장품"},{"id":"C014","checked":false,"name":"여권"},{"id":"C015","checked":false,"name":"휴지&물티슈"},{"id":"C016","checked":false,"name":"카메라"},{"id":"C017","checked":false,"name":"충전기"},{"id":"C018","checked":false,"name":"노트북"},{"id":"C019","checked":false,"name":"선글라스"},{"id":"C020","checked":false,"name":"선크림"},{"id":"C021","checked":false,"name":"우산, 비옷"},{"id":"C022","checked":false,"name":"이어폰"},{"id":"C023","checked":false,"name":"비상약"},{"id":"C024","checked":false,"name":"서브가방"},{"id":"C025","checked":false,"name":"지퍼백"},{"id":"C026","checked":false,"name":"속옷"},{"id":"C027","checked":false,"name":"면도기"},{"id":"C028","checked":false,"name":"가이드북"},{"id":"C029","checked":false,"name":"돼지코"}]';
+    let checkedData = localStorage.getItem(MESSAGE.CHECK_LIST_DATA) || '[{"id":"C01","checked":true,"name":"여벌 옷"},{"id":"C02","checked":false,"name":"실내 복"},{"id":"C03","checked":false,"name":"수영복"},{"id":"C04","checked":false,"name":"모자"},{"id":"C05","checked":false,"name":"슬리퍼"},{"id":"C06","checked":false,"name":"샴푸&린스"},{"id":"C07","checked":false,"name":"바디워시"},{"id":"C08","checked":false,"name":"클렌징"},{"id":"C09","checked":false,"name":"스킨케어"},{"id":"C010","checked":false,"name":"마스크팩"},{"id":"C011","checked":false,"name":"드라이기&고데기"},{"id":"C012","checked":false,"name":"수건"},{"id":"C013","checked":false,"name":"화장품"},{"id":"C014","checked":false,"name":"여권"},{"id":"C015","checked":false,"name":"휴지&물티슈"},{"id":"C016","checked":false,"name":"카메라"},{"id":"C017","checked":false,"name":"충전기"},{"id":"C018","checked":false,"name":"노트북"},{"id":"C019","checked":false,"name":"선글라스"},{"id":"C020","checked":false,"name":"선크림"},{"id":"C021","checked":false,"name":"우산, 비옷"},{"id":"C022","checked":false,"name":"이어폰"},{"id":"C023","checked":false,"name":"비상약"},{"id":"C024","checked":false,"name":"서브가방"},{"id":"C025","checked":false,"name":"지퍼백"},{"id":"C026","checked":false,"name":"속옷"},{"id":"C027","checked":false,"name":"면도기"},{"id":"C028","checked":false,"name":"가이드북"},{"id":"C029","checked":false,"name":"돼지코"}]';
     let myListData = [];
     let listData = [];
 
@@ -62,108 +62,163 @@
             return this.item;
         }
 
+        // [TODO] 합치기
         setOptionUp(){
             const buttonNode = document.createElement('button');
             buttonNode.data = this.data;
 
-            buttonNode.addEventListener('click', proxy(this, this.onClick));
+            buttonNode.addEventListener('click', this.onClick);
             this.node.append(buttonNode);
 
             return this;
         }
 
-        onClick(e) {
+        onClick() {
+            const data = this.data;
+            this.parentNode.remove();
+            
+            Object.values(data).map(function(val){
+                if(val === data.id){
+                    data.checked = false;
+                }
+            });
 
-            console.log(this)
+            appendToBody(checkedData);
 
             return this;
         }
     } 
-
-    // [TODO] 각 리스트 클릭 시  
-    // onClick(e) {
-        //             const { target } = e;
-        //             const { parentNode } = target;
-        //             const { id } = parentNode.dataset;
-        //             const { checked } = target.data;
-        //             const thisNode = document.querySelector('[data-id='+ id +']');
-            
-        //             if(checked.includes(true)){
-        //                 thisNode.remove();
-        //                 listNode.append(parentNode);
-        //                 target.data.checked = false;
-            
-        //             }else{
-        //                 thisNode.remove();
-        //                 myListNode.append(parentNode);
-        //                 target.data.checked = true;
-        //             }
-        
-        //         }
 
     class TotalItem extends CheckItem {
         constructor(data) {
             super(data);
             this.data = data;
             this.setOptionUp();
-            // this.item = new CheckItem(data);
+            
             return this.item;
         }
 
+        // [TODO] 합치기
         setOptionUp(){
             const buttonNode = document.createElement('button');
             buttonNode.data = this.data;
+
+            buttonNode.addEventListener('click', this.onClick);
             this.node.append(buttonNode);
         }
 
-        onClick(e) {
-            console.log(e.target)
-            // this.remove();
+        onClick() {
+            const data = this.data;
+            this.parentNode.remove();
+            
+            Object.values(data).map(function(val){
+                if(val === data.id){
+                    data.checked = true;
+                }
+            });
 
+            appendToBody(checkedData);
+            
+            return this;
         }
     }
+    
+    class Notification {
+        constructor(opts) {
+            this.options = Object.assign({},{
+                timer : 1,
+                text : MESSAGE.NOTI_TEXT_DEFAULT,
+                imageUrl : '',
+                target : 'section' // id, class, tag 
+            }, opts);
 
-    const isExistData = function(data){
-        if(data.length > 0){
+            this.setup();
+            return this;
+        }
+
+        setup() {
+            const targetNode = document.querySelector(this.options.target);
+            const wrapNode = document.createElement('div');
+            const innerNode = document.createElement('div');
+
+            wrapNode.classList.add('app__noti');
+            innerNode.classList.add('inner');
+            wrapNode.append(innerNode);
+            targetNode.append(wrapNode);
+
+            this.node = wrapNode;
+
+            return this;
+        }
+
+        open(opts) {
+            if(opts) {
+                this.options = Object.assign({}, this.options, opts);
+            } 
+
+            const self = this;
+
+            this.node.childNodes[0].innerText = this.options.text;
+            this.node.classList.add('on');
+
+            setTimeout(function(){
+                self.close();
+            }, self.options.timer * 1000); // millisecond
+        }
+
+        close() {
+            this.node.classList.remove('on');
+        }
+    };
+
+    // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!
+    function appendToBody(data){
+        myListNode.innerHTML = '';
+        listNode.innerHTML = '';
+
+        if(isExistData(data)){
+            data.map(function(obj, idx) {
+                if(obj.checked){
+                    let item = new UserItem(obj);
+                    myListNode.append(item.node);
+                    // myListData.push(obj);
+
+                }else{
+                    let item = new TotalItem(obj);
+                    listNode.append(item.node);
+                    // listData.push(obj);
+                }
+            });
+        }
+
+        setEmptyList();
+    };
+
+    function isExistData(data) {
+        if(data.length > 0) {
             return true;
         }
 
         return false;
     };
 
-    const setEmptyList = function(targetNode){
-        if(targetNode.childNodes.length < 1){
+    function setEmptyList(){
+        appendEmptyEl(myListNode, createEmptyEl());
+        appendEmptyEl(listNode, createEmptyEl());
+
+        function createEmptyEl(){
             const node = document.createElement('div');
-            // [TODO] 클래스명 변경
             node.classList.add('empty__text');
             node.innerText = '비었다.';
 
-            targetNode.append(node);
+            return node;
         }
-    };
 
-    const appendDataNodeToBody = function(data){
-        myListNode.innerHTML = '';
-        listNode.innerHTML = '';
-
-        if(isExistData(data)){
-            
-            data.map(function(obj, idx) {
-                // checked가 true일 경우 사용자 리스트
-                if(obj.checked){
-                    let item = new UserItem(obj);
-                    myListNode.append(item.node);
-                    myListData.push(obj);
-
-                }else{
-                    let item = new TotalItem(obj);
-                    listNode.append(item.node);
-                    listData.push(obj);
-                }
-            });
-
-            // [TODO] 비어있을때 
-            setEmptyList(myListNode);
+        function appendEmptyEl(listNode, emptyNode){
+            if(listNode.childNodes.length < 1){
+                listNode.append(emptyNode);
+                return false;
+            }
         }
     };
 
@@ -171,7 +226,7 @@
     // var guide = createGuide();
     const bodyNode = document.querySelector('body');
 
-    data = JSON.parse(data).sort(function(a, b){
+    checkedData = JSON.parse(checkedData).sort(function(a, b){
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
 
@@ -186,133 +241,100 @@
         currentFlow = APP_FLOW.MAIN;
     }
     
-    appendDataNodeToBody(data);
+    appendToBody(checkedData);
     searchInputNode.focus();
 
+    // handler    
+    const notification = new Notification();
+    saveBtnNode.addEventListener('click', function(){
+        if(storageAvailable('localStorage')){
+            localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
+            notification.open({ 
+                text : MESSAGE.NOTI_TEXT_SAVE
+            });
+
+        }else {
+            notification.open({
+                text : MESSAGE.NOTI_TEXT_ERROR
+            });
+        }
+    });
+
+    searchInputNode.addEventListener('input', function(e){
+        const val = e.target.value;
+        let searchData = clone(checkedData);
+        
+        if(val !== ''){
+            searchData = setSearchData(checkedData, val);
+        }
+
+        appendToBody(searchData);
+
+    });
+
+    function setSearchData(data, val){
+        let arr = [];
+
+        data.find(function(obj){
+            if(obj.name.includes(val)){
+                arr.push(obj);
+            }
+        });
+
+        return arr;
+    };
+
     // polyfill
+    function storageAvailable(type){
+        let storage;
+
+        try {
+            storage = window[type];
+            var x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch(e) {
+        return e instanceof DOMException && (
+            e.code === 22 ||
+            e.code === 1014 ||
+            e.name === 'QuotaExceededError' ||
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            (storage && storage.length !== 0);
+        }
+    };
+
     if (!String.prototype.includes) {
         String.prototype.includes = function(search, start) {
-            if (typeof start !== 'number') {
-                start = 0;
-            }
-
+            if (typeof start !== 'number') start = 0;
             if (start + search.length > this.length) {
                 return false;
+        
             } else {
                 return this.indexOf(search, start) !== -1;
             }
         };
     };
 
+    function clone(obj) {
+        if (obj === null || typeof(obj) !== 'object')
+        return obj;
+      
+        var copy = obj.constructor();
+      
+        for (var attr in obj) {
+          if (obj.hasOwnProperty(attr)) {
+            copy[attr] = clone(obj[attr]);
+          }
+        }
+      
+        return copy;
+      }
 })();
   
-//     var Notification = function(opts){
-//         this.options = Object.assign({},{
-//             timer : 1,
-//             text : MESSAGE.NOTI_TEXT_DEFAULT,
-//             imageUrl : '',
-//             target : 'section' // id, class, tag 
-//         }, opts);
 
-//         this.notiEl = this.createHtml();
-//         var target = document.querySelector(this.options.target);
-//         target.append(this.notiEl);
-//     };
 
-//     Notification.prototype = {
-//         createHtml : function(){
-//             var wrap = document.createElement('div');
-//             var inner = document.createElement('div');
-    
-//             wrap.classList.add('app__noti');
-//             inner.classList.add('inner');
-    
-//             wrap.append(inner);
-    
-//             return wrap;
-//         },
-
-//         open : function(opts){
-//             if(opts) this.options = Object.assign({}, this.options, opts);
-//             var self = this;
-
-//             this.notiEl.childNodes[0].innerText = this.options.text;
-
-//             // if(imageUrl){}
-//             this.notiEl.classList.add('on');
-
-//             setTimeout(function(){
-//                 self.close();
-//             }, self.options.timer * 1000); // millisecond
-//         },
-
-//         close : function(){
-//             this.notiEl.classList.remove('on');
-//         }
-//     };
-
-//     var storageAvailable = function(type){
-//         var storage;
-
-//         try {
-//             storage = window[type];
-//             var x = '__storage_test__';
-//             storage.setItem(x, x);
-//             storage.removeItem(x);
-//             return true;
-//         }
-//         catch(e) {
-//             return e instanceof DOMException && (
-//                 // Firefox를 제외한 모든 브라우저
-//                 e.code === 22 ||
-//                 // Firefox
-//                 e.code === 1014 ||
-//                 // 코드가 존재하지 않을 수도 있기 떄문에 이름 필드도 확인합니다.
-//                 // Firefox를 제외한 모든 브라우저
-//                 e.name === 'QuotaExceededError' ||
-//                 // Firefox
-//                 e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-//                 // 이미 저장된 것이있는 경우에만 QuotaExceededError를 확인하십시오.
-//                 (storage && storage.length !== 0);
-//         }
-//     };
-//    
-//     var saveData = function(){
-//         var newData = myListData.concat(listData);
-
-//         newData.sort(function(a, b){
-//             return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-//         });
-
-//         localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(newData));
-//         notification.open({ 
-//             text : MESSAGE.NOTI_TEXT_SAVE
-//         });
-//     };
-
-//     var showSearchResult = function(val){
-//         var searchData = [];
-
-//         for(var i = 0; i < data.length; i++){
-//             if(data[i].name.includes(val)){
-//                 searchData.push(data[i]);
-//             }
-//         }
-
-//         myListNode.innerHTML = '';
-//         listNode.innerHTML = '';
-
-//         for(var i = 0; i < searchData.length; i++){
-//             if(searchData[i].checked === true){
-//                 var item = new CheckItem('true', searchData[i]);
-//                 myListNode.append(item);
-    
-//             }else{
-//                 var item = new CheckItem('false', searchData[i]);
-//                 listNode.append(item);
-//             }
-//         } 
-//     };
 
 //     var createGuide = function(){
 //         var guideInfo = [
@@ -414,28 +436,9 @@
     
 //     init();
 
-//     // handler
-//     saveBtnNode.addEventListener('click', function(){
-//         if(storageAvailable('localStorage')){
-//             saveData();
-            
-//         }else {
-//             notification.open({
-//                 text : MESSAGE.NOTI_TEXT_ERROR
-//             });
-//         }
-//     });
 
-//     searchInputNode.addEventListener('input', function(e){
-//         var val = e.target.value;
 
-//         if(val === ''){
-//             appendToBody(data);
 
-//         }else{
-//             showSearchResult(val);
-//         }
-//     });
 
 
 //     // menu
@@ -474,7 +477,3 @@
         
 //     }
 // })();
-
-// // [TODO]
-// // 리스트가 하나도 없을때 안내
-// // 초성검색..?
