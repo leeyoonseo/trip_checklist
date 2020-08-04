@@ -29,81 +29,6 @@
     // let myListData = [];
     // let listData = [];
 
-    const guide = function() {
-        const INFO = [
-            {
-                className : 'guide__menu',
-                text : '클릭해서 메뉴를 확인하세요.'
-            },
-            {
-                className : 'guide__search',
-                text : '검색어를 입력하여 찾고자하는 아이템을 찾으세요.'
-            },
-            {
-                className : 'guide__save',
-                text : '저장 아이콘을 클릭해서 체크리스트의 상태를 저장하세요!'
-            },
-            {
-                className : 'guide__remove__item',
-                text : 'x 버튼을 클릭해서<br>내 캐리어에서 아이템을 제거하세요.'
-            },
-            {
-                className : 'guide__add__item',
-                text : '텍스트를 클릭해서 내 캐리어에 아이템을 추가하세요.'
-            }
-        ];
-        
-        const itemNode = function(className, text) {
-            var itemEl = document.createElement('div');
-            var iconEl = document.createElement('span');
-            var textEl = document.createElement('span');
-
-            itemEl.classList.add('guide__items');
-            itemEl.classList.add(className);
-            iconEl.classList.add('icon__pointer');
-            textEl.classList.add('text');
-
-            textEl.innerText = text;
-            itemEl.append(iconEl, textEl);
-
-            return itemEl;   
-
-        };
-
-        return getNode();
-
-        function getNode() {
-            const wrapNode = document.createElement('div');
-            const innerNode = document.createElement('div');
-            const expiredNode = document.createElement('div');
-            const expiredBtnNode = document.createElement('button');
-            const expiredTextNode = document.createElement('span');
-
-            wrapNode.classList.add('app__guide');
-            innerNode.classList.add('inner');
-            expiredNode.classList.add('expired');
-            expiredBtnNode.classList.add('expiredBtn');
-
-            expiredBtnNode.innerText = '체크';
-            expiredTextNode.innerText = '다시 보지 않기';
-            // expiredNode.append(expiredNode, expiredTextNode);
-
-            // expiredBtnNode.addEventListener('click', function(){
-            //     wrapNode.remove();
-            //     localStorage.setItem('expired', true);
-            // });
-
-            INFO.map(function(obj){
-                innerNode.append(itemNode(obj.className, obj.text));
-            });
-            
-            innerNode.append(expiredNode);
-            wrapNode.append(innerNode);
-
-            return wrapNode;            
-        }
-    };
-
     class CheckItem {
         constructor(data) {
             this.data = data;
@@ -284,7 +209,7 @@
         function createEmptyEl(){
             const node = document.createElement('div');
             node.classList.add('empty__text');
-            node.innerText = '비었다.';
+            node.innerText = '아이템이 없습니다';
 
             return node;
         }
@@ -298,26 +223,25 @@
     };
 
     // init
-    // var guide = createGuide();
     const bodyNode = document.querySelector('body');
-    const guideNode = guide();
+    const coachingNode = document.querySelector('#coachingCover');
+    const coachingCloseNode = document.querySelector('#coachingCover');
 
     checkedData = JSON.parse(checkedData).sort(function(a, b){
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
 
-
-    bodyNode.prepend(guideNode);
-
     // localStorage.removeItem('expired');
-    if(expired) {
-        currentFlow = APP_FLOW.MAIN;
-        // guide.remove();
-    
-    }else{
-        currentFlow = APP_FLOW.MAIN;
+    // localStorage.removeItem('isFirstVisit');
+    if(localStorage.getItem('isFirstVisit') === null){
+        coachingNode.classList.add('on');
+
+        coachingCloseNode.addEventListener('click', function(){
+            coachingNode.classList.remove('on');
+            localStorage.setItem('isFirstVisit', true);
+        });
     }
-    
+
     appendToBody(checkedData);
     searchInputNode.focus();
 
