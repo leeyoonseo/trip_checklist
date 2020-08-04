@@ -26,8 +26,83 @@
     const searchInputNode = document.querySelector('#searchInput');
     const saveBtnNode = document.querySelector('#saveButton');    
     let checkedData = localStorage.getItem(MESSAGE.CHECK_LIST_DATA) || '[{"id":"C01","checked":true,"name":"여벌 옷"},{"id":"C02","checked":false,"name":"실내 복"},{"id":"C03","checked":false,"name":"수영복"},{"id":"C04","checked":false,"name":"모자"},{"id":"C05","checked":false,"name":"슬리퍼"},{"id":"C06","checked":false,"name":"샴푸&린스"},{"id":"C07","checked":false,"name":"바디워시"},{"id":"C08","checked":false,"name":"클렌징"},{"id":"C09","checked":false,"name":"스킨케어"},{"id":"C010","checked":false,"name":"마스크팩"},{"id":"C011","checked":false,"name":"드라이기&고데기"},{"id":"C012","checked":false,"name":"수건"},{"id":"C013","checked":false,"name":"화장품"},{"id":"C014","checked":false,"name":"여권"},{"id":"C015","checked":false,"name":"휴지&물티슈"},{"id":"C016","checked":false,"name":"카메라"},{"id":"C017","checked":false,"name":"충전기"},{"id":"C018","checked":false,"name":"노트북"},{"id":"C019","checked":false,"name":"선글라스"},{"id":"C020","checked":false,"name":"선크림"},{"id":"C021","checked":false,"name":"우산, 비옷"},{"id":"C022","checked":false,"name":"이어폰"},{"id":"C023","checked":false,"name":"비상약"},{"id":"C024","checked":false,"name":"서브가방"},{"id":"C025","checked":false,"name":"지퍼백"},{"id":"C026","checked":false,"name":"속옷"},{"id":"C027","checked":false,"name":"면도기"},{"id":"C028","checked":false,"name":"가이드북"},{"id":"C029","checked":false,"name":"돼지코"}]';
-    let myListData = [];
-    let listData = [];
+    // let myListData = [];
+    // let listData = [];
+
+    const guide = function() {
+        const INFO = [
+            {
+                className : 'guide__menu',
+                text : '클릭해서 메뉴를 확인하세요.'
+            },
+            {
+                className : 'guide__search',
+                text : '검색어를 입력하여 찾고자하는 아이템을 찾으세요.'
+            },
+            {
+                className : 'guide__save',
+                text : '저장 아이콘을 클릭해서 체크리스트의 상태를 저장하세요!'
+            },
+            {
+                className : 'guide__remove__item',
+                text : 'x 버튼을 클릭해서<br>내 캐리어에서 아이템을 제거하세요.'
+            },
+            {
+                className : 'guide__add__item',
+                text : '텍스트를 클릭해서 내 캐리어에 아이템을 추가하세요.'
+            }
+        ];
+        
+        const itemNode = function(className, text) {
+            var itemEl = document.createElement('div');
+            var iconEl = document.createElement('span');
+            var textEl = document.createElement('span');
+
+            itemEl.classList.add('guide__items');
+            itemEl.classList.add(className);
+            iconEl.classList.add('icon__pointer');
+            textEl.classList.add('text');
+
+            textEl.innerText = text;
+            itemEl.append(iconEl, textEl);
+
+            return itemEl;   
+
+        };
+
+        return getNode();
+
+        function getNode() {
+            const wrapNode = document.createElement('div');
+            const innerNode = document.createElement('div');
+            const expiredNode = document.createElement('div');
+            const expiredBtnNode = document.createElement('button');
+            const expiredTextNode = document.createElement('span');
+
+            wrapNode.classList.add('app__guide');
+            innerNode.classList.add('inner');
+            expiredNode.classList.add('expired');
+            expiredBtnNode.classList.add('expiredBtn');
+
+            expiredBtnNode.innerText = '체크';
+            expiredTextNode.innerText = '다시 보지 않기';
+            // expiredNode.append(expiredNode, expiredTextNode);
+
+            // expiredBtnNode.addEventListener('click', function(){
+            //     wrapNode.remove();
+            //     localStorage.setItem('expired', true);
+            // });
+
+            INFO.map(function(obj){
+                innerNode.append(itemNode(obj.className, obj.text));
+            });
+            
+            innerNode.append(expiredNode);
+            wrapNode.append(innerNode);
+
+            return wrapNode;            
+        }
+    };
 
     class CheckItem {
         constructor(data) {
@@ -225,12 +300,14 @@
     // init
     // var guide = createGuide();
     const bodyNode = document.querySelector('body');
+    const guideNode = guide();
 
     checkedData = JSON.parse(checkedData).sort(function(a, b){
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
 
-    // bodyNode.prepend(guide);
+
+    bodyNode.prepend(guideNode);
 
     // localStorage.removeItem('expired');
     if(expired) {
@@ -336,77 +413,7 @@
 
 
 
-//     var createGuide = function(){
-//         var guideInfo = [
-//             { 
-//                 className : 'guide__menu',
-//                 text : '클릭해서 메뉴를 확인하세요' 
-//             },
-//             {
-//                 className : 'guide__search',
-//                 text : '검색어를 입력하여 찾고자하는 아이템을 찾으세요.'
-//             },
-//             {
-//                 className : 'guide__save',
-//                 text : '저장 아이콘을 클릭해서 체크리스트의 상태를 저장하세요!'
-//             },
-//             {
-//                 className : 'guide__remove__item',
-//                 text : 'x 버튼을 클릭해서<br>내 캐리어에서 아이템을 제거하세요.'
-//             },
-//             {
-//                 className : 'guide__add__item',
-//                 text : '텍스트를 클릭해서 내 캐리어에 아이템을 추가하세요.'
-//             }
 
-//         ]
-
-//         var wrap = document.createElement('div');
-//         var inner = document.createElement('div');
-//         var expired = document.createElement('div');
-//         var expiredBtn = document.createElement('button');
-//         var expiredText = document.createElement('span');
-
-//         APP_FLOW.GUIDE;
-
-//         wrap.classList.add('app__guide');
-//         inner.classList.add('inner');
-//         expired.classList.add('expired');
-//         expiredBtn.classList.add('expiredBtn');
-
-//         expiredBtn.innerText = '체크';
-//         expiredText.innerText = '다시 보지 않기';
-//         expiredBtn.addEventListener('click', function(){
-//             wrap.remove();
-//             localStorage.setItem('expired', true);
-//         });
-
-//         expired.append(expiredBtn, expiredText);
-
-//         for(var i = 0; i < guideInfo.length; i++){
-//             inner.append(getGuideItemStr(guideInfo[i].className, guideInfo[i].text))
-//         }
-//         inner.append(expired);
-//         wrap.append(inner);
-
-//         return wrap;
-
-//         function getGuideItemStr(className, text){
-//             var itemEl = document.createElement('div');
-//             var iconEl = document.createElement('span');
-//             var textEl = document.createElement('span');
-
-//             itemEl.classList.add('guide__items');
-//             itemEl.classList.add(className);
-//             iconEl.classList.add('icon__pointer');
-//             textEl.classList.add('text');
-
-//             textEl.innerText = text;
-//             itemEl.append(iconEl, textEl);
-
-//             return itemEl;            
-//         }
-//     };
 
 //    
 
