@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+header{
+    position:relative;
+    height:get-vw(40px);
+    line-height:get-vw(40px);
+    text-align:center;
+    background-color:#ccc;
+
+    h2{
+        margin:0;
+        font-size:get-vw(18px);
+        color:#333;
+    }
+
+    .menu__toggle{
+        padding:0;
+        position:absolute;
+        top:get-vw(8px);
+        right:5%;
+        width:get-vw(20px);
+        height:get-vw(20px);
+        border:none;
+        background-repeat:no-repeat;
+        background-image:url(../img/icon_menu.png);
+        background-size:100% 100%;
+
+        &:focus{
+            outline:none;
+        }
+    }
+}
