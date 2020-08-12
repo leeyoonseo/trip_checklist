@@ -39,7 +39,7 @@
         
         setup() {
             const wrapNode = document.createElement('div');
-            wrapNode.classList.add('list__items');
+            wrapNode.classList.add('checklist__items');
             wrapNode.innerText = this.data.name;
             wrapNode.dataset.id = this.data.id;
 
@@ -209,7 +209,7 @@
 
         function createEmptyEl(){
             const node = document.createElement('div');
-            node.classList.add('empty__text');
+            node.classList.add('checklist__text--empty');
             node.innerText = '아이템이 없습니다';
 
             return node;

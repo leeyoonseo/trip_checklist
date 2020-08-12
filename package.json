@@ -1,0 +1,27 @@
+{
+  "name": "TripCheckList",
+  "version": "1.0.0",
+  "description": "TripCheckList",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src/js -w -d dist/js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leeyoonseo/trip_checklist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leeyoonseo/trip_checklist/issues"
+  },
+  "homepage": "https://github.com/leeyoonseo/trip_checklist#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0"
+  }
+}
