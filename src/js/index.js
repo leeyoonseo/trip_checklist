@@ -227,6 +227,8 @@
     const bodyNode = document.querySelector('body');
     const coachingNode = document.querySelector('#coachingCover');
     const coachingCloseNode = document.querySelector('#coachingCover');
+    const listEditNode = document.querySelector('#listEdit');
+    const appEditNode = document.querySelector('#appEdit');
 
     checkedData = JSON.parse(checkedData).sort(function(a, b){
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
@@ -271,8 +273,31 @@
         }
 
         appendToBody(searchData);
-
     });
+
+    listEditNode.addEventListener('click', function(){
+        appEditNode.calssList.add('on');
+        setEditAllList();
+    });
+
+
+    const editListNode = document.querySelector('#editList');
+    
+    // [TODO] 제거할 것
+    setEditAllList();
+
+    function setEditAllList(){
+        if(isExistData(checkedData)){
+            checkedData.map(function(obj) {
+                let item = new CheckItem(obj);
+                editListNode.append(item.node);
+            });
+        }
+
+        // setEmptyList();
+    }
+
+
 
     function setSearchData(data, val){
         let arr = [];
@@ -334,78 +359,3 @@
         return copy;
       }
 })();
-  
-
-
-
-
-
-//    
-
-//     var notification = new Notification();
-//     var init = function(){
-//         var guide = createGuide();
-//         var doc = document.querySelector('body');
-
-//         data = JSON.parse(data).sort(function(a, b){
-//             return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-//         });
-
-//         doc.prepend(guide);
-    
-//         // localStorage.removeItem('expired');
-//         if(expired) {
-//             currentFlow = APP_FLOW.MAIN;
-//             guide.remove();
-        
-//         }else{
-//             currentFlow = APP_FLOW.MAIN;
-//         }
-        
-//         appendToBody(data);
-//         searchInputNode.focus();
-//     };
-    
-//     init();
-
-
-
-
-
-
-//     // menu
-//     var menuBtnEl = document.querySelector('.menu__button');
-//     var menuWrapEl = document.querySelector('.menu__wrap');
-//     var listEditButton = document.querySelector('.list__edit__button');
-
-//     menuBtnEl.addEventListener('click', function(){
-//         console.log('menu')
-
-//         if(menuWrapEl.classList.contains('on')){
-//             menuWrapEl.classList.remove('on');
-
-//         }else{
-//             menuWrapEl.classList.add('on');
-//         }
-//     });
-
-//     var editList = document.querySelector('.edit__list');
-
-//     listEditButton.addEventListener('click', function(){
-//         console.log('list', data);
-//         setEditList(data);
-//     });
-
-
-//     function setEditList(data){
-//         editList.innerHTML = '';
-
-//         if(!data) return false;
-
-//         for(var i = 0; i < data.length; i++){
-//             var item = new CheckItem('true', data[i]);
-//             editList.append(item);
-//         }
-        
-//     }
-// })();
