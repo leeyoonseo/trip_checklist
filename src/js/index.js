@@ -1,22 +1,9 @@
-(function(){
+import { APP_FLOW } from './lang';
 
-    const CHECK_LIST_DATA = 'CHECK_LIST_DATA';
+console.log('APP_FLOW', APP_FLOW);
 
-    // [TODO] flow 관리
-    const APP_FLOW = {
-        GUIDE : 'GUIDE',
-        MAIN : 'MAIN',
-        MENU_LIST : 'MENU',
-        LIST_EDIT : 'LIST_EDIT'
-    };
 
-    const MESSAGE = {
-        NOTI_TEXT_DEFAULT : '완료되었습니다.',
-        NOTI_TEXT_SAVE : '저장되었습니다.',
-        NOTI_TEXT_SEARCH_EMPTY : '검색어를 입력해주세요.',
-        NOTI_TEXT_ERROR : '오류입니다.'
-    };
-    
+
     // dev
     // localStorage.removeItem(MESSAGE.CHECK_LIST_DATA);
     // db에 넣어야..
@@ -25,104 +12,11 @@
     const listNode = document.querySelector('#allListNode');
     const searchInputNode = document.querySelector('#searchInput');
     const saveBtnNode = document.querySelector('#listSave');    
-    let checkedData = localStorage.getItem(MESSAGE.CHECK_LIST_DATA) || '[{"id":"C01","checked":true,"name":"여벌 옷"},{"id":"C02","checked":false,"name":"실내 복"},{"id":"C03","checked":false,"name":"수영복"},{"id":"C04","checked":false,"name":"모자"},{"id":"C05","checked":false,"name":"슬리퍼"},{"id":"C06","checked":false,"name":"샴푸&린스"},{"id":"C07","checked":false,"name":"바디워시"},{"id":"C08","checked":false,"name":"클렌징"},{"id":"C09","checked":false,"name":"스킨케어"},{"id":"C010","checked":false,"name":"마스크팩"},{"id":"C011","checked":false,"name":"드라이기&고데기"},{"id":"C012","checked":false,"name":"수건"},{"id":"C013","checked":false,"name":"화장품"},{"id":"C014","checked":false,"name":"여권"},{"id":"C015","checked":false,"name":"휴지&물티슈"},{"id":"C016","checked":false,"name":"카메라"},{"id":"C017","checked":false,"name":"충전기"},{"id":"C018","checked":false,"name":"노트북"},{"id":"C019","checked":false,"name":"선글라스"},{"id":"C020","checked":false,"name":"선크림"},{"id":"C021","checked":false,"name":"우산, 비옷"},{"id":"C022","checked":false,"name":"이어폰"},{"id":"C023","checked":false,"name":"비상약"},{"id":"C024","checked":false,"name":"서브가방"},{"id":"C025","checked":false,"name":"지퍼백"},{"id":"C026","checked":false,"name":"속옷"},{"id":"C027","checked":false,"name":"면도기"},{"id":"C028","checked":false,"name":"가이드북"},{"id":"C029","checked":false,"name":"돼지코"}]';
+    let checkedData = localStorage.getItem(MESSAGE.CHECK_LIST_DATA);
     // let myListData = [];
     // let listData = [];
 
-    class CheckItem {
-        constructor(data) {
-            this.data = data;
-            this.setup();   
-            
-            return this;
-        }
-        
-        setup() {
-            const wrapNode = document.createElement('div');
-            wrapNode.classList.add('checklist__items');
-            wrapNode.innerText = this.data.name;
-            wrapNode.dataset.id = this.data.id;
-
-            this.node = wrapNode;
-
-            // this.attachEvent();
-            return this;
-        }
-    }
-
-    class UserItem extends CheckItem {
-        constructor(data) {
-            // [TODO] super 인자전달에 대해 알아볼것!
-            super(data);
-            this.data = data;
-            // [TODO] mode? options?
-            // this.item = new CheckItem(data);
-            this.setOptionUp();
-
-            return this.item;
-        }
-
-        // [TODO] 합치기
-        setOptionUp(){
-            const buttonNode = document.createElement('button');
-            buttonNode.data = this.data;
-
-            buttonNode.addEventListener('click', this.onClick);
-            this.node.append(buttonNode);
-
-            return this;
-        }
-
-        // [TODO]
-        onClick() {
-            const data = this.data;
-            this.parentNode.remove();
-            
-            Object.values(data).map(function(val){
-                if(val === data.id){
-                    data.checked = false;
-                }
-            });
-
-            appendToBody(checkedData);
-
-            return this;
-        }
-    } 
-
-    class TotalItem extends CheckItem {
-        constructor(data) {
-            super(data);
-            this.data = data;
-            this.setOptionUp();
-            
-            return this.item;
-        }
-
-        // [TODO] 합치기
-        setOptionUp(){
-            const buttonNode = document.createElement('button');
-            buttonNode.data = this.data;
-
-            buttonNode.addEventListener('click', this.onClick);
-            this.node.append(buttonNode);
-        }
-
-        onClick() {
-            const data = this.data;
-            this.parentNode.remove();
-            
-            Object.values(data).map(function(val){
-                if(val === data.id){
-                    data.checked = true;
-                }
-            });
-
-            appendToBody(checkedData);
-            
-            return this;
-        }
-    }
+    
     
     class Notification {
         constructor(opts) {
@@ -172,6 +66,35 @@
         }
     };
 
+    class coachingCover {
+        constructor(){
+            this.el = this.create();
+    
+            return this;
+        }
+    
+        create(){
+            const cover = document.createElement('div');
+            const inner = document.createElement('div');
+            const nav = document.createElement('div');
+            const close = document.createElement('div');
+            const closeButton = document.createElement('button');
+    
+    
+            cover.classList.add('coaching-cover');
+            inner.classList.add('coaching-cover__inner');
+            nav.classList.add('coaching-cover__nav');
+            close.classList.add('coaching-cover__close');
+            closeButton.innerText = '닫기';
+    
+            close.append(closeButton);
+            inner.append(nav).append(close);
+            cover.append(inner);
+    
+            return cover;
+        }
+    }
+
     // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!
     function appendToBody(data){
         myListNode.innerHTML = '';
@@ -182,12 +105,9 @@
                 if(obj.checked){
                     let item = new UserItem(obj);
                     myListNode.append(item.node);
-                    // myListData.push(obj);
-
                 }else{
                     let item = new TotalItem(obj);
                     listNode.append(item.node);
-                    // listData.push(obj);
                 }
             });
         }
@@ -225,9 +145,9 @@
 
     // init
     const bodyNode = document.querySelector('body');
-    const coachingNode = document.querySelector('#coachingCover');
-    const coachingCloseNode = document.querySelector('#coachingCover');
-    const listEditNode = document.querySelector('#listEdit');
+    // const coachingNode = document.querySelector('#coachingCover');
+    // const coachingCloseNode = document.querySelector('#coachingCover');
+    // const listEditNode = document.querySelector('#listEdit');
     const appEditNode = document.querySelector('#appEdit');
 
     checkedData = JSON.parse(checkedData).sort(function(a, b){
@@ -237,12 +157,12 @@
     // localStorage.removeItem('expired');
     // localStorage.removeItem('isFirstVisit');
     if(localStorage.getItem('isFirstVisit') === null){
-        coachingNode.classList.add('on');
+        // coachingNode.classList.add('on');
 
-        coachingCloseNode.addEventListener('click', function(){
-            coachingNode.classList.remove('on');
-            localStorage.setItem('isFirstVisit', true);
-        });
+        // coachingCloseNode.addEventListener('click', function(){
+        //     // coachingNode.classList.remove('on');
+        //     localStorage.setItem('isFirstVisit', true);
+        // });
     }
 
     appendToBody(checkedData);
@@ -275,10 +195,10 @@
         appendToBody(searchData);
     });
 
-    listEditNode.addEventListener('click', function(){
-        appEditNode.calssList.add('on');
-        setEditAllList();
-    });
+    // listEditNode.addEventListener('click', function(){
+    //     appEditNode.calssList.add('on');
+    //     setEditAllList();
+    // });
 
 
     const editListNode = document.querySelector('#editList');
@@ -290,7 +210,7 @@
         if(isExistData(checkedData)){
             checkedData.map(function(obj) {
                 let item = new CheckItem(obj);
-                editListNode.append(item.node);
+                // editListNode.append(item.node);
             });
         }
 
@@ -358,4 +278,3 @@
       
         return copy;
       }
-})();
