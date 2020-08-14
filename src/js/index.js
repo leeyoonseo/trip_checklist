@@ -1,172 +1,82 @@
-import { APP_FLOW } from './lang';
+import data from './data';
+import { APP_FLOW, MESSAGE } from './lang';
+import { clone } from './utill';
 
-console.log('APP_FLOW', APP_FLOW);
+const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
+const originalData = localStorage.getItem(CHECKED_LOCAL_DATA) || data;
+const myListNode = document.querySelector('#myListNode');
+const allListNode = document.querySelector('#allListNode');
+const searchInputNode = document.querySelector('#searchInput');
+const saveBtnNode = document.querySelector('#listSave');    
+
+searchInputNode.focus();
+
+let checkListData = clone(originalData).sort(function(a, b){
+    return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+});
 
 
+function setListNode(){
+    allListNode.innerHTML = '';
+    myListNode.innerHTML = '';
 
-    // dev
-    // localStorage.removeItem(MESSAGE.CHECK_LIST_DATA);
-    // db에 넣어야..
-    const expired = localStorage.getItem('expired') || false;
-    const myListNode = document.querySelector('#myListNode');
-    const listNode = document.querySelector('#allListNode');
-    const searchInputNode = document.querySelector('#searchInput');
-    const saveBtnNode = document.querySelector('#listSave');    
-    let checkedData = localStorage.getItem(MESSAGE.CHECK_LIST_DATA);
-    // let myListData = [];
-    // let listData = [];
+    if(hasData(checkListData)) return false;
 
-    
-    
-    class Notification {
-        constructor(opts) {
-            this.options = Object.assign({},{
-                timer : 1,
-                text : MESSAGE.NOTI_TEXT_DEFAULT,
-                imageUrl : '',
-                target : 'body' // id, class, tag 
-            }, opts);
+    checkListData.map((obj, idx) => {
+        let listNode = allListNode;
+        let item = new TotalItem(obj);
 
-            this.setup();
-            return this;
+        if(obj.checked){
+            listNode = myListNode;
+            item = new UserItem(obj);
         }
 
-        setup() {
-            const targetNode = document.querySelector(this.options.target);
-            const wrapNode = document.createElement('div');
-            const innerNode = document.createElement('div');
+        listNode.append(item.node);
 
-            wrapNode.classList.add('app__notification');
-            innerNode.classList.add('inner');
-            wrapNode.append(innerNode);
-            targetNode.append(wrapNode);
-
-            this.node = wrapNode;
-
-            return this;
+        if(idx === checkListData.length){
+            allListNode.childNodes.length < 1 && setEmptyList(allListNode);
+            myListNode.childNodes.length < 1 && setEmptyList(myListNode);
         }
+    });
+}
 
-        open(opts) {
-            if(opts) {
-                this.options = Object.assign({}, this.options, opts);
-            } 
+function setEmptyList(targetNode){
+    const wrapNode = document.createElement('div');
+    wrapNode.classList.add('checklist__text--empty');
+    wrapNode.innerText = '아이템이 없습니다';
+    targetNode.append(wrapNode)
+}
 
-            const self = this;
+function hasData(data) {
+    return (data.length > 0) ? true : false;
+};
 
-            this.node.childNodes[0].innerText = this.options.text;
-            this.node.classList.add('on');
 
-            setTimeout(function(){
-                self.close();
-            }, self.options.timer * 1000); // millisecond
-        }
+    // const expired = localStorage.getItem('expired') || false;
 
-        close() {
-            this.node.classList.remove('on');
-        }
-    };
-
-    class coachingCover {
-        constructor(){
-            this.el = this.create();
-    
-            return this;
-        }
-    
-        create(){
-            const cover = document.createElement('div');
-            const inner = document.createElement('div');
-            const nav = document.createElement('div');
-            const close = document.createElement('div');
-            const closeButton = document.createElement('button');
-    
-    
-            cover.classList.add('coaching-cover');
-            inner.classList.add('coaching-cover__inner');
-            nav.classList.add('coaching-cover__nav');
-            close.classList.add('coaching-cover__close');
-            closeButton.innerText = '닫기';
-    
-            close.append(closeButton);
-            inner.append(nav).append(close);
-            cover.append(inner);
-    
-            return cover;
-        }
-    }
-
-    // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!
-    function appendToBody(data){
-        myListNode.innerHTML = '';
-        listNode.innerHTML = '';
-
-        if(isExistData(data)){
-            data.map(function(obj, idx) {
-                if(obj.checked){
-                    let item = new UserItem(obj);
-                    myListNode.append(item.node);
-                }else{
-                    let item = new TotalItem(obj);
-                    listNode.append(item.node);
-                }
-            });
-        }
-
-        setEmptyList();
-    };
-
-    function isExistData(data) {
-        if(data.length > 0) {
-            return true;
-        }
-
-        return false;
-    };
-
-    function setEmptyList(){
-        appendEmptyEl(myListNode, createEmptyEl());
-        appendEmptyEl(listNode, createEmptyEl());
-
-        function createEmptyEl(){
-            const node = document.createElement('div');
-            node.classList.add('checklist__text--empty');
-            node.innerText = '아이템이 없습니다';
-
-            return node;
-        }
-
-        function appendEmptyEl(listNode, emptyNode){
-            if(listNode.childNodes.length < 1){
-                listNode.append(emptyNode);
-                return false;
-            }
-        }
-    };
+   
 
     // init
-    const bodyNode = document.querySelector('body');
+    // const bodyNode = document.querySelector('body');
     // const coachingNode = document.querySelector('#coachingCover');
     // const coachingCloseNode = document.querySelector('#coachingCover');
     // const listEditNode = document.querySelector('#listEdit');
-    const appEditNode = document.querySelector('#appEdit');
+    // const appEditNode = document.querySelector('#appEdit');
 
-    checkedData = JSON.parse(checkedData).sort(function(a, b){
-        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-    });
+    
 
     // localStorage.removeItem('expired');
     // localStorage.removeItem('isFirstVisit');
-    if(localStorage.getItem('isFirstVisit') === null){
+    // if(localStorage.getItem('isFirstVisit') === null){
         // coachingNode.classList.add('on');
 
         // coachingCloseNode.addEventListener('click', function(){
         //     // coachingNode.classList.remove('on');
         //     localStorage.setItem('isFirstVisit', true);
         // });
-    }
+    // }
 
-    appendToBody(checkedData);
-    searchInputNode.focus();
+    
 
     // handler    
     const notification = new Notification();
@@ -231,6 +141,12 @@ console.log('APP_FLOW', APP_FLOW);
         return arr;
     };
 
+
+    // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!
+    
+
+    
+
     // polyfill
     function storageAvailable(type){
         let storage;
@@ -264,17 +180,4 @@ console.log('APP_FLOW', APP_FLOW);
         };
     };
 
-    function clone(obj) {
-        if (obj === null || typeof(obj) !== 'object')
-        return obj;
-      
-        var copy = obj.constructor();
-      
-        for (var attr in obj) {
-          if (obj.hasOwnProperty(attr)) {
-            copy[attr] = clone(obj[attr]);
-          }
-        }
-      
-        return copy;
-      }
+    

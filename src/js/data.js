@@ -145,3 +145,5 @@ const data = [
         "name":"돼지코"
     }
 ];
+
+export default data;
