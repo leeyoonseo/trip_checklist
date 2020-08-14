@@ -1,6 +1,7 @@
 import data from './data';
 import { APP_FLOW, MESSAGE } from './lang';
-import { clone } from './utill';
+import { deepCloneObject, isEmptyData } from './utill';
+import { UserItem, TotalItem } from './CheckItem';
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 const originalData = localStorage.getItem(CHECKED_LOCAL_DATA) || data;
@@ -11,24 +12,27 @@ const saveBtnNode = document.querySelector('#listSave');
 
 searchInputNode.focus();
 
-let checkListData = clone(originalData).sort(function(a, b){
+let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
 
-
-function setListNode(){
+const setListNode = function(){
     allListNode.innerHTML = '';
     myListNode.innerHTML = '';
 
-    if(hasData(checkListData)) return false;
+    if(isEmptyData(checkListData)) return false;
 
     checkListData.map((obj, idx) => {
         let listNode = allListNode;
-        let item = new TotalItem(obj);
+        let itemOpt = {
+            data : obj, 
+            callback : setListNode 
+        }
+        let item = new TotalItem(itemOpt);
 
         if(obj.checked){
             listNode = myListNode;
-            item = new UserItem(obj);
+            item = new UserItem(itemOpt);
         }
 
         listNode.append(item.node);
@@ -38,18 +42,18 @@ function setListNode(){
             myListNode.childNodes.length < 1 && setEmptyList(myListNode);
         }
     });
-}
+};
+
+setListNode();
 
 function setEmptyList(targetNode){
     const wrapNode = document.createElement('div');
     wrapNode.classList.add('checklist__text--empty');
     wrapNode.innerText = '아이템이 없습니다';
-    targetNode.append(wrapNode)
+    targetNode.append(wrapNode);
 }
 
-function hasData(data) {
-    return (data.length > 0) ? true : false;
-};
+
 
 
     // const expired = localStorage.getItem('expired') || false;
@@ -79,31 +83,31 @@ function hasData(data) {
     
 
     // handler    
-    const notification = new Notification();
-    saveBtnNode.addEventListener('click', function(){
-        if(storageAvailable('localStorage')){
-            localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
-            notification.open({ 
-                text : MESSAGE.NOTI_TEXT_SAVE
-            });
+    // const notification = new Notification();
+    // saveBtnNode.addEventListener('click', function(){
+    //     if(storageAvailable('localStorage')){
+    //         localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
+    //         notification.open({ 
+    //             text : MESSAGE.NOTI_TEXT_SAVE
+    //         });
 
-        }else {
-            notification.open({
-                text : MESSAGE.NOTI_TEXT_ERROR
-            });
-        }
-    });
+    //     }else {
+    //         notification.open({
+    //             text : MESSAGE.NOTI_TEXT_ERROR
+    //         });
+    //     }
+    // });
 
-    searchInputNode.addEventListener('input', function(e){
-        const val = e.target.value;
-        let searchData = clone(checkedData);
+    // searchInputNode.addEventListener('input', function(e){
+    //     const val = e.target.value;
+    //     let searchData = clone(checkedData);
         
-        if(val !== ''){
-            searchData = setSearchData(checkedData, val);
-        }
+    //     if(val !== ''){
+    //         searchData = setSearchData(checkedData, val);
+    //     }
 
-        appendToBody(searchData);
-    });
+    //     appendToBody(searchData);
+    // });
 
     // listEditNode.addEventListener('click', function(){
     //     appEditNode.calssList.add('on');
@@ -111,35 +115,35 @@ function hasData(data) {
     // });
 
 
-    const editListNode = document.querySelector('#editList');
+    // const editListNode = document.querySelector('#editList');
     
-    // [TODO] 제거할 것
-    setEditAllList();
+    // // [TODO] 제거할 것
+    // setEditAllList();
 
-    function setEditAllList(){
-        if(isExistData(checkedData)){
-            checkedData.map(function(obj) {
-                let item = new CheckItem(obj);
-                // editListNode.append(item.node);
-            });
-        }
+    // function setEditAllList(){
+    //     if(hasData(checkedData)){
+    //         checkedData.map(function(obj) {
+    //             let item = new CheckItem(obj);
+    //             // editListNode.append(item.node);
+    //         });
+    //     }
 
-        // setEmptyList();
-    }
+    //     // setEmptyList();
+    // }
 
 
 
-    function setSearchData(data, val){
-        let arr = [];
+    // function setSearchData(data, val){
+    //     let arr = [];
 
-        data.find(function(obj){
-            if(obj.name.includes(val)){
-                arr.push(obj);
-            }
-        });
+    //     data.find(function(obj){
+    //         if(obj.name.includes(val)){
+    //             arr.push(obj);
+    //         }
+    //     });
 
-        return arr;
-    };
+    //     return arr;
+    // };
 
 
     // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!

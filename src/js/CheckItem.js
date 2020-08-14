@@ -1,6 +1,7 @@
 class CheckItem {
-    constructor(data) {
+    constructor({ data, callback = null }) {
         this.data = data;
+        this.callback = callback;
         this.setup();   
         
         return this;
@@ -14,18 +15,14 @@ class CheckItem {
 
         this.node = wrapNode;
 
-        // this.attachEvent();
         return this;
     }
 }
 
 class UserItem extends CheckItem {
-    constructor(data) {
+    constructor({ data, callback }) {
         // [TODO] super 인자전달에 대해 알아볼것!
-        super(data);
-        this.data = data;
-        // [TODO] mode? options?
-        // this.item = new CheckItem(data);
+        super({ data, callback });
         this.setOptionUp();
 
         return this.item;
@@ -33,35 +30,35 @@ class UserItem extends CheckItem {
 
     // [TODO] 합치기
     setOptionUp(){
+        const that = this;
         const buttonNode = document.createElement('button');
         buttonNode.data = this.data;
 
-        buttonNode.addEventListener('click', this.onClick);
-        this.node.append(buttonNode);
+        buttonNode.addEventListener('click', function(e){
+            that.onClick(e);
+        });
 
+        this.node.append(buttonNode);
         return this;
     }
 
-    // [TODO]
-    onClick() {
-        const data = this.data;
-        this.parentNode.remove();
+    onClick(e) {
+        e.target.parentNode.remove();
         
-        Object.values(data).map(function(val){
-            if(val === data.id){
-                data.checked = false;
+        Object.values(this.data).map((val) => {
+            if(val === this.data.id){
+                this.data.checked = false;
             }
         });
 
-        appendToBody(checkedData);
-
+        this.callback();
         return this;
     }
 } 
 
 class TotalItem extends CheckItem {
-    constructor(data) {
-        super(data);
+    constructor({ data, callback }) {
+        super({ data, callback });
         this.data = data;
         this.setOptionUp();
         
@@ -70,25 +67,30 @@ class TotalItem extends CheckItem {
 
     // [TODO] 합치기
     setOptionUp(){
+        const that = this;
         const buttonNode = document.createElement('button');
         buttonNode.data = this.data;
 
-        buttonNode.addEventListener('click', this.onClick);
+        buttonNode.addEventListener('click', function({ target }){
+            that.onClick(target);
+        });
+
         this.node.append(buttonNode);
+        return this;
     }
 
-    onClick() {
-        const data = this.data;
-        this.parentNode.remove();
+    onClick(target) {
+        target.parentNode.remove();
         
-        Object.values(data).map(function(val){
-            if(val === data.id){
-                data.checked = true;
+        Object.values(this.data).map((val) => {
+            if(val === this.data.id){
+                this.data.checked = true;
             }
         });
 
-        appendToBody(checkedData);
-        
+        this.callback();
         return this;
     }
 }
+
+export { CheckItem, UserItem, TotalItem };
