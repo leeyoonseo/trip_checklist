@@ -1,7 +1,8 @@
 import data from './data';
 import { APP_FLOW, MESSAGE } from './lang';
-import { deepCloneObject, isEmptyData } from './utill';
+import { deepCloneObject, isEmpty } from './utill';
 import { UserItem, TotalItem } from './CheckItem';
+import { getSearchData } from './Search';
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 const originalData = localStorage.getItem(CHECKED_LOCAL_DATA) || data;
@@ -10,19 +11,22 @@ const allListNode = document.querySelector('#allListNode');
 const searchInputNode = document.querySelector('#searchInput');
 const saveBtnNode = document.querySelector('#listSave');    
 
-searchInputNode.focus();
-
 let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
 
-const setListNode = function(){
+const setListNode = function(data){
     allListNode.innerHTML = '';
     myListNode.innerHTML = '';
 
-    if(isEmptyData(checkListData)) return false;
+    if(isEmpty(data)) {
+        allListNode.innerHTML = getEmptyListStr();
+        myListNode.innerHTML = getEmptyListStr();
 
-    checkListData.map((obj, idx) => {
+        return false;
+    }
+    
+    data.map((obj, idx) => {
         let listNode = allListNode;
         let itemOpt = {
             data : obj, 
@@ -37,22 +41,39 @@ const setListNode = function(){
 
         listNode.append(item.node);
 
-        if(idx === checkListData.length){
-            allListNode.childNodes.length < 1 && setEmptyList(allListNode);
-            myListNode.childNodes.length < 1 && setEmptyList(myListNode);
+        if((idx + 1) === data.length){
+            if(allListNode.childNodes.length < 1){
+                allListNode.innerHTML = getEmptyListStr();
+            }
+
+            if(myListNode.childNodes.length < 1){
+                myListNode.innerHTML = getEmptyListStr();
+            }
         }
     });
 };
 
-setListNode();
+setListNode(checkListData);
 
-function setEmptyList(targetNode){
-    const wrapNode = document.createElement('div');
-    wrapNode.classList.add('checklist__text--empty');
-    wrapNode.innerText = '아이템이 없습니다';
-    targetNode.append(wrapNode);
+function getEmptyListStr(){
+    return '<div class="checklist__text--empty">아이템이 없습니다</div>';
 }
 
+searchInputNode.focus();
+
+searchInputNode.addEventListener('input', ({ target }) => {
+    const { value } = target;
+    let data = deepCloneObject(checkListData);
+
+    if(!isEmpty(value)){
+        data = getSearchData({
+            data, 
+            word : value
+        });
+    }
+    
+    setListNode(data);
+});
 
 
 
@@ -98,17 +119,7 @@ function setEmptyList(targetNode){
     //     }
     // });
 
-    // searchInputNode.addEventListener('input', function(e){
-    //     const val = e.target.value;
-    //     let searchData = clone(checkedData);
-        
-    //     if(val !== ''){
-    //         searchData = setSearchData(checkedData, val);
-    //     }
-
-    //     appendToBody(searchData);
-    // });
-
+   
     // listEditNode.addEventListener('click', function(){
     //     appEditNode.calssList.add('on');
     //     setEditAllList();
@@ -133,17 +144,7 @@ function setEmptyList(targetNode){
 
 
 
-    // function setSearchData(data, val){
-    //     let arr = [];
-
-    //     data.find(function(obj){
-    //         if(obj.name.includes(val)){
-    //             arr.push(obj);
-    //         }
-    //     });
-
-    //     return arr;
-    // };
+    
 
 
     // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!

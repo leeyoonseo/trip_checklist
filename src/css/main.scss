@@ -1,9 +1,9 @@
 @charset "utf-8";
-@import "_variables.scss", 
-        "_reset.scss", 
-        "_header.scss",
-        "_footer.scss",
-        "_checkItem.scss";
+@import "_variables", 
+        "_reset", 
+        "_header",
+        "_footer",
+        "../components/CheckItem/checkItem";
 
 .app{
     .contents{

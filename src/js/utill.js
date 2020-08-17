@@ -11,6 +11,14 @@ export const deepCloneObject = function(obj) {
     return copy;
 };
 
-export const isEmptyData = function(data) {
-    return (data.length < 1) ? true : false;
+export const isEmpty = function(target) {
+    if(typeof target === 'object'){
+        return (target.length < 1) ? true : false;
+    }
+
+    if(typeof target === 'string'){
+        return (target === '') ? true : false;
+    }
+
+    return false;
 };
