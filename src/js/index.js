@@ -1,7 +1,7 @@
 import data from './data';
 import { APP_FLOW, MESSAGE } from './lang';
-import { deepCloneObject, isEmpty } from './utill';
-import { UserItem, TotalItem } from './CheckItem';
+import { deepCloneObject, isEmpty, storageAvailable } from './utill';
+import { CheckItem, UserItem, TotalItem } from './CheckItem';
 import { getSearchData } from './Search';
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
@@ -15,6 +15,8 @@ let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
 
+
+
 const setListNode = function(data){
     allListNode.innerHTML = '';
     myListNode.innerHTML = '';
@@ -25,21 +27,24 @@ const setListNode = function(data){
 
         return false;
     }
-    
-    data.map((obj, idx) => {
-        let listNode = allListNode;
-        let itemOpt = {
-            data : obj, 
-            callback : setListNode 
-        }
-        let item = new TotalItem(itemOpt);
 
-        if(obj.checked){
-            listNode = myListNode;
-            item = new UserItem(itemOpt);
-        }
+    [...data].map((obj, idx) => {
+        const item = new UserItem();
+        let listNode = obj.checked ? myListNode : allListNode;
+        item.itemElement = obj;
+        
+        // [TODO] 클릭할때마다 다시 새로고쳐지면 레거시는???
+        item.itemElement.querySelector('button').addEventListener('click', ({ target }) => {
+            Object.values(checkListData).map((val) => {
+                if(val.id === item.data.id){
+                    item.changeChecked = !val.checked;
+                }
+            });
+            
+            setListNode(checkListData);
+        });
 
-        listNode.append(item.node);
+        listNode.append(item.itemElement.querySelector('div'));
 
         if((idx + 1) === data.length){
             if(allListNode.childNodes.length < 1){
@@ -75,6 +80,22 @@ searchInputNode.addEventListener('input', ({ target }) => {
     setListNode(data);
 });
 
+// const notification = new Notification();
+saveBtnNode.addEventListener('click', () => {
+    console.log('save')
+    if(storageAvailable('localStorage')){
+        // localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
+        // notification.open({ 
+        //     text : MESSAGE.NOTI_TEXT_SAVE
+        // });
+
+    }else {
+        // notification.open({
+        //     text : MESSAGE.NOTI_TEXT_ERROR
+        // });
+    }
+});
+
 
 
     // const expired = localStorage.getItem('expired') || false;
@@ -104,20 +125,7 @@ searchInputNode.addEventListener('input', ({ target }) => {
     
 
     // handler    
-    // const notification = new Notification();
-    // saveBtnNode.addEventListener('click', function(){
-    //     if(storageAvailable('localStorage')){
-    //         localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
-    //         notification.open({ 
-    //             text : MESSAGE.NOTI_TEXT_SAVE
-    //         });
-
-    //     }else {
-    //         notification.open({
-    //             text : MESSAGE.NOTI_TEXT_ERROR
-    //         });
-    //     }
-    // });
+    
 
    
     // listEditNode.addEventListener('click', function(){
@@ -153,25 +161,7 @@ searchInputNode.addEventListener('input', ({ target }) => {
     
 
     // polyfill
-    function storageAvailable(type){
-        let storage;
-
-        try {
-            storage = window[type];
-            var x = '__storage_test__';
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            return true;
-        }
-        catch(e) {
-        return e instanceof DOMException && (
-            e.code === 22 ||
-            e.code === 1014 ||
-            e.name === 'QuotaExceededError' ||
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            (storage && storage.length !== 0);
-        }
-    };
+    
 
     if (!String.prototype.includes) {
         String.prototype.includes = function(search, start) {

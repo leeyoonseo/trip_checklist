@@ -1,5 +1,9 @@
 @charset "utf-8";
-@import "_variables.scss", "_reset.scss";
+@import "_variables", 
+        "_reset", 
+        "_header",
+        "_footer",
+        "_checkItem";
 
 .header{
     position:relative;
@@ -73,7 +77,6 @@
             position:relative;
             margin:get-vw(4px) 0;
             padding:get-vw(5px);
-    
             border:get-vw(1px) dashed #333;
             border-radius:get-vw(5px);
             box-sizing:border-box;
