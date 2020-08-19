@@ -8,34 +8,34 @@ import { getSearchData } from './Search';
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 
 // localStorage.removeItem(CHECKED_LOCAL_DATA)
-const originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
-const myListNode = document.querySelector('#myListNode');
-const allListNode = document.querySelector('#allListNode');
-const searchInputNode = document.querySelector('#searchInput');
-const saveBtnNode = document.querySelector('#listSave');    
+let originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
+const myListArea = document.querySelector('#myListArea');
+const allListArea = document.querySelector('#allListArea');
+const searchInput = document.querySelector('#searchInput');
+const saveBtn = document.querySelector('#listSaveBtn');    
+const menuBtn = document.querySelector('#menuBtn');
 const notification = new Notification();
-const body = document.body;
 
-body.append(notification.element);
+document.body.append(notification.element);
 
 let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
 
 const setListNode = function(data){
-    allListNode.innerHTML = '';
-    myListNode.innerHTML = '';
+    allListArea.innerHTML = '';
+    myListArea.innerHTML = '';
 
     if(isEmpty(data)) {
-        allListNode.innerHTML = getEmptyListStr();
-        myListNode.innerHTML = getEmptyListStr();
+        allListArea.innerHTML = getEmptyListStr();
+        myListArea.innerHTML = getEmptyListStr();
 
         return false;
     }
 
     [...data].map((obj, idx) => {
         const item = new CheckItem();
-        let listNode = obj.checked ? myListNode : allListNode;
+        let listNode = obj.checked ? myListArea : allListArea;
         item.element = obj;
         
         // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
@@ -52,12 +52,12 @@ const setListNode = function(data){
         listNode.append(item.element.querySelector('div'));
 
         if((idx + 1) === data.length){
-            if(allListNode.childNodes.length < 1){
-                allListNode.innerHTML = getEmptyListStr();
+            if(allListArea.childNodes.length < 1){
+                allListArea.innerHTML = getEmptyListStr();
             }
 
-            if(myListNode.childNodes.length < 1){
-                myListNode.innerHTML = getEmptyListStr();
+            if(myListArea.childNodes.length < 1){
+                myListArea.innerHTML = getEmptyListStr();
             }
         }
     });
@@ -69,9 +69,9 @@ function getEmptyListStr(){
     return '<div class="checklist__text--empty">아이템이 없습니다</div>';
 }
 
-searchInputNode.focus();
+searchInput.focus();
 
-searchInputNode.addEventListener('input', ({ target }) => {
+searchInput.addEventListener('input', ({ target }) => {
     const { value } = target;
     let data = deepCloneObject(checkListData);
 
@@ -85,94 +85,63 @@ searchInputNode.addEventListener('input', ({ target }) => {
     setListNode(data);
 });
 
-saveBtnNode.addEventListener('click', () => {
+saveBtn.addEventListener('click', () => {
     notification.text = MESSAGE.NOTI_TEXT_ERROR;
 
-    if(isSupportedStorage('localStorage')){
-        localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(checkListData));
-        notification.text = MESSAGE.NOTI_TEXT_SAVE;
-    }
+    if(isSameData(originalData, checkListData)){
+        notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
+    
+    }else{
+        if(isSupportedStorage('localStorage')){
+            localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(checkListData));
+            originalData = [...checkListData];
 
+            notification.text = MESSAGE.NOTI_TEXT_SAVE;
+        }
+    }
+    
     notification.open();
 });
 
+function isSameData(originalData, changedData) {
+    let sameCount = originalData.length;
 
+    changedData.sort();
+    originalData.map((obj, idx) => {
+        if(Object.is(obj.checked, changedData[idx].checked)){
+            sameCount--;
+        }
+    });
 
-    // const expired = localStorage.getItem('expired') || false;
+    return sameCount ? false : true;
+}
 
-   
+// // [TODO] 제거할 것
+// setEditAllList();
 
-    // init
-    // const bodyNode = document.querySelector('body');
-    // const coachingNode = document.querySelector('#coachingCover');
-    // const coachingCloseNode = document.querySelector('#coachingCover');
-    // const listEditNode = document.querySelector('#listEdit');
-    // const appEditNode = document.querySelector('#appEdit');
+// function setEditAllList(){
+//     if(hasData(checkedData)){
+//         checkedData.map(function(obj) {
+//             let item = new CheckItem(obj);
+//             // editListNode.append(item.node);
+//         });
+//     }
 
+//     // setEmptyList();
+// }
     
 
-    // localStorage.removeItem('expired');
-    // localStorage.removeItem('isFirstVisit');
-    // if(localStorage.getItem('isFirstVisit') === null){
-        // coachingNode.classList.add('on');
-
-        // coachingCloseNode.addEventListener('click', function(){
-        //     // coachingNode.classList.remove('on');
-        //     localStorage.setItem('isFirstVisit', true);
-        // });
-    // }
-
+// polyfill
+if (!String.prototype.includes) {
+    String.prototype.includes = function(search, start) {
+        if (typeof start !== 'number') start = 0;
+        if (start + search.length > this.length) {
+            return false;
     
-
-    // handler    
-    
-
-   
-    // listEditNode.addEventListener('click', function(){
-    //     appEditNode.calssList.add('on');
-    //     setEditAllList();
-    // });
-
-
-    // const editListNode = document.querySelector('#editList');
-    
-    // // [TODO] 제거할 것
-    // setEditAllList();
-
-    // function setEditAllList(){
-    //     if(hasData(checkedData)){
-    //         checkedData.map(function(obj) {
-    //             let item = new CheckItem(obj);
-    //             // editListNode.append(item.node);
-    //         });
-    //     }
-
-    //     // setEmptyList();
-    // }
-
-
-
-    
-
-
-    // [TODO] 매번 데이터를 새로 그리지 않도록 해야하는데, 방법을 찾아보자!!
-    
-
-    
-
-    // polyfill
-    
-
-    if (!String.prototype.includes) {
-        String.prototype.includes = function(search, start) {
-            if (typeof start !== 'number') start = 0;
-            if (start + search.length > this.length) {
-                return false;
-        
-            } else {
-                return this.indexOf(search, start) !== -1;
-            }
-        };
+        } else {
+            return this.indexOf(search, start) !== -1;
+        }
     };
+};
 
     
