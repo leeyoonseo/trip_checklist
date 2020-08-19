@@ -17,9 +17,8 @@ class UserItem extends CheckItem {
     set itemElement(data){
         const { id, name } = data;
         const wrapStr = `<div class="checklist__items" data-id="${ id }">
-            <button type="button">
-                ${ name }
-            </button>
+            ${ name }
+            <button type="button"></button>
         </div>`;
         const dom = new DOMParser().parseFromString(wrapStr, "text/html");
 
