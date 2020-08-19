@@ -3,7 +3,8 @@
         "_reset", 
         "_header",
         "_footer",
-        "_checkItem";
+        "_checkItem",
+        "_notification";
 
 .header{
     position:relative;
@@ -202,35 +203,4 @@
     }
 }
 
-.app__notification{
-    display:none;
-    position:fixed;
-    top:30%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    background:#fff;
-    padding:15px;
-    color:#333;
-    text-align:center;
-    border:1px solid #333;
-    border-radius:get-vw(5px);
-    box-sizing:border-box;
-
-    &.on{
-        display:block;
-    }
-
-    &:before{
-        content:'';
-        display:inline-block;
-        width:get-vw(20px);
-        height:get-vw(20px);
-        background:url('../img/icon_check.png')no-repeat;
-        background-size:100% 100%;
-    }
-
-    .inner{
-        display:block;
-    }
-}
 

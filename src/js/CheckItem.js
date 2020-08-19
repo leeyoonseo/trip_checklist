@@ -3,18 +3,8 @@ class CheckItem {
         this.name = 'CheckItem';
         return this;
     }
-}
 
-// [TODO] checkitem으로 하고... useritem과 totalitem은 별도로 필요한 것들..
-class UserItem extends CheckItem {
-    constructor(){
-        super();
-        this.name = 'UserItem';
-
-        return this;
-    }
-
-    set itemElement(data){
+    set element(data){
         const { id, name } = data;
         const wrapStr = `<div class="checklist__items" data-id="${ id }">
             ${ name }
@@ -30,7 +20,7 @@ class UserItem extends CheckItem {
         this._data.checked = isChecked;
     }
 
-    get itemElement(){
+    get element(){
         return this._node;
     }
 
@@ -38,6 +28,40 @@ class UserItem extends CheckItem {
         return this._data;
     }
 }
+
+// [TODO] checkitem으로 하고... useritem과 totalitem은 별도로 필요한 것들..
+// class UserItem extends CheckItem {
+//     constructor(){
+//         super();
+//         this.name = 'UserItem';
+
+//         return this;
+//     }
+
+//     set itemElement(data){
+//         const { id, name } = data;
+//         const wrapStr = `<div class="checklist__items" data-id="${ id }">
+//             ${ name }
+//             <button type="button"></button>
+//         </div>`;
+//         const dom = new DOMParser().parseFromString(wrapStr, "text/html");
+
+//         this._data = data;
+//         this._node = dom;
+//     }
+
+//     set changeChecked(isChecked){
+//         this._data.checked = isChecked;
+//     }
+
+//     get itemElement(){
+//         return this._node;
+//     }
+
+//     get data(){
+//         return this._data;
+//     }
+// }
 
 // class UserItem extends CheckItem {
 //     constructor({ data, callback }) {
@@ -116,6 +140,7 @@ class UserItem extends CheckItem {
 //     }
 // }
 
-export { CheckItem, UserItem
+export { CheckItem, 
+    // UserItem,
     // TotalItem 
 };

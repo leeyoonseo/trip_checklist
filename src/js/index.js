@@ -1,21 +1,26 @@
-import data from './data';
+import defaultData from './data';
 import { APP_FLOW, MESSAGE } from './lang';
-import { deepCloneObject, isEmpty, storageAvailable } from './utill';
+import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 import { CheckItem, UserItem, TotalItem } from './CheckItem';
+import Notification from './Notification';
 import { getSearchData } from './Search';
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
-const originalData = localStorage.getItem(CHECKED_LOCAL_DATA) || data;
+
+// localStorage.removeItem(CHECKED_LOCAL_DATA)
+const originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
 const myListNode = document.querySelector('#myListNode');
 const allListNode = document.querySelector('#allListNode');
 const searchInputNode = document.querySelector('#searchInput');
 const saveBtnNode = document.querySelector('#listSave');    
+const notification = new Notification();
+const body = document.body;
+
+body.append(notification.element);
 
 let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
-
-
 
 const setListNode = function(data){
     allListNode.innerHTML = '';
@@ -29,12 +34,12 @@ const setListNode = function(data){
     }
 
     [...data].map((obj, idx) => {
-        const item = new UserItem();
+        const item = new CheckItem();
         let listNode = obj.checked ? myListNode : allListNode;
-        item.itemElement = obj;
+        item.element = obj;
         
-        // [TODO] 클릭할때마다 다시 새로고쳐지면 레거시는???
-        item.itemElement.querySelector('button').addEventListener('click', ({ target }) => {
+        // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
+        item.element.querySelector('button').addEventListener('click', ({ target }) => {
             Object.values(checkListData).map((val) => {
                 if(val.id === item.data.id){
                     item.changeChecked = !val.checked;
@@ -44,7 +49,7 @@ const setListNode = function(data){
             setListNode(checkListData);
         });
 
-        listNode.append(item.itemElement.querySelector('div'));
+        listNode.append(item.element.querySelector('div'));
 
         if((idx + 1) === data.length){
             if(allListNode.childNodes.length < 1){
@@ -80,20 +85,15 @@ searchInputNode.addEventListener('input', ({ target }) => {
     setListNode(data);
 });
 
-// const notification = new Notification();
 saveBtnNode.addEventListener('click', () => {
-    console.log('save')
-    if(storageAvailable('localStorage')){
-        // localStorage.setItem(MESSAGE.CHECK_LIST_DATA, JSON.stringify(checkedData));
-        // notification.open({ 
-        //     text : MESSAGE.NOTI_TEXT_SAVE
-        // });
+    notification.text = MESSAGE.NOTI_TEXT_ERROR;
 
-    }else {
-        // notification.open({
-        //     text : MESSAGE.NOTI_TEXT_ERROR
-        // });
+    if(isSupportedStorage('localStorage')){
+        localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(checkListData));
+        notification.text = MESSAGE.NOTI_TEXT_SAVE;
     }
+
+    notification.open();
 });
 
 

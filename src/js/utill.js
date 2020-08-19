@@ -1,4 +1,4 @@
-export const deepCloneObject = function(obj) {
+const deepCloneObject = function(obj) {
     if (obj === null || typeof(obj) !== 'object') return obj;
     let copy = obj.constructor();
 
@@ -11,7 +11,7 @@ export const deepCloneObject = function(obj) {
     return copy;
 };
 
-export const isEmpty = function(target) {
+const isEmpty = function(target) {
     if(typeof target === 'object'){
         return (target.length < 1) ? true : false;
     }
@@ -24,7 +24,7 @@ export const isEmpty = function(target) {
 };
 
 // polyfill
-export const storageAvailable = function(type){
+const isSupportedStorage = function(type){
     let storage;
 
     try {
@@ -43,3 +43,9 @@ export const storageAvailable = function(type){
         (storage && storage.length !== 0);
     }
 };
+
+export {
+    deepCloneObject,
+    isEmpty,
+    isSupportedStorage
+}

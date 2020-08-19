@@ -1,48 +1,39 @@
-class Notification {
+ class Notification {
     constructor(opts) {
         this.options = Object.assign({},{
-            timer : 1,
-            text : MESSAGE.NOTI_TEXT_DEFAULT,
-            imageUrl : '',
-            target : 'body' // id, class, tag 
+            time : 1000, // ms
+            text : 'is notification'
         }, opts);
 
-        this.setup();
+        this.createNode();
         return this;
     }
 
-    setup() {
-        const targetNode = document.querySelector(this.options.target);
-        const wrapNode = document.createElement('div');
-        const innerNode = document.createElement('div');
+    createNode() {
+        const wrapStr = `<div class="app__notification">
+            <div class="inner">${ this.options.text }</div>
+        </div>`;
 
-        wrapNode.classList.add('app__notification');
-        innerNode.classList.add('inner');
-        wrapNode.append(innerNode);
-        targetNode.append(wrapNode);
-
-        this.node = wrapNode;
-
-        return this;
+        const dom = new DOMParser().parseFromString(wrapStr, "text/html");
+        this._node = dom.body.firstChild;
     }
 
-    open(opts) {
-        if(opts) {
-            this.options = Object.assign({}, this.options, opts);
-        } 
-
-        const self = this;
-
-        this.node.childNodes[0].innerText = this.options.text;
-        this.node.classList.add('on');
-
-        setTimeout(function(){
-            self.close();
-        }, self.options.timer * 1000); // millisecond
+    set text(text){
+        const innerNode = this._node.firstElementChild;
+        innerNode.innerText = text;
     }
 
-    close() {
-        this.node.classList.remove('on');
+    get element(){
+        return this._node;
+    }
+
+    open(){
+        setTimeout(() => this.close(), this.options.time);
+        this._node.classList.add('on');
+    }
+
+    close(){
+        this._node.classList.remove('on');
     }
 };
 
