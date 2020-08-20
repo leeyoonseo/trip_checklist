@@ -1,5 +1,5 @@
 // [TODO] 검색 기능 향상이나 라이브러리 찾아보기
-export const getSearchData = function({ data, word }){
+const getSearchData = function({ data, word }){
     let arr = [];
 
     data.find(function(obj){
@@ -10,3 +10,5 @@ export const getSearchData = function({ data, word }){
 
     return arr;
 };
+
+export default getSearchData;

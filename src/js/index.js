@@ -1,9 +1,9 @@
-import defaultData from './data';
+import defaultData from '../dev/data';
 import { APP_FLOW, MESSAGE } from './lang';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
-import { CheckItem, UserItem, TotalItem } from './CheckItem';
-import Notification from './Notification';
-import { getSearchData } from './Search';
+import { CheckItem, UserItem, TotalItem } from '../Components/CheckItem/';
+import Notification from '../Components/Notification/';
+import { getSearchData } from '../Components/Search/';
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 

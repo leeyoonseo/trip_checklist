@@ -1,70 +1,4 @@
 @charset "utf-8";
-@import "_variables", 
-        "_reset", 
-        "_header",
-        "_footer",
-        "_checkItem",
-        "_notification";
-
-.header{
-    position:relative;
-    height:get-vw(40px);
-    line-height:get-vw(40px);
-    text-align:center;
-    background-color:#ccc;
-
-    h2{
-        margin:0;
-        font-size:get-vw(18px);
-        color:#333;
-    }
-
-    .header-menu__button{
-        padding:0;
-        position:absolute;
-        top:get-vw(8px);
-        right:5%;
-        width:get-vw(20px);
-        height:get-vw(20px);
-        border:none;
-        background-repeat:no-repeat;
-        background-size:100% 100%;
-        background-image:url(../img/icon_menu.png);
-        background-color:inherit;
-
-        &:focus{
-            outline:none;
-        }
-    }
-}
-
-.main{
-    position:relative;
-
-    &-inner{
-        margin:0 5%;
-    }
-}
-
-.search{
-    padding:get-vw(30px) 0;
-    
-    &:after{
-        @extend %clearfix;
-    }
-
-    &-input{
-        float:left;
-        width:100%;
-        height:get-vw(30px);
-        line-height:1;
-        text-indent:get-vw(5px);
-        border:1px solid #666;
-        border-radius:get-vw(5px);
-        box-sizing:border-box;
-        outline:none;
-    }
-}
 
 .checklist{
     &__my{
@@ -138,7 +72,6 @@
 
     &__list{
         margin:get-vw(5px) 0;
-        padding:get-vw(10px) 0;    
     
         .checklist__text--empty{
             font-size:get-vw(12px);
@@ -174,33 +107,3 @@
         background-size:100% 100%;
     }
 }
-
-.footer{
-    margin-top:get-vw(20px);
-    text-align:center;
-    font-size:get-vw(10px);
-    color:#666;
-}
-
-
-
-
-.app__coaching__cover{
-    display:none;
-    position:absolute;
-    width:100%;
-    height:100%;
-    z-index:999;
-    background:url('../img/bg_coaching_cover.png')no-repeat;
-    background-size:100% 100%;
-
-    &.on{
-        display:block;
-    }
-
-    .inner{
-        padding:0 5%;
-    }
-}
-
-
