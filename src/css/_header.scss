@@ -13,7 +13,7 @@
         color:#333;
     }
 
-    .header-menu__button{
+    &-menu__button{
         padding:0;
         position:absolute;
         top:get-vw(8px);
@@ -29,5 +29,36 @@
         &:focus{
             outline:none;
         }
+
+        .close{
+            background-image:url(../img/icon_menu_close.png);
+        }
     }
+
+    // &-menu__button{
+    //     padding:0;
+    //     position:absolute;
+    //     top:get-vw(8px);
+    //     right:5%;
+    //     width:get-vw(20px);
+    //     height:get-vw(20px);
+    //     border:none;
+    //     background-repeat:no-repeat;
+    //     background-size:100% 100%;
+    //     background-image:url(../img/icon_menu_close.png);
+    //     background-color:inherit;
+
+    //     &:focus{
+    //         outline:none;
+    //     }
+    // }
+
+    // &-header{
+    //     height:get-vw(40px);
+    //     line-height:get-vw(40px);
+    //     text-align:center;
+    //     background-color:#ccc;
+
+        
+    // }
 }

@@ -8,11 +8,14 @@ import { getSearchData } from '../Components/Search/';
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 
 // localStorage.removeItem(CHECKED_LOCAL_DATA)
+let flow = APP_FLOW.MAIN;
 let originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
 const myListArea = document.querySelector('#myListArea');
 const allListArea = document.querySelector('#allListArea');
 const searchInput = document.querySelector('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');    
+const mainArea = document.querySelector('#mainArea');
+const menuArea = document.querySelector('#menuArea');
 const menuBtn = document.querySelector('#menuBtn');
 const notification = new Notification();
 
@@ -115,6 +118,27 @@ function isSameData(originalData, changedData) {
 
     return sameCount ? false : true;
 }
+
+menuBtn.addEventListener('click', (e) => {
+    console.log('click');
+    
+    // 메인
+    if(flow === APP_FLOW.MAIN){
+        menuArea.classList.add('on');
+        mainArea.classList.remove('on');
+        e.target.classList.add('close');
+
+        flow = APP_FLOW.MENU_LIST;
+
+    // 메뉴
+    }else if(flow === APP_FLOW.MENU_LIST){
+        mainArea.classList.add('on');
+        menuArea.classList.remove('on');
+        e.target.classList.remove('close');
+
+        flow = APP_FLOW.MAIN;
+    }
+});
 
 // // [TODO] 제거할 것
 // setEditAllList();

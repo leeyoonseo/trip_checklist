@@ -20,68 +20,70 @@
         </button>
     </div>
 
-    <div class="main">
-        <div class="main-inner">
-            <div class="search">
-                <label>
-                    <span class="hidden">검색바</span>
-                    <input id="searchInput" class="search-input" placeholder="검색어를 입력하세요." value="" />
-                </label>
-            </div>
+    <div class="container">
+        <div id="mainArea" class="main on">
+            <div class="main-inner">
+                <div class="search">
+                    <label>
+                        <span class="hidden">검색바</span>
+                        <input id="searchInput" class="search-input" placeholder="검색어를 입력하세요." value="" />
+                    </label>
+                </div>
+            
+                <div class="checklist__my">
+                    <span class="checklist__icon checklist__icon--my">
+                        <span class="hidden">내 아이콘</span>
+                    </span>
         
-            <div class="checklist__my">
-                <span class="checklist__icon checklist__icon--my">
-                    <span class="hidden">내 아이콘</span>
-                </span>
+                    <button id="listSaveBtn" class="checklist__button-save">
+                        <span class="hidden">저장 버튼</span>
+                    </button>
+        
+                    <div id="myListArea" class="checklist__list"></div>
+                </div>
+            
+                <div class="checklist__all">
+                    <span class="checklist__icon checklist__icon--default"><span class="hidden">목록 아이콘</span></span>
+                    <div id="allListArea" class="checklist__list"></div>
+               </div>
+            </div>
+        </div>
     
-                <button id="listSaveBtn" class="checklist__button-save">
-                    <span class="hidden">저장 버튼</span>
+        <div id="menuArea" class="menu">
+            <!-- <h3 class="hidden">메뉴 리스트</h3>
+            <div class="menu-header">
+                <h4 class="hidden">메뉴헤더</h4>
+                <button class="--clomenu-header__buttonse">
+                    <span class="hidden">메뉴닫기 버튼</span>
                 </button>
+            </div> -->
     
-                <div id="myListArea" class="checklist__list"></div>
+            <div class="menu-list">
+                <ul class="menu-list-inner">
+                    <li>
+                        <a href="./src/pages/ediit.html">
+                            아이템 추가/편집
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            문의하기
+                        </a>
+                    </li>
+                    <li class="version">
+                        버전 1.0
+                    </li>
+                </ul>
             </div>
-        
-            <div class="checklist__all">
-                <span class="checklist__icon checklist__icon--default"><span class="hidden">목록 아이콘</span></span>
-                <div id="allListArea" class="checklist__list"></div>
-           </div>
         </div>
     </div>
-
-    <div class="menu">
-        <h3 class="hidden">메뉴 리스트</h3>
-        <div class="menu-header">
-            <h4 class="hidden">메뉴헤더</h4>
-            <button class="menu-header__button--close">
-                <span class="hidden">메뉴닫기 버튼</span>
-            </button>
-        </div>
-
-        <div class="menu-list">
-            <ul class="menu-list-inner">
-                <li>
-                    <a href="./src/pages/ediit.html">
-                        아이템 추가/편집
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        문의하기
-                    </a>
-                </li>
-                <li class="version">
-                    버전 1.0
-                </li>
-            </ul>
-        </div>
-    </div>
+   
 
     <div class="footer">
         author : okayoon.lee@gmail.com<br>
         icon source : Icons made by <a href="https://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     </div>
-<!-- <script src="./dist/js/coachingCover.js"></script> -->
-<!-- <script src="./dist/js/lang.js"></script> -->
+
 <script src="./dist/js/bundle.js"></script>
 </body>
 </html>
