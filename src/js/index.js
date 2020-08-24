@@ -121,20 +121,22 @@ function isSameData(originalData, changedData) {
 
 menuBtn.addEventListener('click', (e) => {
     console.log('click');
+    const closeBtnClass = 'header-menu__button-close';
+    const activeClass = 'on';
     
     // 메인
     if(flow === APP_FLOW.MAIN){
-        menuArea.classList.add('on');
-        mainArea.classList.remove('on');
-        e.target.classList.add('close');
+        menuArea.classList.add(activeClass);
+        mainArea.classList.remove(activeClass);
+        e.target.classList.add(closeBtnClass);
 
         flow = APP_FLOW.MENU_LIST;
 
     // 메뉴
     }else if(flow === APP_FLOW.MENU_LIST){
-        mainArea.classList.add('on');
-        menuArea.classList.remove('on');
-        e.target.classList.remove('close');
+        mainArea.classList.add(activeClass);
+        menuArea.classList.remove(activeClass);
+        e.target.classList.remove(closeBtnClass);
 
         flow = APP_FLOW.MAIN;
     }

@@ -16,8 +16,10 @@
     &-menu__button{
         padding:0;
         position:absolute;
-        top:get-vw(8px);
+        top:50%;
+        // top:get-vw(8px);
         right:5%;
+        transform:translateY(-50%);
         width:get-vw(20px);
         height:get-vw(20px);
         border:none;
@@ -30,7 +32,9 @@
             outline:none;
         }
 
-        .close{
+        &-close{
+            width:get-vw(15px);
+            height:get-vw(15px);
             background-image:url(../img/icon_menu_close.png);
         }
     }
