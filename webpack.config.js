@@ -2,10 +2,13 @@ const path = require('path');
 
 module.exports = {
     name : 'Trip CheckList',
-    entry: './src/js/index.js',
+    entry: {
+        "indexEntry" : './src/js/index.js',
+        "editEntry" : './src/js/edit.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist/js'),
-        filename: 'bundle.js'
+        filename: '[name].bundle.js'
     },
     module: {
         rules: [

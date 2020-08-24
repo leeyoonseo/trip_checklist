@@ -3,11 +3,13 @@ import { APP_FLOW, MESSAGE } from './lang';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 import { CheckItem, UserItem, TotalItem } from '../Components/CheckItem/';
 import Notification from '../Components/Notification/';
-import { getSearchData } from '../Components/Search/';
+import getSearchData from '../Components/Search/';
+
+console.log('index');
 
 const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 
-// localStorage.removeItem(CHECKED_LOCAL_DATA)
+// flow 필요없으면 삭제
 let flow = APP_FLOW.MAIN;
 let originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
 const myListArea = document.querySelector('#myListArea');
@@ -17,6 +19,7 @@ const saveBtn = document.querySelector('#listSaveBtn');
 const mainArea = document.querySelector('#mainArea');
 const menuArea = document.querySelector('#menuArea');
 const menuBtn = document.querySelector('#menuBtn');
+const backBtn = document.querySelector('#backBtn');
 const notification = new Notification();
 
 document.body.append(notification.element);
@@ -119,28 +122,25 @@ function isSameData(originalData, changedData) {
     return sameCount ? false : true;
 }
 
-menuBtn.addEventListener('click', (e) => {
-    console.log('click');
-    const closeBtnClass = 'header-menu__button-close';
-    const activeClass = 'on';
-    
+menuBtn.addEventListener('click', ({ target }) => {
     // 메인
     if(flow === APP_FLOW.MAIN){
-        menuArea.classList.add(activeClass);
-        mainArea.classList.remove(activeClass);
-        e.target.classList.add(closeBtnClass);
+        menuArea.classList.add('on');
+        mainArea.classList.remove('on');
+        target.classList.add('header-menu__button-close');
 
         flow = APP_FLOW.MENU_LIST;
 
     // 메뉴
     }else if(flow === APP_FLOW.MENU_LIST){
-        mainArea.classList.add(activeClass);
-        menuArea.classList.remove(activeClass);
-        e.target.classList.remove(closeBtnClass);
+        menuArea.classList.remove('on');
+        mainArea.classList.add('on');
+        target.classList.remove('header-menu__button-close');
 
         flow = APP_FLOW.MAIN;
     }
 });
+
 
 // // [TODO] 제거할 것
 // setEditAllList();

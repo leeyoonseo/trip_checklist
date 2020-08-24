@@ -37,6 +37,13 @@
             height:get-vw(15px);
             background-image:url(../img/icon_menu_close.png);
         }
+
+        &-back{
+            left:5%;
+            width:get-vw(15px);
+            height:get-vw(15px);
+            background-image:url(../img/icon_back.png);
+        }
     }
 
     // &-menu__button{
