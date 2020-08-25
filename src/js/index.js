@@ -19,7 +19,6 @@ const saveBtn = document.querySelector('#listSaveBtn');
 const mainArea = document.querySelector('#mainArea');
 const menuArea = document.querySelector('#menuArea');
 const menuBtn = document.querySelector('#menuBtn');
-const backBtn = document.querySelector('#backBtn');
 const notification = new Notification();
 
 document.body.append(notification.element);
@@ -140,22 +139,6 @@ menuBtn.addEventListener('click', ({ target }) => {
         flow = APP_FLOW.MAIN;
     }
 });
-
-
-// // [TODO] 제거할 것
-// setEditAllList();
-
-// function setEditAllList(){
-//     if(hasData(checkedData)){
-//         checkedData.map(function(obj) {
-//             let item = new CheckItem(obj);
-//             // editListNode.append(item.node);
-//         });
-//     }
-
-//     // setEmptyList();
-// }
-    
 
 // polyfill
 if (!String.prototype.includes) {

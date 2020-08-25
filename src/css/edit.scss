@@ -6,3 +6,22 @@
         "../Components/Search/_index",
         "../Components/CheckItem/_index",
         "../Components/Notification/_index";
+
+        
+.edit{
+    &-inner{
+        margin:get-vw(30px) 5%;
+    }               
+}
+
+.controls-add{
+    display:none;
+}
+
+.editing{
+    .controls-add{
+        display:block;
+    }
+}
+
+

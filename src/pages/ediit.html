@@ -17,12 +17,24 @@
         </button>
     </div>
 
-
     <div class="container">
         <div id="editArea" class="edit">
             <div class="edit-inner">
+                <div class="controls">
+                    <button id="editBtn">추가/편집</button>
+                    <button id="deleteBtn">삭제</button>
+
+                    <div class="controls-add">
+                        <label>
+                            <span class="hidden">아이템 추가</span>
+                            <input id="addInput" class="controls-add__input" placeholder="추가할 아이템명을 입력하세요." value="" />
+                        </label>
+                        <button class="addBtn">추가</button>
+                    </div>
+                </div>
+                
+
                 <div class="checklist__all">
-                    <span class="checklist__icon checklist__icon--default"><span class="hidden">목록 아이콘</span></span>
                     <div id="allListArea" class="checklist__list"></div>
                </div>
             </div>
