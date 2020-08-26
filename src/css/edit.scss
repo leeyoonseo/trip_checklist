@@ -7,21 +7,51 @@
         "../Components/CheckItem/_index",
         "../Components/Notification/_index";
 
+        //[TODO] 체크아이템 크기랑 똑같이 맞추기
         
 .edit{
     &-inner{
         margin:get-vw(30px) 5%;
     }               
 }
-
 .controls-add{
-    display:none;
-}
+    margin-top:get-vw(10px);
+    // display:none;
+    vertical-align:middle;
+    input{
+        width:50%;
+        padding:get-vw(5px);
+        outline:0;
+        border:1px solid #666;
+        box-sizing:border-box;
+        border-radius:get-vw(3px);
+    }
 
-.editing{
-    .controls-add{
-        display:block;
+    button{
+        width:10%;
+        padding:get-vw(5px);
+        box-sizing:border-box;
+        vertical-align:middle;
+        border-radius:get-vw(3px);
+        border:1px solid #666;
     }
 }
 
+.controls{
+    button{
+        border-radius:get-vw(3px);
+        padding:get-vw(6px) get-vw(5px);
+        box-sizing:border-box;
+        color:#333;
+        background:#fff;
+        border:1px solid #666;
+        outline:0;
 
+        &.on{
+            color:#fff;
+            background:#666;
+            border:1px solid #666;
+            box-sizing:border-box;
+        }
+    }
+}

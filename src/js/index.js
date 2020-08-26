@@ -22,7 +22,6 @@ const menuBtn = document.querySelector('#menuBtn');
 const notification = new Notification();
 
 document.body.append(notification.element);
-
 let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
