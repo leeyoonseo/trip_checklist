@@ -8,9 +8,10 @@
     }
 
     &-input{
+        padding:get-vw(5px);
         float:left;
         width:100%;
-        height:get-vw(30px);
+        // height:get-vw(30px);
         line-height:1;
         text-indent:get-vw(5px);
         border:1px solid #666;

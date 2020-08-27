@@ -30,9 +30,10 @@
                 margin-left:get-vw(5px);
                 padding:0;
                 position:relative;
-                top:get-vw(4px);
-                width:get-vw(17px);
-                height:get-vw(17px);
+                top:0;
+                vertical-align:middle;
+                width:get-vw(14px);
+                height:get-vw(14px);
                 background:#fff url(../img/icon_close.png)no-repeat;
                 background-size:100% 100%;
                 border-radius:50%;
@@ -51,6 +52,7 @@
             padding:get-vw(5px);
             border:get-vw(1px) dashed #333;
             border-radius:get-vw(5px);
+            box-sizing:border-box;
         
             &:hover{
                 color:#fff;
