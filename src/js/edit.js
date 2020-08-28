@@ -14,10 +14,17 @@ const editBtn = document.querySelector('#editBtn');
 const openControlsBtn = document.querySelector('#openControlsBtn');
 const addBtn = document.querySelector('#addBtn');
 const addInput = document.querySelector('#addInput');
-
 const notification = new Notification();
 
 document.body.append(notification.element);
+
+const MODE = {
+    ADD : 'ADD',
+    DEFAULT : 'DEFAULT',
+    DELETD : 'DELETE',
+    EDIT : 'EDIT',
+};
+let isStatus = 'DEFAULT'; 
 
 let checkListData = deepCloneObject(originalData).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
@@ -38,6 +45,17 @@ const setListNode = function(data){
 
         // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
         item.element.querySelector('button').addEventListener('click', ({ target }) => {
+
+            if(isStatus === MODE.EDIT){
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.value = target.parentNode.innerText;
+                console.log(input.value)
+                target.parentNode.append(input);
+                console.log(target.parentNode);
+            
+            }
+
             Object.values(checkListData).map((val) => {
                 if(val.id === item.data.id){
                     item.changeChecked = !val.checked;
@@ -65,13 +83,7 @@ backBtn.addEventListener('click', () => {
     window.history.back();
 });
 
-const MODE = {
-    ADD : 'ADD',
-    DEFAULT : 'DEFAULT',
-    DELETD : 'DELETE',
-    EDIT : 'EDIT',
-};
-let isStatus = 'DEFAULT'; 
+
 const addInputArea = document.querySelector('.controls-add');
 const addListData = deepCloneObject(originalData);
 
@@ -114,8 +126,19 @@ addBtn.addEventListener('click', () => {
     }
 });
 
-editBtn.addEventListener('click', () => {
+editBtn.addEventListener('click', ({ target }) => {
+    if(isStatus === MODE.EDIT){
+        target.innerText = '편집';
+        editArea.classList.remove('editing');
+        isStatus = MODE.DEFAULT;
 
+        // TODO  화살표 툴팁으로 버튼 클릭해서 바꾸는거 안내
+
+    }else{
+        target.innerText = '취소';
+        editArea.classList.add('editing');
+        isStatus = MODE.EDIT;
+    }
 });
 
 addInput.addEventListener('keydown', (e) => {

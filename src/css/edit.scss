@@ -15,6 +15,21 @@
     }               
 }
 
+.edit.editing{
+    .checklist__items{
+        animation:alternate rocking .3s infinite linear;
+    }
+}
+
+@keyframes rocking{
+    0%{
+        transform:rotate(2deg);
+    }
+    100%{
+        transform:rotate(-2deg);
+    }
+}
+
 .controls{
     .controls-btns{
         display:flex;
@@ -80,3 +95,4 @@
         }
     }
 }
+
