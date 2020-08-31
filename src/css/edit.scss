@@ -95,4 +95,37 @@
         }
     }
 }
+.editing__item{
+    border:1px solid #333 !important;
+    
+    &:hover{
+        background:none !important;
+    }
 
+    input{
+        padding:get-vw(5px);
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        border:0;
+        border-radius:0;
+        box-sizing:border-box;
+
+        &:hover{
+            border:0;
+            outline:0;
+        }
+    }
+
+    .btn_edit_submit{
+        display:inline-block;
+        width:get-vw(5px);
+        height:get-vw(5px);
+        border-radius:50%;
+        border:1px solid #666;
+        background:#fff url(../img/icon_close.png) no-repeat;
+        box-sizing:border-box;
+    }
+}

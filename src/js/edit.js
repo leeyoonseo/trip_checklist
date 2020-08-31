@@ -16,7 +16,35 @@ const addBtn = document.querySelector('#addBtn');
 const addInput = document.querySelector('#addInput');
 const notification = new Notification();
 
+var editingList;
+
 document.body.append(notification.element);
+document.body.addEventListener('click', ({ target }) => {
+    var { parentNode } = target;
+    var { value } = parentNode.classList;
+    var id = parentNode.dataset.id;
+
+    var editingItems = document.querySelectorAll('.editing__item');
+    Array.from(editingItems).map((o) => {
+        var oId = o.dataset.id;
+
+        if(id !== oId){
+            var btn = o.querySelector('button');
+            var input = o.querySelector('input');
+            var nameNode = o.querySelector('.checkList__items-name')
+            var val = input.value;
+            console.log(val);
+
+            nameNode.innerText = val;
+
+            btn.classList.remove('btn_edit_submit');
+            input.remove();
+
+            o.classList.remove('editing__item');            
+        }
+    });
+    
+})
 
 const MODE = {
     ADD : 'ADD',
@@ -45,24 +73,44 @@ const setListNode = function(data){
 
         // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
         item.element.querySelector('button').addEventListener('click', ({ target }) => {
+            if(isStatus === MODE.DEFAULT) return false;
 
+            // 수정 상태
             if(isStatus === MODE.EDIT){
+                var { parentNode } = target;
+                var { innerText } = parentNode;
+                var prev = target.previousSibling;
+                var originVal = parentNode.innerText;
+                var { value } = parentNode.classList
                 var input = document.createElement('input');
+                
+                parentNode.classList.add('editing__item');
+                target.classList.add('btn_edit_submit');
+
                 input.type = 'text';
-                input.value = target.parentNode.innerText;
-                console.log(input.value)
-                target.parentNode.append(input);
-                console.log(target.parentNode);
+                input.value = innerText;
+
+                parentNode.append(input);
+
+                input.focus();
+                
+
             
+            
+            // 삭제 상태
+            }else if(isStatus === MODE.DELETD){
+
+            }else{
+                Object.values(checkListData).map((val) => {
+                    if(val.id === item.data.id){
+                        item.changeChecked = !val.checked;
+                    }
+                });
+                
+                setListNode(checkListData);
             }
 
-            Object.values(checkListData).map((val) => {
-                if(val.id === item.data.id){
-                    item.changeChecked = !val.checked;
-                }
-            });
-            
-            setListNode(checkListData);
+           
         });
 
         allListArea.append(item.element.querySelector('div'));
@@ -134,8 +182,9 @@ editBtn.addEventListener('click', ({ target }) => {
 
         // TODO  화살표 툴팁으로 버튼 클릭해서 바꾸는거 안내
 
+
     }else{
-        target.innerText = '취소';
+        target.innerText = '저장';
         editArea.classList.add('editing');
         isStatus = MODE.EDIT;
     }

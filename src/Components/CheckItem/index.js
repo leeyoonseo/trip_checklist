@@ -7,7 +7,7 @@ class CheckItem {
     set element(data){
         const { id, name } = data;
         const wrapStr = `<div class="checklist__items" data-id="${ id }">
-            ${ name }
+            <span class="checkList__items-name">${ name }</span>
             <button type="button"></button>
         </div>`;
         const dom = new DOMParser().parseFromString(wrapStr, "text/html");
