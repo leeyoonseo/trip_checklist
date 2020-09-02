@@ -129,3 +129,9 @@
         box-sizing:border-box;
     }
 }
+
+.remove-ing{
+    .checklist__items{
+        border:1px dashed red !important;
+    }
+}

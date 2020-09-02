@@ -11,6 +11,10 @@ const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
 
 // flow 필요없으면 삭제
 let flow = APP_FLOW.MAIN;
+
+// [D] 테스트 도중 데이터 삭제
+// localStorage.removeItem(CHECKED_LOCAL_DATA);
+
 let originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
 const myListArea = document.querySelector('#myListArea');
 const allListArea = document.querySelector('#allListArea');
