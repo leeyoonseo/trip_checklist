@@ -20,6 +20,7 @@ const deleteBtn = document.querySelector('#deleteBtn');
 
 var editingList;
 var editedListData = deepCloneObject(originalData);
+var deleteAfterListData = deepCloneObject(originalData);
 var changeCounter = 0;
 
 document.body.append(notification.element);
@@ -87,7 +88,7 @@ const setListNode = function(data){
         item.element.querySelector('button').addEventListener('click', ({ target }) => {
             if(isStatus === MODE.DEFAULT) return false;
             var { parentNode } = target;
-
+            
             // 수정 상태
             if(isStatus === MODE.EDIT){
                 var { innerText } = parentNode;
@@ -104,11 +105,13 @@ const setListNode = function(data){
             
             // 삭제 상태
             }else if(isStatus === MODE.DELETE){
-                console.log('삭제');
                 parentNode.remove();
 
-
-
+                deleteAfterListData = deleteAfterListData.filter((e) => {
+                    if(e.id !== parentNode.dataset.id){
+                        return e;
+                    }
+                });
 
             }else{
                 Object.values(checkListData).map((val) => {
@@ -194,7 +197,6 @@ editBtn.addEventListener('click', ({ target }) => {
         // 저장
         if(changeCounter > 0){
             if(isSupportedStorage('localStorage')){
-                console.log(editedListData)
                 localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(editedListData));
                 notification.text = MESSAGE.NOTI_TEXT_SAVE;
                 notification.open();
@@ -246,11 +248,19 @@ deleteBtn.addEventListener('click', function(){
         deleteBtn.innerText = '삭제';
         editArea.classList.remove('remove-ing');
 
+        if(isSupportedStorage('localStorage')){
+            localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(deleteAfterListData));
+            console.log('deleteAfterListData',deleteAfterListData)
+            notification.text = MESSAGE.NOTI_TEXT_SAVE;
+            notification.open();
+        }
+
+        // changeCounter = 0;
+
         isStatus = MODE.DEFAULT;
     }else{
         deleteBtn.innerText = '저장';
         editArea.classList.add('remove-ing');
-        console.log(123)
 
         isStatus = MODE.DELETE;
     }
