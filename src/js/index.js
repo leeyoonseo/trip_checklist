@@ -1,21 +1,11 @@
-import defaultData from '../dev/data';
+import CHECKLIST_DATA from './data';
+
 import { APP_FLOW, MESSAGE } from './lang';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 import { CheckItem, UserItem, TotalItem } from '../Components/CheckItem/';
 import Notification from '../Components/Notification/';
 import getSearchData from '../Components/Search/';
 
-console.log('index');
-
-const CHECKED_LOCAL_DATA = 'CHECKED_LOCAL_DATA';
-
-// flow 필요없으면 삭제
-let flow = APP_FLOW.MAIN;
-
-// [D] 테스트 도중 데이터 삭제
-// localStorage.removeItem(CHECKED_LOCAL_DATA);
-
-let originalData = JSON.parse(localStorage.getItem(CHECKED_LOCAL_DATA)) || defaultData;
 const myListArea = document.querySelector('#myListArea');
 const allListArea = document.querySelector('#allListArea');
 const searchInput = document.querySelector('#searchInput');
@@ -26,7 +16,7 @@ const menuBtn = document.querySelector('#menuBtn');
 const notification = new Notification();
 
 document.body.append(notification.element);
-let checkListData = deepCloneObject(originalData).sort(function(a, b){
+let checkListData = deepCloneObject(CHECKLIST_DATA).sort(function(a, b){
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 });
 
@@ -96,13 +86,13 @@ searchInput.addEventListener('input', ({ target }) => {
 saveBtn.addEventListener('click', () => {
     notification.text = MESSAGE.NOTI_TEXT_ERROR;
 
-    if(isSameData(originalData, checkListData)){
+    if(isSameData(CHECKLIST_DATA, checkListData)){
         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
         if(isSupportedStorage('localStorage')){
-            localStorage.setItem(CHECKED_LOCAL_DATA, JSON.stringify(checkListData));
-            originalData = [...checkListData];
+            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(checkListData));
+            CHECKLIST_DATA = [...checkListData];
 
             notification.text = MESSAGE.NOTI_TEXT_SAVE;
         }
@@ -111,11 +101,11 @@ saveBtn.addEventListener('click', () => {
     notification.open();
 });
 
-function isSameData(originalData, changedData) {
-    let sameCount = originalData.length;
+function isSameData(CHECKLIST_DATA, changedData) {
+    let sameCount = CHECKLIST_DATA.length;
 
     changedData.sort();
-    originalData.map((obj, idx) => {
+    CHECKLIST_DATA.map((obj, idx) => {
         if(Object.is(obj.checked, changedData[idx].checked)){
             sameCount--;
         }
