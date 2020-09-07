@@ -1,3 +1,5 @@
+
+// TODO 데이터를 여기서 최초로 만들어야함
 import DEV_DATA from '../dev/data';
 
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';

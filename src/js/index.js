@@ -6,6 +6,8 @@ import { CheckItem, UserItem, TotalItem } from '../Components/CheckItem/';
 import Notification from '../Components/Notification/';
 import getSearchData from '../Components/Search/';
 
+import '../../src/Components/Search/Search';
+
 const myListArea = document.querySelector('#myListArea');
 const allListArea = document.querySelector('#allListArea');
 const searchInput = document.querySelector('#searchInput');
@@ -13,6 +15,8 @@ const saveBtn = document.querySelector('#listSaveBtn');
 const mainArea = document.querySelector('#mainArea');
 const menuArea = document.querySelector('#menuArea');
 const menuBtn = document.querySelector('#menuBtn');
+
+
 const notification = new Notification();
 
 document.body.append(notification.element);
