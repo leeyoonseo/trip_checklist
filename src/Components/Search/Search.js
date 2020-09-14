@@ -1,39 +1,44 @@
-import CHECKLIST_DATA from '../../js/data';
-class Search {
-    constructor(){
-        this.name = 'Search';
-        return this;
-    }
+// class Search{
+//     constructor(){
+//         this.name = 'Search';
+//         this.version = '1.0.0';
 
-    get init(){
-        // const wrap = document.createElement('div');
-        // const input = document.createElement('input');
+//         this.data;
+//         this.word;
+//         this.resultList;
+
+//         return this;
+//     }
+
+//     set data(data){
+//         this.data = data;
+//     }
+
+//     set word(word){
+//         this.word = word;
+//     }
+
+//     get test(){
+//         return this.version;
+//     }
+
+//     get list(){
+//         console.log('aaa')
+//         return 'a';
+//     }
+
+//     // findList(value){
+//     //     console.log(value)
+//     //     // this.resultList = [...this.data].filter((o) => {
+//     //     //     let { name } = o;
+//     //     //     name = removeWhiteSpace(name).toLowerCase();
+//     //     //     word = removeWhiteSpace(this.word).toLowerCase();
         
-        // wrap.classList = 'search';
-        // input.id = 'searchInput';
-        // input.classList.add('search-input');
-        // input.placeholder = '검색어를 입력하세요.';
-        // wrap.append(input);
+//     //     //     if(name.includes(word)){
+//     //     //         return o;
+//     //     //     }
+//     //     // });
+//     // }
+// }
 
-        // this.wrap = wrap;
-        // this.input = input;
-
-        // return this;
-    }
-
-    set value(value){
-
-    }
-}
-
-const t = new Search();
-
-
-const searchInput = document.querySelector('#searchInput');
-
-searchInput.addEventListener('input', ({ target }) => {
-    const val = target.value;
-    console.log(val);
-
-
-});
+// export default Search;

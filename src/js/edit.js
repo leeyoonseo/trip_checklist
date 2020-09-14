@@ -1,7 +1,7 @@
 import defaultData from '../dev/data';
 import { APP_FLOW, MESSAGE } from './lang';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
-import { CheckItem } from '../Components/CheckItem/';
+import { CheckItem } from '../Components/CheckItem/CheckItem';
 import Notification from '../Components/Notification/';
 
 
