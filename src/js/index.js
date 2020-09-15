@@ -1,22 +1,25 @@
 import CHECKLIST_DATA from './data';
 
+// [TODO] CheckItem 하위에 index일때 중복해서 이름을 안쓸 방법?
+import CheckItem from '../Components/CheckItem/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 
 
-let listData = deepCloneObject(CHECKLIST_DATA);
+let checklistData = deepCloneObject(CHECKLIST_DATA).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+let viewData = deepCloneObject(checklistData);
 
 const searchInput = getNode('#searchInput');
 searchInput.focus();
 
 searchInput.addEventListener('input', ({ target }) => {
     let { value } = target;
-    let searchData = deepCloneObject(CHECKLIST_DATA);
+    let searchData = deepCloneObject(checklistData);
 
     if(isEmpty(value)){
-        listData = searchData;
+        viewData = searchData;
 
     }else{
-        listData = searchData.filter((o) => {
+        viewData = searchData.filter((o) => {
             let { name } = o;
             name = removeWhiteSpace(name).toLowerCase();
             value = removeWhiteSpace(value).toLowerCase();
@@ -40,9 +43,99 @@ function removeWhiteSpace(str){
     return str.replace(/ /gi, "");
 }
 
+const enabledList = document.getElementById('enabledList');
+const disabledList = document.getElementById('disabledList');
+
+const CheckList = {
+    reset(){
+        enabledList.innerHTML = '';
+        disabledList.innerHTML = '';
+    },
+
+    // [...DEV_DATA].map((obj) => {
+    //     const items = new CheckItem({
+    //         data : obj,
+    //         className : 'test',
+    //         clickabled : true,
+    //         clickFunction : function(){
+    //             console.log('test');
+    //         }
+    //     });
+    
+    //     checkListNode.append(items.element.querySelector('div'));
+    // });
+
+    set(data){
+        this.reset();
+
+        if(isEmpty(data)){
+            // enabledList.innerHTML = getEmptyListStr();
+            // disabledList.innerHTML = getEmptyListStr();
+        }else{
+            deepCloneObject(data).map((obj, i) => {
+                console.log(i)
+                const { checked } = obj;
+                let enabledArr = [];
+                let disabledArr = [];
+
+                let item = new CheckItem({
+                    data : obj,
+                    clickabled : true
+                });
+
+                if(checked){
+                    console.log('true');
+                    item.callbackFunction = function(){
+                        console.log(123);
+                    }
+
+                }else{
+
+                }
 
 
 
+                // last idx
+                if((i + 1) === data.length){
+                    console.log('?')
+                }
+
+                // const item = new CheckItem({
+                //     data : obj,
+                //     clickabled : 
+                // });
+                // let listNode = obj.checked ? myListArea : allListArea;
+                // item.element = obj;
+                
+                // // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
+                // item.element.querySelector('button').addEventListener('click', ({ target }) => {
+                //     Object.values(checkListData).map((val) => {
+                //         if(val.id === item.data.id){
+                //             item.changeChecked = !val.checked;
+                //         }
+                //     });
+                    
+                //     setCheckList(checkListData);
+                // });
+        
+                // listNode.append(item.element.querySelector('div'));
+        
+                // if((idx + 1) === data.length){
+                //     if(allListArea.childNodes.length < 1){
+                //         allListArea.innerHTML = getEmptyListStr();
+                //     }
+        
+                //     if(myListArea.childNodes.length < 1){
+                //         myListArea.innerHTML = getEmptyListStr();
+                //     }
+                // }
+            });
+        }
+
+    }
+}
+
+CheckList.set(checklistData);
 
 
 
@@ -50,12 +143,8 @@ function removeWhiteSpace(str){
 // import CheckItem from '../Components/CheckItem/CheckItem';
 // import Notification from '../Components/Notification/';
 // import getSearchData from '../Components/Search/';
-
 // import '../../src/Components/Search/Search';
 
-// const myListArea = document.querySelector('#myListArea');
-// const allListArea = document.querySelector('#allListArea');
-// const searchInput = document.querySelector('#searchInput');
 // const saveBtn = document.querySelector('#listSaveBtn');    
 // const mainArea = document.querySelector('#mainArea');
 // const menuArea = document.querySelector('#menuArea');
@@ -64,52 +153,8 @@ function removeWhiteSpace(str){
 // const notification = new Notification();
 
 // document.body.append(notification.element);
-// let checkListData = deepCloneObject(CHECKLIST_DATA).sort(function(a, b){
-//     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-// });
 
-// const setListNode = function(data){
-//     allListArea.innerHTML = '';
-//     myListArea.innerHTML = '';
 
-//     if(isEmpty(data)) {
-//         allListArea.innerHTML = getEmptyListStr();
-//         myListArea.innerHTML = getEmptyListStr();
-
-//         return false;
-//     }
-
-//     [...data].map((obj, idx) => {
-//         const item = new CheckItem();
-//         let listNode = obj.checked ? myListArea : allListArea;
-//         item.element = obj;
-        
-//         // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
-//         item.element.querySelector('button').addEventListener('click', ({ target }) => {
-//             Object.values(checkListData).map((val) => {
-//                 if(val.id === item.data.id){
-//                     item.changeChecked = !val.checked;
-//                 }
-//             });
-            
-//             setListNode(checkListData);
-//         });
-
-//         listNode.append(item.element.querySelector('div'));
-
-//         if((idx + 1) === data.length){
-//             if(allListArea.childNodes.length < 1){
-//                 allListArea.innerHTML = getEmptyListStr();
-//             }
-
-//             if(myListArea.childNodes.length < 1){
-//                 myListArea.innerHTML = getEmptyListStr();
-//             }
-//         }
-//     });
-// };
-
-// setListNode(checkListData);
 
 // function getEmptyListStr(){
 //     return '<div class="checklist__text--empty">아이템이 없습니다</div>';

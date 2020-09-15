@@ -25,7 +25,8 @@ class CheckItem {
         return this;
     }
 
-    set attachEvent({ clickabled, clickFunction }){
+    set attachEvent({ clickabled = false, clickFunction }){
+        console.log(clickabled, clickFunction);
         if(!clickabled) return false;
 
         this.element.querySelector('button').addEventListener('click', clickFunction);
@@ -34,6 +35,8 @@ class CheckItem {
 
     set changeChecked(isChecked){
         this.itemData.checked = isChecked;
+
+        return this;
     }
 
     set element({ data, className }){
@@ -46,6 +49,12 @@ class CheckItem {
 
         this.itemData = data;
         this._node = dom;
+
+        return this;
+    }
+
+    set callbackFunction(callback){
+        this.attachEvent = { clickFunction : callback };
 
         return this;
     }
