@@ -69,35 +69,42 @@ const CheckList = {
         this.reset();
 
         if(isEmpty(data)){
-            // enabledList.innerHTML = getEmptyListStr();
-            // disabledList.innerHTML = getEmptyListStr();
+            enabledList.innerHTML = getEmptyListStr();
+            disabledList.innerHTML = getEmptyListStr();
+
         }else{
             deepCloneObject(data).map((obj, i) => {
-                console.log(i)
                 const { checked } = obj;
                 let enabledArr = [];
                 let disabledArr = [];
-
                 let item = new CheckItem({
                     data : obj,
                     clickabled : true
                 });
 
                 if(checked){
-                    console.log('true');
-                    item.callbackFunction = function(){
-                        console.log(123);
-                    }
+                    item.addEvent = function(e, data){
+                        console.log('true 입니다.', e, data);
 
+                        // data.checked = false;
+                    };
+
+                    enabledList.appendChild(item.el);
+                    enabledArr.push(item);
                 }else{
+                    item.addEvent = function(){
+                        console.log('false 입니다.');
+                    };
 
+                    disabledList.appendChild(item.el);
+                    disabledArr.push(item);
                 }
 
-
+                
 
                 // last idx
                 if((i + 1) === data.length){
-                    console.log('?')
+                    // console.log('?')
                 }
 
                 // const item = new CheckItem({

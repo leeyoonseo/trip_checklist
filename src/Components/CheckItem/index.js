@@ -18,18 +18,22 @@ class CheckItem {
     }) {
         this.name = 'CheckItem';
         this.version = '1.1.0';
+        this.el;
+        
+        this.html = { data, className };
+        this.clickabled = clickabled;
 
-        this.element = { data, className };
-        this.attachEvent = { clickabled, clickFunction };
+        if(clickabled && clickFunction){
+            this.attachEvent = clickFunction;
+        } 
 
         return this;
     }
 
-    set attachEvent({ clickabled = false, clickFunction }){
-        console.log(clickabled, clickFunction);
-        if(!clickabled) return false;
-
-        this.element.querySelector('button').addEventListener('click', clickFunction);
+    set attachEvent(clickFunc){
+        this.el.querySelector('button').addEventListener('click', () => {
+            clickFunc(this.el, this.itemData);
+        });
         return this;
     }
 
@@ -39,28 +43,29 @@ class CheckItem {
         return this;
     }
 
-    set element({ data, className }){
+    set html({ data, className }){
         const { id, name } = data;
-        const wrapStr = `<div class="checklist__items ${className}" data-id="${ id }">
-            <span class="checkList__items-name">${ name }</span>
-            <button type="button"></button>
-        </div>`;
-        const dom = new DOMParser().parseFromString(wrapStr, "text/html");
+        let htmlStr = `
+            <div class="checklist__items ${className}" data-id="${ id }">
+                <span class="checkList__items-name">${ name }</span>
+                <button type="button"></button>
+            </div>
+        `;
+
+        const parseHtml = new DOMParser().parseFromString(htmlStr, "text/html").querySelector('div');
 
         this.itemData = data;
-        this._node = dom;
+        this.el = parseHtml;
 
         return this;
     }
 
-    set callbackFunction(callback){
-        this.attachEvent = { clickFunction : callback };
+    set addEvent(callback){
+        if(!this.clickabled) return false;
+
+        this.attachEvent = callback;
 
         return this;
-    }
-
-    get element(){
-        return this._node;
     }
 
     get data(){
