@@ -1,74 +1,46 @@
 @charset "utf-8";
 
+button{
+    border:none;
+    outline:none;
+}
+
 .checklist{
-    &__my{
+
+    & + .checklist{
+        margin-top:get-vw(15px);
+    }
+
+    .checklist__items{
+        position:relative;
+        margin:get-vw(4px);
+        display:inline-block;
+        padding:get-vw(5px);
+        border:get-vw(1px) dashed #333;
+        box-sizing:border-box;
+    
+        &:hover{
+            color:#fff;
+            background:#666;
+        }
+
         button{
+            position:absolute;
+            top:0;
+            lefT:0;
+            width:100%;
+            height:100%;
+            background:none;
             border:none;
             outline:none;
         }
-
-        .checklist__items{
-            overflow:hidden;
-            display:inline-block;
-            position:relative;
-            margin:get-vw(4px) 0;
-            padding:get-vw(5px);
-            border:get-vw(1px) dashed #333;
-            box-sizing:border-box;
-            cursor:default;
-
-            &:hover{
-                color:#fff;
-                background:#666;
-            }
-    
-            & + .checklist__items{
-                margin-left:2%;
-            }
-
-            button{
-                margin-left:get-vw(5px);
-                padding:0;
-                position:relative;
-                top:0;
-                vertical-align:middle;
-                width:get-vw(14px);
-                height:get-vw(14px);
-                background:#fff url('../img/icon_close.png')no-repeat;
-                background-size:100% 100%;
-                border-radius:50%;
-                box-sizing:border-box;
-            }
-        }
     }
 
-    &__all{
-        margin-top:get-vw(15px);
-
-        .checklist__items{
-            position:relative;
-            margin:get-vw(4px);
-            display:inline-block;
-            padding:get-vw(5px);
-            border:get-vw(1px) dashed #333;
-            box-sizing:border-box;
-        
-            &:hover{
-                color:#fff;
-                background:#666;
-            }
-    
-            button{
-                position:absolute;
-                top:0;
-                lefT:0;
-                width:100%;
-                height:100%;
-                background:none;
-                border:none;
-                outline:none;
-            }
-        }
+    &__button--save{
+        width:get-vw(20px);
+        height:get-vw(20px);
+        background:url('../img/icon_save.png')no-repeat;
+        background-size:100% 100%;
     }
 
     &__list{

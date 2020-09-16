@@ -73,29 +73,60 @@ const CheckList = {
             disabledList.innerHTML = getEmptyListStr();
 
         }else{
+            let enabledArr = [];
+            let disabledArr = [];
+
             deepCloneObject(data).map((obj, i) => {
                 const { checked } = obj;
-                let enabledArr = [];
-                let disabledArr = [];
+ 
                 let item = new CheckItem({
                     data : obj,
-                    clickabled : true
+                    clickabled : true,
+                    addEvent : function(element, data){
+                        const targetId = data.id;
+                        let { checked } = data;
+
+                        element.remove();
+
+                        // My Checklist
+                        if(checked){
+                            // console.log('나의',checked);
+                            enabledArr.find((e) => {
+                                const { itemData } = e;
+                                const { id } = itemData;
+
+                                if(id === targetId){
+                                    disabledArr.push(e);
+                                    disabledList.append(e.el);
+                                    console.log(e.el)
+                                }
+                            });
+                            
+
+                        // All CheckList
+                        }else{
+                            console.log(disabledArr)
+                            disabledArr.find((e) => {
+                                const { itemData } = e;
+                                const { id } = itemData;
+
+                                if(id === targetId){
+                                    enabledArr.push(e);
+                                    enabledList.append(e.el);
+                                    console.log(e.el)
+                                }
+                            });
+
+                        }
+
+                        data.checked = !checked;
+                    }
                 });
 
                 if(checked){
-                    item.addEvent = function(e, data){
-                        console.log('true 입니다.', e, data);
-
-                        // data.checked = false;
-                    };
-
                     enabledList.appendChild(item.el);
                     enabledArr.push(item);
                 }else{
-                    item.addEvent = function(){
-                        console.log('false 입니다.');
-                    };
-
                     disabledList.appendChild(item.el);
                     disabledArr.push(item);
                 }

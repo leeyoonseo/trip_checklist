@@ -8,13 +8,13 @@ class CheckItem {
      * data.checked {Boolean}
      * className {String} - 아이템 클래스
      * clickabled {Boolean} - 아이템 클릭 기능 여부
-     * clickFunction {Function} - 아이템 클릭 기능이 true일 경우 실행될 함수
+     * addEvent {Function} - 아이템 클릭 기능이 true일 경우 실행될 함수
      */
     constructor({
         data = null,
         className = '',
         clickabled = false,
-        clickFunction = null
+        addEvent = null
     }) {
         this.name = 'CheckItem';
         this.version = '1.1.0';
@@ -23,8 +23,8 @@ class CheckItem {
         this.html = { data, className };
         this.clickabled = clickabled;
 
-        if(clickabled && clickFunction){
-            this.attachEvent = clickFunction;
+        if(clickabled && addEvent){
+            this.attachEvent = addEvent;
         } 
 
         return this;
