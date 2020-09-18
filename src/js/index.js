@@ -52,20 +52,7 @@ const CheckList = {
         disabledList.innerHTML = '';
     },
 
-    // [...DEV_DATA].map((obj) => {
-    //     const items = new CheckItem({
-    //         data : obj,
-    //         className : 'test',
-    //         clickabled : true,
-    //         clickFunction : function(){
-    //             console.log('test');
-    //         }
-    //     });
-    
-    //     checkListNode.append(items.element.querySelector('div'));
-    // });
-
-    set(data){
+    init(data){
         this.reset();
 
         if(isEmpty(data)){
@@ -98,14 +85,22 @@ const CheckList = {
                                 if(id === targetId){
                                     disabledArr.push(e);
                                     disabledList.append(e.el);
-                                    console.log(e.el)
+
+                                    // // 아이템이 없음
+                                    if(!enabledList.childNodes.length){
+                                        enabledList.innerHTML = '<span class="empty">아이템이 없습니다.</span>';
+                                    }
+                                    
+                                    const emptyTextNode = disabledList.querySelector('.empty');
+                                    if(emptyTextNode){
+                                        emptyTextNode.remove();
+                                    }
                                 }
                             });
                             
 
                         // All CheckList
                         }else{
-                            console.log(disabledArr)
                             disabledArr.find((e) => {
                                 const { itemData } = e;
                                 const { id } = itemData;
@@ -113,7 +108,16 @@ const CheckList = {
                                 if(id === targetId){
                                     enabledArr.push(e);
                                     enabledList.append(e.el);
-                                    console.log(e.el)
+
+                                    // 아이템이 없음
+                                    if(!disabledList.childNodes.length){
+                                        disabledList.innerHTML = '<span class="empty">아이템이 없습니다.</span>';
+                                    }
+
+                                    const emptyTextNode = enabledList.querySelector('.empty');
+                                    if(emptyTextNode){
+                                        emptyTextNode.remove();
+                                    }
                                 }
                             });
 
@@ -173,10 +177,12 @@ const CheckList = {
     }
 }
 
-CheckList.set(checklistData);
+CheckList.init(checklistData);
 
 
 
+
+//출처: https://uxgjs.tistory.com/170 [UX 공작소]
 // import { APP_FLOW, MESSAGE } from './lang';
 // import CheckItem from '../Components/CheckItem/CheckItem';
 // import Notification from '../Components/Notification/';
