@@ -4,13 +4,22 @@ import CHECKLIST_DATA from './data';
 import CheckItem from '../Components/CheckItem/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 
+const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
+// localStorage.removeItem(LOCALSTORAGE_DATA);
 
-let checklistData = deepCloneObject(CHECKLIST_DATA).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+const originalData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
+
+console.log(originalData)
+let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
 let viewData = deepCloneObject(checklistData);
-
 const searchInput = getNode('#searchInput');
-searchInput.focus();
+const saveBtn = document.querySelector('#listSaveBtn');
+const enabledList = document.getElementById('enabledList');
+const disabledList = document.getElementById('disabledList');
+let enabledArr = [];
+let disabledArr = [];
 
+searchInput.focus();
 searchInput.addEventListener('input', ({ target }) => {
     let { value } = target;
     let searchData = deepCloneObject(checklistData);
@@ -29,11 +38,47 @@ searchInput.addEventListener('input', ({ target }) => {
             }
         });
     }
+
+    CheckList.init(viewData);
 });
 
 function getNode(selectorStr){
     return document.querySelector(selectorStr);
 }
+
+saveBtn.addEventListener('click', () => {
+    // let saveData = enabledArr.concat(disabledArr);
+    // saveData = saveData.map((o) => o.itemData);
+
+    // originalData.map((o) => {
+    //     saveData.map((obj) => {
+    //         if(o.id === obj.id){
+    //             o.checked = obj.checked;
+    //         }
+    //     });
+    // });
+    console.log(originalData)
+    if(isSupportedStorage('localStorage')){
+        localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
+    }
+
+
+    // notification.text = MESSAGE.NOTI_TEXT_ERROR;
+
+    // if(isSameData(CHECKLIST_DATA, checkListData)){
+    //     notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
+    
+    // }else{
+    //     if(isSupportedStorage('localStorage')){
+    //         localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(checkListData));
+    //         CHECKLIST_DATA = [...checkListData];
+
+    //         notification.text = MESSAGE.NOTI_TEXT_SAVE;
+    //     }
+    // }
+    
+    // notification.open();
+});
 
 /**
  * 문자열 공백 제거
@@ -42,9 +87,6 @@ function getNode(selectorStr){
 function removeWhiteSpace(str){
     return str.replace(/ /gi, "");
 }
-
-const enabledList = document.getElementById('enabledList');
-const disabledList = document.getElementById('disabledList');
 
 const CheckList = {
     reset(){
@@ -55,13 +97,8 @@ const CheckList = {
     init(data){
         this.reset();
 
-        if(isEmpty(data)){
-            enabledList.innerHTML = getEmptyListStr();
-            disabledList.innerHTML = getEmptyListStr();
-
-        }else{
-            let enabledArr = [];
-            let disabledArr = [];
+        if(!isEmpty(data)){
+            
 
             deepCloneObject(data).map((obj, i) => {
                 const { checked } = obj;
@@ -82,9 +119,11 @@ const CheckList = {
                                 const { itemData } = e;
                                 const { id } = itemData;
 
-                                if(id === targetId){
+                                if(id === targetId){                           
                                     disabledArr.push(e);
                                     disabledList.append(e.el);
+
+                                    console.log(enabledArr)
 
                                     // // 아이템이 없음
                                     if(!enabledList.childNodes.length){
@@ -95,6 +134,9 @@ const CheckList = {
                                     if(emptyTextNode){
                                         emptyTextNode.remove();
                                     }
+
+                                    const removeIndex = enabledArr.findIndex(({ itemData }) => itemData.id === targetId);
+                                    enabledArr.splice(removeIndex, 1);
                                 }
                             });
                             
@@ -102,12 +144,14 @@ const CheckList = {
                         // All CheckList
                         }else{
                             disabledArr.find((e) => {
+                                console.log(e)
                                 const { itemData } = e;
                                 const { id } = itemData;
 
                                 if(id === targetId){
                                     enabledArr.push(e);
                                     enabledList.append(e.el);
+                                    console.log(disabledArr)
 
                                     // 아이템이 없음
                                     if(!disabledList.childNodes.length){
@@ -118,6 +162,9 @@ const CheckList = {
                                     if(emptyTextNode){
                                         emptyTextNode.remove();
                                     }
+
+                                    const removeIndex = disabledArr.findIndex(({ itemData }) => itemData.id === targetId);
+                                    disabledArr.splice(removeIndex, 1);
                                 }
                             });
 
@@ -134,43 +181,6 @@ const CheckList = {
                     disabledList.appendChild(item.el);
                     disabledArr.push(item);
                 }
-
-                
-
-                // last idx
-                if((i + 1) === data.length){
-                    // console.log('?')
-                }
-
-                // const item = new CheckItem({
-                //     data : obj,
-                //     clickabled : 
-                // });
-                // let listNode = obj.checked ? myListArea : allListArea;
-                // item.element = obj;
-                
-                // // [TODO] 클릭할때마다 다시 새로고쳐지면 데이터 처리비용이..! 확인해보쟈!
-                // item.element.querySelector('button').addEventListener('click', ({ target }) => {
-                //     Object.values(checkListData).map((val) => {
-                //         if(val.id === item.data.id){
-                //             item.changeChecked = !val.checked;
-                //         }
-                //     });
-                    
-                //     setCheckList(checkListData);
-                // });
-        
-                // listNode.append(item.element.querySelector('div'));
-        
-                // if((idx + 1) === data.length){
-                //     if(allListArea.childNodes.length < 1){
-                //         allListArea.innerHTML = getEmptyListStr();
-                //     }
-        
-                //     if(myListArea.childNodes.length < 1){
-                //         myListArea.innerHTML = getEmptyListStr();
-                //     }
-                // }
             });
         }
 
@@ -189,7 +199,7 @@ CheckList.init(checklistData);
 // import getSearchData from '../Components/Search/';
 // import '../../src/Components/Search/Search';
 
-// const saveBtn = document.querySelector('#listSaveBtn');    
+//     
 // const mainArea = document.querySelector('#mainArea');
 // const menuArea = document.querySelector('#menuArea');
 // const appMenuButton = document.querySelector('#appMenuButton');
@@ -200,43 +210,6 @@ CheckList.init(checklistData);
 
 
 
-// function getEmptyListStr(){
-//     return '<div class="checklist__text--empty">아이템이 없습니다</div>';
-// }
-
-// searchInput.focus();
-
-// searchInput.addEventListener('input', ({ target }) => {
-//     const { value } = target;
-//     let data = deepCloneObject(checkListData);
-
-//     if(!isEmpty(value)){
-//         data = getSearchData({
-//             data, 
-//             word : value
-//         });
-//     }
-    
-//     setListNode(data);
-// });
-
-// saveBtn.addEventListener('click', () => {
-//     notification.text = MESSAGE.NOTI_TEXT_ERROR;
-
-//     if(isSameData(CHECKLIST_DATA, checkListData)){
-//         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
-    
-//     }else{
-//         if(isSupportedStorage('localStorage')){
-//             localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(checkListData));
-//             CHECKLIST_DATA = [...checkListData];
-
-//             notification.text = MESSAGE.NOTI_TEXT_SAVE;
-//         }
-//     }
-    
-//     notification.open();
-// });
 
 // function isSameData(CHECKLIST_DATA, changedData) {
 //     let sameCount = CHECKLIST_DATA.length;
