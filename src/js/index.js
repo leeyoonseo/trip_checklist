@@ -9,7 +9,6 @@ const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 
 const originalData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
 
-console.log(originalData)
 let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
 let viewData = deepCloneObject(checklistData);
 const searchInput = getNode('#searchInput');
@@ -57,7 +56,6 @@ saveBtn.addEventListener('click', () => {
     //         }
     //     });
     // });
-    console.log(originalData)
     if(isSupportedStorage('localStorage')){
         localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
     }
@@ -114,18 +112,16 @@ const CheckList = {
 
                         // My Checklist
                         if(checked){
-                            // console.log('나의',checked);
-                            enabledArr.find((e) => {
-                                const { itemData } = e;
+                            for(var i = 0; i < enabledArr.length; i++){
+                                const target = enabledArr[i];
+                                const { itemData } = target;
                                 const { id } = itemData;
-
+                                
                                 if(id === targetId){                           
-                                    disabledArr.push(e);
-                                    disabledList.append(e.el);
+                                    disabledArr.push(target);
+                                    disabledList.append(target.el);
 
-                                    console.log(enabledArr)
-
-                                    // // 아이템이 없음
+                                    // 아이템이 없음
                                     if(!enabledList.childNodes.length){
                                         enabledList.innerHTML = '<span class="empty">아이템이 없습니다.</span>';
                                     }
@@ -137,21 +133,23 @@ const CheckList = {
 
                                     const removeIndex = enabledArr.findIndex(({ itemData }) => itemData.id === targetId);
                                     enabledArr.splice(removeIndex, 1);
+
+                                    break;
                                 }
-                            });
-                            
+                            }
 
                         // All CheckList
                         }else{
-                            disabledArr.find((e) => {
-                                console.log(e)
-                                const { itemData } = e;
+
+                            for(var i = 0; i < disabledArr.length; i++){
+                                const target = disabledArr[i];
+                                const { itemData } = target;
                                 const { id } = itemData;
 
-                                if(id === targetId){
-                                    enabledArr.push(e);
-                                    enabledList.append(e.el);
-                                    console.log(disabledArr)
+                                if(id === targetId){                           
+                                    console.log(target)
+                                    enabledArr.push(target);
+                                    enabledList.append(target.el);
 
                                     // 아이템이 없음
                                     if(!disabledList.childNodes.length){
@@ -165,9 +163,10 @@ const CheckList = {
 
                                     const removeIndex = disabledArr.findIndex(({ itemData }) => itemData.id === targetId);
                                     disabledArr.splice(removeIndex, 1);
-                                }
-                            });
 
+                                    break;
+                                }
+                            }
                         }
 
                         data.checked = !checked;
@@ -185,7 +184,7 @@ const CheckList = {
         }
 
     }
-}
+};
 
 CheckList.init(checklistData);
 
