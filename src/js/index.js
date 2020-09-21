@@ -8,83 +8,15 @@ const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
 
 const originalData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
-
-let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-let viewData = deepCloneObject(checklistData);
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
+
+let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+let viewData = deepCloneObject(checklistData);
 let enabledArr = [];
 let disabledArr = [];
-
-searchInput.focus();
-searchInput.addEventListener('input', ({ target }) => {
-    let { value } = target;
-    let searchData = deepCloneObject(checklistData);
-
-    if(isEmpty(value)){
-        viewData = searchData;
-
-    }else{
-        viewData = searchData.filter((o) => {
-            let { name } = o;
-            name = removeWhiteSpace(name).toLowerCase();
-            value = removeWhiteSpace(value).toLowerCase();
-
-            if(name.includes(value)){
-                return o;
-            }
-        });
-    }
-
-    CheckList.init(viewData);
-});
-
-function getNode(selectorStr){
-    return document.querySelector(selectorStr);
-}
-
-saveBtn.addEventListener('click', () => {
-    // let saveData = enabledArr.concat(disabledArr);
-    // saveData = saveData.map((o) => o.itemData);
-
-    // originalData.map((o) => {
-    //     saveData.map((obj) => {
-    //         if(o.id === obj.id){
-    //             o.checked = obj.checked;
-    //         }
-    //     });
-    // });
-    if(isSupportedStorage('localStorage')){
-        localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
-    }
-
-
-    // notification.text = MESSAGE.NOTI_TEXT_ERROR;
-
-    // if(isSameData(CHECKLIST_DATA, checkListData)){
-    //     notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
-    
-    // }else{
-    //     if(isSupportedStorage('localStorage')){
-    //         localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(checkListData));
-    //         CHECKLIST_DATA = [...checkListData];
-
-    //         notification.text = MESSAGE.NOTI_TEXT_SAVE;
-    //     }
-    // }
-    
-    // notification.open();
-});
-
-/**
- * 문자열 공백 제거
- * @param {String} str 
- */
-function removeWhiteSpace(str){
-    return str.replace(/ /gi, "");
-}
 
 const CheckList = {
     reset(){
@@ -93,14 +25,15 @@ const CheckList = {
     },
 
     init(data){
+        const emptyHtmlStr = '<span class="empty">아이템이 없습니다.</span>';
+
         this.reset();
 
         if(!isEmpty(data)){
-            
-
             deepCloneObject(data).map((obj, i) => {
                 const { checked } = obj;
- 
+
+                // TODO 반복되는 곳들 리팩터링! 
                 let item = new CheckItem({
                     data : obj,
                     clickabled : true,
@@ -123,7 +56,7 @@ const CheckList = {
 
                                     // 아이템이 없음
                                     if(!enabledList.childNodes.length){
-                                        enabledList.innerHTML = '<span class="empty">아이템이 없습니다.</span>';
+                                        enabledList.innerHTML = emptyHtmlStr;
                                     }
                                     
                                     const emptyTextNode = disabledList.querySelector('.empty');
@@ -153,7 +86,7 @@ const CheckList = {
 
                                     // 아이템이 없음
                                     if(!disabledList.childNodes.length){
-                                        disabledList.innerHTML = '<span class="empty">아이템이 없습니다.</span>';
+                                        disabledList.innerHTML = emptyHtmlStr;
                                     }
 
                                     const emptyTextNode = enabledList.querySelector('.empty');
@@ -173,21 +106,126 @@ const CheckList = {
                     }
                 });
 
-                if(checked){
+                if(checked){                    
                     enabledList.appendChild(item.el);
                     enabledArr.push(item);
+
                 }else{
                     disabledList.appendChild(item.el);
                     disabledArr.push(item);
                 }
-            });
-        }
 
+                // last
+                if(i === (data.length - 1) ){
+                    if(enabledArr.length === 0){
+                        enabledList.innerHTML = emptyHtmlStr;
+                    }
+
+                    if(disabledArr.length === 0){
+                        disabledList.innerHTML = emptyHtmlStr;
+                    }
+                }
+            });
+
+        }else{
+            enabledList.innerHTML = emptyHtmlStr;
+            disabledList.innerHTML = emptyHtmlStr;
+        }
     }
 };
 
 CheckList.init(checklistData);
 
+searchInput.focus();
+searchInput.addEventListener('input', ({ target }) => {
+    let { value } = target;
+    let searchData = deepCloneObject(checklistData);
+
+    if(isEmpty(value)){
+        viewData = searchData;
+
+    }else{
+        viewData = searchData.filter((o) => {
+            let { name } = o;
+            name = removeWhiteSpace(name).toLowerCase();
+            value = removeWhiteSpace(value).toLowerCase();
+
+            if(name.includes(value)){
+                return o;
+            }
+        });
+    }
+
+    CheckList.init(viewData);
+});
+
+function getNode(selectorStr){
+    return document.querySelector(selectorStr);
+}
+
+saveBtn.addEventListener('click', () => {
+    let saveData = enabledArr.concat(disabledArr);
+    saveData = saveData.map((o) => o.itemData);
+
+    originalData.map((o) => {
+        saveData.map((obj) => {
+            if(o.id === obj.id){
+                o.checked = obj.checked;
+            }
+        });
+    });
+
+    // notification.text = MESSAGE.NOTI_TEXT_ERROR;
+
+    // TODO 수정할 것
+    if(isSameData(originalData, saveData)){
+        console.log('같다');
+        // notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
+    
+    }else{
+        console.log('다르다.');
+        if(isSupportedStorage('localStorage')){
+            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
+            // notification.text = MESSAGE.NOTI_TEXT_SAVE;
+        }
+    }
+    
+    // notification.open();
+});
+
+/**
+ * 문자열 공백 제거
+ * @param {String} str 
+ */
+function removeWhiteSpace(str){
+    return str.replace(/ /gi, "");
+}
+
+function isSameData(CHECKLIST_DATA, changedData) {
+    let sameCount = CHECKLIST_DATA.length;
+
+    changedData.sort();
+    CHECKLIST_DATA.map((obj, idx) => {
+        if(Object.is(obj.checked, changedData[idx].checked)){
+            sameCount--;
+        }
+    });
+
+    return sameCount ? false : true;
+}
+
+// polyfill
+if (!String.prototype.includes) {
+    String.prototype.includes = function(search, start) {
+        if (typeof start !== 'number') start = 0;
+        if (start + search.length > this.length) {
+            return false;
+    
+        } else {
+            return this.indexOf(search, start) !== -1;
+        }
+    };
+};
 
 
 
@@ -210,18 +248,6 @@ CheckList.init(checklistData);
 
 
 
-// function isSameData(CHECKLIST_DATA, changedData) {
-//     let sameCount = CHECKLIST_DATA.length;
-
-//     changedData.sort();
-//     CHECKLIST_DATA.map((obj, idx) => {
-//         if(Object.is(obj.checked, changedData[idx].checked)){
-//             sameCount--;
-//         }
-//     });
-
-//     return sameCount ? false : true;
-// }
 
 // appMenuButton.addEventListener('click', ({ target }) => {
 //     // 메인
@@ -242,17 +268,6 @@ CheckList.init(checklistData);
 //     }
 // });
 
-// // polyfill
-// if (!String.prototype.includes) {
-//     String.prototype.includes = function(search, start) {
-//         if (typeof start !== 'number') start = 0;
-//         if (start + search.length > this.length) {
-//             return false;
-    
-//         } else {
-//             return this.indexOf(search, start) !== -1;
-//         }
-//     };
-// };
+
 
     
