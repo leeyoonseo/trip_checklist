@@ -2,3 +2,5 @@ node_modules
 dist/*
 *.log
 .vscode
+.min.css
+.min.css.map
