@@ -7,9 +7,9 @@
         "_reset.scss",
         "_header.scss",
         "_footer.scss",
-        "../Components/Search/_index.scss",
-        "../Components/CheckItem/CheckItem.scss",
-        "../Components/Notification/_index.scss"
+        "../Components/Search/index.scss",
+        "../Components/CheckItem/index.scss",
+        "../Components/Notification/index.scss"
     ],
     "names": [],
     "file": "index.min.css"

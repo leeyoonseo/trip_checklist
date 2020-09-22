@@ -1,39 +1,52 @@
- class Notification {
+class Notification {
     constructor(opts) {
         this.options = Object.assign({},{
             time : 1000, // ms
             text : 'is notification'
         }, opts);
 
+        this.el;
+        this.messageEl;
+
+        this.message = this.options.text;
+
         this.createNode();
         return this;
     }
 
-    createNode() {
-        const wrapStr = `<div class="app__notification">
-            <div class="inner">${ this.options.text }</div>
-        </div>`;
-
-        const dom = new DOMParser().parseFromString(wrapStr, "text/html");
-        this._node = dom.body.firstChild;
-    }
-
-    set text(text){
-        const innerNode = this._node.firstElementChild;
-        innerNode.innerText = text;
+    set text(msg){
+        console.log(msg)
+        // const innerNode = this.el.firstElementChild;
+        // innerNode.innerText = text;
+        this.message = msg;
     }
 
     get element(){
-        return this._node;
+        return this.el;
+    }
+
+    createNode() {
+        const el = document.createElement('div');
+        const messageEl = document.createElement('div');
+
+        el.classList.add('app__notification');
+        messageEl.classList.add('inner');
+
+        el.append(messageEl);
+
+        this.el = el;
+        this.messageEl = messageEl;
     }
 
     open(){
+        this.messageEl.innerText = this.message;
+
         setTimeout(() => this.close(), this.options.time);
-        this._node.classList.add('on');
+        this.el.classList.add('on');
     }
 
     close(){
-        this._node.classList.remove('on');
+        this.el.classList.remove('on');
     }
 };
 

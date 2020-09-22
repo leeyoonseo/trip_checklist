@@ -2,7 +2,9 @@ import CHECKLIST_DATA from './data';
 
 // [TODO] CheckItem 하위에 index일때 중복해서 이름을 안쓸 방법?
 import CheckItem from '../Components/CheckItem/';
+import Notification from '../Components/Notification/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
+import { APP_FLOW, MESSAGE } from './lang.js';
 
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
@@ -12,6 +14,7 @@ const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
+const notification = new Notification();
 
 let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
 let viewData = deepCloneObject(checklistData);
@@ -136,6 +139,7 @@ const CheckList = {
 
 CheckList.init(checklistData);
 
+document.getElementsByTagName('body')[0].append(notification.el);
 searchInput.focus();
 searchInput.addEventListener('input', ({ target }) => {
     let { value } = target;
@@ -175,22 +179,21 @@ saveBtn.addEventListener('click', () => {
         });
     });
 
-    // notification.text = MESSAGE.NOTI_TEXT_ERROR;
-
     // TODO 수정할 것
     if(isSameData(originalData, saveData)){
         console.log('같다');
-        // notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
+        notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
         console.log('다르다.');
         if(isSupportedStorage('localStorage')){
             localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
-            // notification.text = MESSAGE.NOTI_TEXT_SAVE;
+            notification.text = MESSAGE.NOTI_TEXT_SAVE;
         }
     }
+    console.log(notification.text)
     
-    // notification.open();
+    notification.open();
 });
 
 /**
