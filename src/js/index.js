@@ -1,25 +1,25 @@
 import CHECKLIST_DATA from './data';
 
-// [TODO] CheckItem 하위에 index일때 중복해서 이름을 안쓸 방법?
 import CheckItem from '../Components/CheckItem/';
 import Notification from '../Components/Notification/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 import { APP_FLOW, MESSAGE } from './lang.js';
 
+// TODO localStorage말고 CDN 방법 찾기
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
 
-const originalData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
+const originData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
 const notification = new Notification();
 
-let checklistData = originalData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-let viewData = deepCloneObject(checklistData);
-let enabledArr = [];
-let disabledArr = [];
+let checklistData = originData.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+let displayData = deepCloneObject(checklistData);
+let enabledItemArr = [];
+let disabledItemArr = [];
 
 const CheckList = {
     reset(){
@@ -34,101 +34,86 @@ const CheckList = {
 
         if(!isEmpty(data)){
             deepCloneObject(data).map((obj, i) => {
-                const { checked } = obj;
-
-                // TODO 반복되는 곳들 리팩터링! 
+                const { checked } = obj;       
+                let checkedArr = enabledItemArr;
+                let checkedList = enabledList;
+                let unCheckedArr = disabledItemArr;
+                let unCheckedList = disabledList;
+              
                 let item = new CheckItem({
                     data : obj,
                     clickabled : true,
                     addEvent : function(element, data){
-                        const targetId = data.id;
-                        let { checked } = data;
-
+                        const { id, checked } = data;
+                        
                         element.remove();
 
-                        // My Checklist
-                        if(checked){
-                            for(var i = 0; i < enabledArr.length; i++){
-                                const target = enabledArr[i];
-                                const { itemData } = target;
-                                const { id } = itemData;
-                                
-                                if(id === targetId){                           
-                                    disabledArr.push(target);
-                                    disabledList.append(target.el);
-
-                                    // 아이템이 없음
-                                    if(!enabledList.childNodes.length){
-                                        enabledList.innerHTML = emptyHtmlStr;
-                                    }
-                                    
-                                    const emptyTextNode = disabledList.querySelector('.empty');
-                                    if(emptyTextNode){
-                                        emptyTextNode.remove();
-                                    }
-
-                                    const removeIndex = enabledArr.findIndex(({ itemData }) => itemData.id === targetId);
-                                    enabledArr.splice(removeIndex, 1);
-
-                                    break;
-                                }
-                            }
-
-                        // All CheckList
-                        }else{
-
-                            for(var i = 0; i < disabledArr.length; i++){
-                                const target = disabledArr[i];
-                                const { itemData } = target;
-                                const { id } = itemData;
-
-                                if(id === targetId){                           
-                                    console.log(target)
-                                    enabledArr.push(target);
-                                    enabledList.append(target.el);
-
-                                    // 아이템이 없음
-                                    if(!disabledList.childNodes.length){
-                                        disabledList.innerHTML = emptyHtmlStr;
-                                    }
-
-                                    const emptyTextNode = enabledList.querySelector('.empty');
-                                    if(emptyTextNode){
-                                        emptyTextNode.remove();
-                                    }
-
-                                    const removeIndex = disabledArr.findIndex(({ itemData }) => itemData.id === targetId);
-                                    disabledArr.splice(removeIndex, 1);
-
-                                    break;
-                                }
-                            }
+                        if(!checked){
+                            checkedArr = disabledItemArr;
+                            checkedList = disabledList;
+                            unCheckedArr = enabledItemArr;
+                            unCheckedList = enabledList;
                         }
+
+                        handlerClick({
+                            checkedArr, 
+                            checkedList,
+                            unCheckedArr,
+                            unCheckedList, 
+                            targetID : id
+                        });
 
                         data.checked = !checked;
                     }
                 });
 
-                if(checked){                    
-                    enabledList.appendChild(item.el);
-                    enabledArr.push(item);
-
-                }else{
-                    disabledList.appendChild(item.el);
-                    disabledArr.push(item);
+                if(!checked){
+                    checkedArr = disabledItemArr;
+                    checkedList = disabledList;
                 }
+
+                checkedList.appendChild(item.el);
+                checkedArr.push(item);
 
                 // last
                 if(i === (data.length - 1) ){
-                    if(enabledArr.length === 0){
-                        enabledList.innerHTML = emptyHtmlStr;
-                    }
-
-                    if(disabledArr.length === 0){
-                        disabledList.innerHTML = emptyHtmlStr;
-                    }
+                    if(enabledItemArr.length === 0) enabledList.innerHTML = emptyHtmlStr;
+                    if(disabledItemArr.length === 0) disabledList.innerHTML = emptyHtmlStr;
                 }
             });
+
+            function handlerClick({ 
+                checkedArr, 
+                checkedList, 
+                unCheckedArr, 
+                unCheckedList, 
+                targetID 
+            }){
+                for(var i = 0; i < checkedArr.length; i++){
+                    const target = checkedArr[i];
+                    const { itemData } = target;
+                    const { id } = itemData;
+                    
+                    if(id === targetID){                           
+                        unCheckedArr.push(target);
+                        unCheckedList.append(target.el);
+
+                        if(!checkedList.childNodes.length){
+                            checkedList.innerHTML = emptyHtmlStr;
+                        }
+                        
+                        const emptyTextNode = unCheckedList.querySelector('.empty');
+                        if(emptyTextNode){
+                            emptyTextNode.remove();
+                        }
+
+                        const removeIndex = checkedArr.findIndex(({ itemData }) => itemData.id === targetID);
+                        checkedArr.splice(removeIndex, 1);
+
+                        break;
+                    }
+                }
+            };
 
         }else{
             enabledList.innerHTML = emptyHtmlStr;
@@ -146,10 +131,10 @@ searchInput.addEventListener('input', ({ target }) => {
     let searchData = deepCloneObject(checklistData);
 
     if(isEmpty(value)){
-        viewData = searchData;
+        displayData = searchData;
 
     }else{
-        viewData = searchData.filter((o) => {
+        displayData = searchData.filter((o) => {
             let { name } = o;
             name = removeWhiteSpace(name).toLowerCase();
             value = removeWhiteSpace(value).toLowerCase();
@@ -160,7 +145,7 @@ searchInput.addEventListener('input', ({ target }) => {
         });
     }
 
-    CheckList.init(viewData);
+    CheckList.init(displayData);
 });
 
 function getNode(selectorStr){
@@ -168,14 +153,14 @@ function getNode(selectorStr){
 }
 
 saveBtn.addEventListener('click', () => {
-    let saveData = enabledArr.concat(disabledArr);
+    let saveData = enabledItemArr.concat(disabledItemArr);
     saveData = saveData.map((o) => o.itemData);    
     
-    if(isSameData(originalData, saveData)){
+    if(isSameData(originData, saveData)){
         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
-        originalData.map((o) => {
+        originData.map((o) => {
             saveData.map((obj) => {
                 if(o.id === obj.id){
                     o.checked = obj.checked;
@@ -184,12 +169,11 @@ saveBtn.addEventListener('click', () => {
         });
     
         if(isSupportedStorage('localStorage')){
-            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
+            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originData));
             notification.text = MESSAGE.NOTI_TEXT_SAVE;
         }
     }
-    console.log(notification.text)
-    
+
     notification.open();
 });
 

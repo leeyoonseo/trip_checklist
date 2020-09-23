@@ -15,9 +15,6 @@ class Notification {
     }
 
     set text(msg){
-        console.log(msg)
-        // const innerNode = this.el.firstElementChild;
-        // innerNode.innerText = text;
         this.message = msg;
     }
 
