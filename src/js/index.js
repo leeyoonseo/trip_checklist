@@ -250,10 +250,6 @@ if (!String.prototype.includes) {
 
 // document.body.append(notification.element);
 
-
-
-
-
 // appMenuButton.addEventListener('click', ({ target }) => {
 //     // 메인
 //     if(flow === APP_FLOW.MAIN){

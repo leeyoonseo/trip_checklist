@@ -15,5 +15,5 @@ const MESSAGE = {
 
 export {
     APP_FLOW,
-    MESSAGE
+    MESSAGE,
 }

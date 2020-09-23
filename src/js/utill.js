@@ -47,5 +47,5 @@ const isSupportedStorage = function(type){
 export {
     deepCloneObject,
     isEmpty,
-    isSupportedStorage
+    isSupportedStorage,
 }
