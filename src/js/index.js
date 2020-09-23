@@ -139,7 +139,7 @@ const CheckList = {
 
 CheckList.init(checklistData);
 
-document.getElementsByTagName('body')[0].append(notification.el);
+document.querySelector('body').append(notification.el);
 searchInput.focus();
 searchInput.addEventListener('input', ({ target }) => {
     let { value } = target;
@@ -169,23 +169,20 @@ function getNode(selectorStr){
 
 saveBtn.addEventListener('click', () => {
     let saveData = enabledArr.concat(disabledArr);
-    saveData = saveData.map((o) => o.itemData);
-
-    originalData.map((o) => {
-        saveData.map((obj) => {
-            if(o.id === obj.id){
-                o.checked = obj.checked;
-            }
-        });
-    });
-
-    // TODO 수정할 것
+    saveData = saveData.map((o) => o.itemData);    
+    
     if(isSameData(originalData, saveData)){
-        console.log('같다');
         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
-        console.log('다르다.');
+        originalData.map((o) => {
+            saveData.map((obj) => {
+                if(o.id === obj.id){
+                    o.checked = obj.checked;
+                }
+            });
+        });
+    
         if(isSupportedStorage('localStorage')){
             localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originalData));
             notification.text = MESSAGE.NOTI_TEXT_SAVE;
@@ -204,12 +201,17 @@ function removeWhiteSpace(str){
     return str.replace(/ /gi, "");
 }
 
-function isSameData(CHECKLIST_DATA, changedData) {
-    let sameCount = CHECKLIST_DATA.length;
+function isSameData(selectToCompareData, compareWithSelectData) {
+    const copyData1 = deepCloneObject(selectToCompareData);
+    const copyData2 = deepCloneObject(compareWithSelectData);
 
-    changedData.sort();
-    CHECKLIST_DATA.map((obj, idx) => {
-        if(Object.is(obj.checked, changedData[idx].checked)){
+    let sameCount = copyData1.length;
+
+    copyData1.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+    copyData2.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+
+    copyData1.sort().map((obj, idx) => {
+        if(obj.checked === copyData2[idx].checked){
             sameCount--;
         }
     });
