@@ -3,7 +3,7 @@ import CHECKLIST_DATA from './data';
 import CheckItem from '../Components/CheckItem/';
 import Notification from '../Components/Notification/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
-import { APP_FLOW, MESSAGE } from './lang.js';
+import { MESSAGE } from './lang.js';
 
 // TODO localStorage말고 CDN 방법 찾기
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';

@@ -1,9 +1,9 @@
-const APP_FLOW = {
-    GUIDE : 'GUIDE',
-    MAIN : 'MAIN',
-    MENU_LIST : 'MENU',
-    LIST_EDIT : 'LIST_EDIT'
-};
+// const APP_FLOW = {
+//     GUIDE : 'GUIDE',
+//     MAIN : 'MAIN',
+//     MENU_LIST : 'MENU',
+//     LIST_EDIT : 'LIST_EDIT'
+// };
 
 const MESSAGE = {
     NOTI_TEXT_DEFAULT : '완료되었습니다.',
@@ -14,6 +14,5 @@ const MESSAGE = {
 };
 
 export {
-    APP_FLOW,
     MESSAGE,
 }
