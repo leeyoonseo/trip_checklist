@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+.search{
+    margin-bottom:get-vw(30px);
+    
+    &:after{
+        @extend %clearfix;
+    }
+
+    &-input{
+        padding:get-vw(5px);
+        float:left;
+        width:100%;
+        // height:get-vw(30px);
+        line-height:1;
+        text-indent:get-vw(5px);
+        border:1px solid #666;
+        border-radius:get-vw(5px);
+        box-sizing:border-box;
+        outline:none;
+    }
+}

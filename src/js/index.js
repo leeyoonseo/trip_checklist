@@ -12,6 +12,8 @@ const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 const originData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
+const menuArea = document.querySelector('#menuArea');
+const menuBtn = document.querySelector('#menuBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
 const notification = new Notification();
@@ -216,43 +218,15 @@ if (!String.prototype.includes) {
     };
 };
 
+menuBtn.addEventListener('click', ({ target }) => {
+    if(menuArea.classList.contains('on')){
+        menuArea.classList.remove('on');
+        mainArea.classList.add('on');
+        target.classList.remove('header-menu__button-close');
 
-
-//출처: https://uxgjs.tistory.com/170 [UX 공작소]
-// import { APP_FLOW, MESSAGE } from './lang';
-// import CheckItem from '../Components/CheckItem/CheckItem';
-// import Notification from '../Components/Notification/';
-// import getSearchData from '../Components/Search/';
-// import '../../src/Components/Search/Search';
-
-//     
-// const mainArea = document.querySelector('#mainArea');
-// const menuArea = document.querySelector('#menuArea');
-// const appMenuButton = document.querySelector('#appMenuButton');
-
-// const notification = new Notification();
-
-// document.body.append(notification.element);
-
-// appMenuButton.addEventListener('click', ({ target }) => {
-//     // 메인
-//     if(flow === APP_FLOW.MAIN){
-//         menuArea.classList.add('on');
-//         mainArea.classList.remove('on');
-//         target.classList.add('header-menu__button-close');
-
-//         flow = APP_FLOW.MENU_LIST;
-
-//     // 메뉴
-//     }else if(flow === APP_FLOW.MENU_LIST){
-//         menuArea.classList.remove('on');
-//         mainArea.classList.add('on');
-//         target.classList.remove('header-menu__button-close');
-
-//         flow = APP_FLOW.MAIN;
-//     }
-// });
-
-
-
-    
+    }else{
+        menuArea.classList.add('on');
+        mainArea.classList.remove('on');
+        target.classList.add('header-menu__button-close');
+    }
+});
