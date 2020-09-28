@@ -69,21 +69,72 @@
 }
 
 
+.checklist{
+    button + button{
+        margin-left:get-vw(15px);
+    }
 
-// .app__coaching__cover{
-//     display:none;
-//     position:absolute;
-//     width:100%;
-//     height:100%;
-//     z-index:999;
-//     background:url('../img/bg_coaching_cover.png')no-repeat;
-//     background-size:100% 100%;
+    & + .checklist{
+        margin-top:get-vw(15px);
+    }    
 
-//     &.on{
-//         display:block;
-//     }
+    &__list{
+        margin:get-vw(5px) 0;
+    
+        .checklist__text--empty{
+            font-size:get-vw(12px);
+        }
+    }
 
-//     .inner{
-//         padding:0 5%;
-//     }
-// }
+    &__icon{
+        position:relative;
+        display:block;
+        background-repeat:no-repeat;
+        background-size:100% 100%;
+
+        &--default{
+            left:-(get-vw(5px));
+            width:get-vw(30px);
+            height:get-vw(30px);
+            background-image:url('../../src/img/icon_list.png');
+        }
+
+        &--my{
+            display:inline-block;
+            left:-(get-vw(7px));
+            width:get-vw(40px);
+            height:get-vw(40px);
+            background-image:url('../../src/img/icon_baggage.png');
+        }
+    }
+
+    &__button--save{
+        width:get-vw(20px);
+        height:get-vw(20px);
+        background:url('../img/icon_save.png')no-repeat;
+        background-size:100% 100%;
+    }
+
+    &__button--add{
+        position:relative;
+        width:get-vw(20px);
+        height:get-vw(20px);
+        background:url('../img/icon_plus.png')no-repeat;
+        background-size:100% 100%;
+    
+        &.on{
+            background:url('../img/icon_check.png')no-repeat;
+            background-size:100% 100%;
+        }
+    }
+
+    &_input--add{
+        position:absolute;
+        top:0;
+        left:get-vw(25px);
+        width:get-vw(150px);
+        height:get-vw(20px);
+        font-size:get-vw(12px);
+        background:#fff;
+    }
+}

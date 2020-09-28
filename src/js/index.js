@@ -12,8 +12,7 @@ const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 const originData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
-const menuArea = document.querySelector('#menuArea');
-const menuBtn = document.querySelector('#menuBtn');
+const addBtn = document.querySelector('#addListBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
 const notification = new Notification();
@@ -179,6 +178,57 @@ saveBtn.addEventListener('click', () => {
     notification.open();
 });
 
+let addInput;
+let addItem;
+addBtn.addEventListener('click', ({ target }) => {
+    if(target.classList.contains('on')){
+        target.classList.remove('on');
+
+        if(addInput){
+            addItem = addInput.value;
+            console.log(addItem)
+            if(addItem !== ''){
+                createID();
+
+            }
+
+            addInput.remove();
+            // addInput = null;
+        }
+
+    }else{
+        target.classList.add('on');
+
+        addInput = document.createElement('input');
+        addInput.id = 'addItem';
+        addInput.classList.add('checklist_input--add');
+        addInput.placeholder = '아이템을 추가해주세요.';
+        target.append(addInput);
+        addInput.focus();
+    }
+});
+
+createID();
+
+function createID(){
+    let today = new Date();
+    let todayArr = String(today).split(' ')
+    let month = todayArr[1].substr(0, 1);
+    let day = todayArr[2];
+    let year = todayArr[3].substr(2, 2);
+    let time = todayArr[4].split(':');
+    let h = time[0];
+    let m = time[1];
+    let s = time[2];
+// S20-28-
+    let id;
+
+    id = `${month}${year}-${day}-${h}.${m}.${s}`;
+    console.log(id)
+    
+
+}
+
 /**
  * 문자열 공백 제거
  * @param {String} str 
@@ -217,16 +267,3 @@ if (!String.prototype.includes) {
         }
     };
 };
-
-menuBtn.addEventListener('click', ({ target }) => {
-    if(menuArea.classList.contains('on')){
-        menuArea.classList.remove('on');
-        mainArea.classList.add('on');
-        target.classList.remove('header-menu__button-close');
-
-    }else{
-        menuArea.classList.add('on');
-        mainArea.classList.remove('on');
-        target.classList.add('header-menu__button-close');
-    }
-});

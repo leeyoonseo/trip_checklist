@@ -3,8 +3,7 @@ const path = require('path');
 module.exports = {
     name : 'Trip CheckList',
     entry: {
-        "indexEntry" : './src/js/index.js',
-        "editEntry" : './src/js/edit.js'
+        "indexEntry" : './src/js/index.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist/js'),
