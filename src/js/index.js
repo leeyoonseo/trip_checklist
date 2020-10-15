@@ -178,18 +178,59 @@ saveBtn.addEventListener('click', () => {
     notification.open();
 });
 
+
+// TODO 이거 정리하고 save되게 만들기
 let addInput;
-let addItem;
+let addItemVal;
 addBtn.addEventListener('click', ({ target }) => {
+    let newID;
+    let newItemArr;
+
     if(target.classList.contains('on')){
         target.classList.remove('on');
 
         if(addInput){
-            addItem = addInput.value;
-            console.log(addItem)
-            if(addItem !== ''){
-                createID();
+            addItemVal = addInput.value;
 
+            if(addItem !== ''){
+                newID = createIDStr();
+                newItemArr = {
+                    "id" : newID,
+                    "checked" : false,
+                    "name" : addItemVal
+                };
+
+                console.log('addItemVal', addItemVal, 'id', newID);
+
+                let item = new CheckItem({
+                    data : newItemArr,
+                    clickabled : false,
+                    addEvent : function(element, data){
+                        const { id, checked } = data;
+                        
+                        element.remove();
+
+                        if(!checked){
+                            checkedArr = disabledItemArr;
+                            checkedList = disabledList;
+                            unCheckedArr = enabledItemArr;
+                            unCheckedList = enabledList;
+                        }
+
+                        handlerClick({
+                            checkedArr, 
+                            checkedList,
+                            unCheckedArr,
+                            unCheckedList, 
+                            targetID : id
+                        });
+
+                        data.checked = !checked;
+                    }
+                });
+
+                disabledItemArr.push(item);
+                disabledList.appendChild(item.el);
             }
 
             addInput.remove();
@@ -208,9 +249,7 @@ addBtn.addEventListener('click', ({ target }) => {
     }
 });
 
-createID();
-
-function createID(){
+function createIDStr(){
     let today = new Date();
     let todayArr = String(today).split(' ')
     let month = todayArr[1].substr(0, 1);
@@ -220,13 +259,8 @@ function createID(){
     let h = time[0];
     let m = time[1];
     let s = time[2];
-// S20-28-
-    let id;
 
-    id = `${month}${year}-${day}-${h}.${m}.${s}`;
-    console.log(id)
-    
-
+    return `${month}${year}${day}-${h}${m}${s}`;
 }
 
 /**
