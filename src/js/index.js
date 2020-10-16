@@ -9,7 +9,8 @@ import { MESSAGE } from './lang.js';
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
 
-const originData = JSON.parse(localStorage.getItem(LOCALSTORAGE_DATA)) || deepCloneObject(CHECKLIST_DATA);
+const originData = deepCloneObject(CHECKLIST_DATA);
+console.log(CHECKLIST_DATA)
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const addBtn = document.querySelector('#addListBtn');
@@ -21,6 +22,8 @@ let checklistData = originData.sort((a, b) => a.name < b.name ? -1 : a.name > b.
 let displayData = deepCloneObject(checklistData);
 let enabledItemArr = [];
 let disabledItemArr = [];
+let addInput;
+let addItemVal;
 
 const CheckList = {
     reset(){
@@ -40,7 +43,6 @@ const CheckList = {
                 let checkedList = enabledList;
                 let unCheckedArr = disabledItemArr;
                 let unCheckedList = disabledList;
-              
                 let item = new CheckItem({
                     data : obj,
                     clickabled : true,
@@ -161,16 +163,8 @@ saveBtn.addEventListener('click', () => {
         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
-        originData.map((o) => {
-            saveData.map((obj) => {
-                if(o.id === obj.id){
-                    o.checked = obj.checked;
-                }
-            });
-        });
-    
         if(isSupportedStorage('localStorage')){
-            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(originData));
+            localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(saveData));
             notification.text = MESSAGE.NOTI_TEXT_SAVE;
         }
     }
@@ -178,10 +172,6 @@ saveBtn.addEventListener('click', () => {
     notification.open();
 });
 
-
-// TODO 이거 정리하고 save되게 만들기
-let addInput;
-let addItemVal;
 addBtn.addEventListener('click', ({ target }) => {
     let newID;
     let newItemArr;
@@ -192,7 +182,7 @@ addBtn.addEventListener('click', ({ target }) => {
         if(addInput){
             addItemVal = addInput.value;
 
-            if(addItem !== ''){
+            if(addItemVal !== ''){
                 newID = createIDStr();
                 newItemArr = {
                     "id" : newID,
@@ -234,9 +224,7 @@ addBtn.addEventListener('click', ({ target }) => {
             }
 
             addInput.remove();
-            // addInput = null;
         }
-
     }else{
         target.classList.add('on');
 
