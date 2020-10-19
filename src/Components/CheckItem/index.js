@@ -31,8 +31,13 @@ class CheckItem {
     }
 
     remove(){
-        console.log('remove');
-        return this;
+        this.el.remove();
+        
+        this.el = null;
+        this.clickabled = null;
+        this.name = null;
+        this.version = null;
+        this.itemData = null;
     }
 
     set attachEvent(clickFunc){

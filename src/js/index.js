@@ -48,15 +48,22 @@ const CheckList = {
                     data : obj,
                     clickabled : true,
                     addEvent : function(item){
+                        const { el, itemData } = item;
+                        const { id, checked } = itemData;
 
                         if(mainArea.classList.contains('remove')){
+                            if(!checked) checkedArr = disabledItemArr;
+
+                            for(let i = 0; i < checkedArr.length; i++){
+                                if(id === checkedArr[i].itemData.id){
+                                    checkedArr.splice(i, 1);
+                                    break;
+                                }
+                            }
+
                             item.remove();
                             return false;
                         }
-
-                        console.log(123)
-                        const { el, itemData } = item;
-                        const { id, checked } = itemData;
 
                         if(!checked){
                             checkedArr = disabledItemArr;
@@ -204,8 +211,6 @@ addBtn.addEventListener('click', ({ target }) => {
                     clickabled : false,
                     addEvent : function(element, data){
                         const { id, checked } = data;
-                        
-                        element.remove();
 
                         if(!checked){
                             checkedArr = disabledItemArr;
@@ -259,8 +264,6 @@ function createIDStr(){
 }
 
 removeBtn.addEventListener('click', function(){
-    console.log(123);
-
     if(removeListBtn.classList.contains('on')){
         removeListBtn.classList.remove('on');
         mainArea.classList.remove('remove');
@@ -269,9 +272,6 @@ removeBtn.addEventListener('click', function(){
         removeListBtn.classList.add('on');
         mainArea.classList.add('remove');
     }
-
-
-
 });
 
 /**
