@@ -10,10 +10,10 @@ const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
 
 const originData = deepCloneObject(CHECKLIST_DATA);
-console.log(CHECKLIST_DATA)
 const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const addBtn = document.querySelector('#addListBtn');
+const removeBtn = document.querySelector('#removeListBtn');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
 const notification = new Notification();
@@ -250,6 +250,10 @@ function createIDStr(){
 
     return `${month}${year}${day}-${h}${m}${s}`;
 }
+
+removeBtn.addEventListener('click', function(){
+    console.log(123);
+});
 
 /**
  * 문자열 공백 제거

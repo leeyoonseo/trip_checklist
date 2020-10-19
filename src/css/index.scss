@@ -12,11 +12,6 @@
 
     .main{
         position:relative;
-        display:none;
-    
-        &.on{
-            display:block;
-        }
     
         &-inner{
             margin:get-vw(30px) 5%;
@@ -119,8 +114,9 @@
         position:relative;
         width:get-vw(20px);
         height:get-vw(20px);
-        background:url('../img/icon_plus.png')no-repeat;
+        background:url('../img/icon_plus.png')no-repeat #fff;
         background-size:100% 100%;
+        z-index:1;
     
         &.on{
             background:url('../img/icon_check.png')no-repeat;
