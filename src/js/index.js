@@ -14,6 +14,7 @@ const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const addBtn = document.querySelector('#addListBtn');
 const removeBtn = document.querySelector('#removeListBtn');
+const mainArea = document.querySelector('#mainArea');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');
 const notification = new Notification();
@@ -46,10 +47,16 @@ const CheckList = {
                 let item = new CheckItem({
                     data : obj,
                     clickabled : true,
-                    addEvent : function(element, data){
-                        const { id, checked } = data;
-                        
-                        element.remove();
+                    addEvent : function(item){
+
+                        if(mainArea.classList.contains('remove')){
+                            item.remove();
+                            return false;
+                        }
+
+                        console.log(123)
+                        const { el, itemData } = item;
+                        const { id, checked } = itemData;
 
                         if(!checked){
                             checkedArr = disabledItemArr;
@@ -253,6 +260,18 @@ function createIDStr(){
 
 removeBtn.addEventListener('click', function(){
     console.log(123);
+
+    if(removeListBtn.classList.contains('on')){
+        removeListBtn.classList.remove('on');
+        mainArea.classList.remove('remove');
+        
+    }else{
+        removeListBtn.classList.add('on');
+        mainArea.classList.add('remove');
+    }
+
+
+
 });
 
 /**

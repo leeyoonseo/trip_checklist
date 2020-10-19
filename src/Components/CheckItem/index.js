@@ -30,9 +30,14 @@ class CheckItem {
         return this;
     }
 
+    remove(){
+        console.log('remove');
+        return this;
+    }
+
     set attachEvent(clickFunc){
         this.el.querySelector('button').addEventListener('click', () => {
-            clickFunc(this.el, this.itemData);
+            clickFunc(this);
         });
         return this;
     }
@@ -64,7 +69,6 @@ class CheckItem {
         if(!this.clickabled) return false;
 
         this.attachEvent = callback;
-
         return this;
     }
 

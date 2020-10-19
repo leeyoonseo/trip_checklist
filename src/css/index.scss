@@ -16,45 +16,16 @@
         &-inner{
             margin:get-vw(30px) 5%;
         }
-    }
-    
-    .menu{
-        display:none;
-        background:#fff;
-    
-        &.on{
-            display:block;
-        }        
-    
-        &-list-inner{
-            margin:get-vw(30px) 0;
-    
-            li{
-                background:#eee;
-                color:#333;
-    
-                & + li {
-                    margin-top:get-vw(10px);
-                }
-    
-                a{
-                    display:block;
-                    padding:get-vw(15px) 5%;
-                    color:#333;
-                    text-decoration:none;
-                    
-                    &:hover{
-                        font-weight:700;
-                    }
-                }
-    
-                &.version{
-                    padding:get-vw(15px) 5%;
-                }
+
+        &.remove{
+            .checklist__items{
+                border-style:solid;
+                border-color:red;
             }
+
         }
     }
-
+    
     .empty{
         display:inline-block;
         margin-top:get-vw(10px);
@@ -62,7 +33,6 @@
         
     }
 }
-
 
 .checklist{
     button + button{
@@ -130,6 +100,11 @@
         height:get-vw(20px);
         background:url('../img/icon_minus.png')no-repeat;
         background-size:100% 100%;
+
+        &.on{
+            background:url('../img/icon_check.png')no-repeat;
+            background-size:100% 100%;
+        }
     }
 
     &_input--add{
