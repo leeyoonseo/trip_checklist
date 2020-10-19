@@ -60,27 +60,30 @@ const CheckList = {
                                     break;
                                 }
                             }
+                            console.log(checkedArr)
 
                             item.remove();
                             return false;
+                        }else{
+                            if(!checked){
+                                checkedArr = disabledItemArr;
+                                checkedList = disabledList;
+                                unCheckedArr = enabledItemArr;
+                                unCheckedList = enabledList;
+                            }
+    
+                            handlerClick({
+                                checkedArr, 
+                                checkedList,
+                                unCheckedArr,
+                                unCheckedList, 
+                                targetID : id
+                            });
+    
+                            data.checked = !checked;
                         }
 
-                        if(!checked){
-                            checkedArr = disabledItemArr;
-                            checkedList = disabledList;
-                            unCheckedArr = enabledItemArr;
-                            unCheckedList = enabledList;
-                        }
-
-                        handlerClick({
-                            checkedArr, 
-                            checkedList,
-                            unCheckedArr,
-                            unCheckedList, 
-                            targetID : id
-                        });
-
-                        data.checked = !checked;
+                        
                     }
                 });
 
@@ -172,12 +175,15 @@ function getNode(selectorStr){
 saveBtn.addEventListener('click', () => {
     let saveData = enabledItemArr.concat(disabledItemArr);
     saveData = saveData.map((o) => o.itemData);    
-    
     if(isSameData(originData, saveData)){
         notification.text = MESSAGE.NOTI_TEXT_NOT_MODIFY;       
     
     }else{
         if(isSupportedStorage('localStorage')){
+            if(mainArea.classList.contains('remove')){
+                mainArea.classList.remove('remove');
+            }
+
             localStorage.setItem(LOCALSTORAGE_DATA, JSON.stringify(saveData));
             notification.text = MESSAGE.NOTI_TEXT_SAVE;
         }
@@ -282,17 +288,17 @@ function removeWhiteSpace(str){
     return str.replace(/ /gi, "");
 }
 
-function isSameData(selectToCompareData, compareWithSelectData) {
-    const copyData1 = deepCloneObject(selectToCompareData);
-    const copyData2 = deepCloneObject(compareWithSelectData);
-
+function isSameData(CompareData, compareWithData) {
+    const copyData1 = deepCloneObject(CompareData);
+    const copyData2 = deepCloneObject(compareWithData);
     let sameCount = copyData1.length;
 
     copyData1.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     copyData2.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
 
-    copyData1.sort().map((obj, idx) => {
-        if(obj.checked === copyData2[idx].checked){
+    copyData1.map((obj, idx) => {
+        const diffData = copyData2[idx];
+        if(diffData !== undefined && obj.id === diffData.id){
             sameCount--;
         }
     });
