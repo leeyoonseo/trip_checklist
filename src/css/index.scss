@@ -117,3 +117,22 @@
         background:#fff;
     }
 }
+
+.welcome-cover{
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:99;
+    background:gray;
+}
+
+.checklist__icon{
+    &--airplane{
+        position:relative;
+        display:block;
+        width:get-vw(100px);
+        height:get-vw(100px);
+        background:url('../img/icon_airplane.png')no-repeat;
+        background-size:100% 100%;
+    }
+}
