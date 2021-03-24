@@ -5,7 +5,7 @@ import Notification from '../Components/Notification/';
 import { deepCloneObject, isEmpty, isSupportedStorage } from './utill';
 import { MESSAGE } from './lang.js';
 
-// TODO localStorage말고 CDN 방법 찾기
+// [D] Dev, localstorage 저장
 const LOCALSTORAGE_DATA = 'LOCALSTORAGE_DATA';
 // localStorage.removeItem(LOCALSTORAGE_DATA);
 
@@ -14,6 +14,7 @@ const searchInput = getNode('#searchInput');
 const saveBtn = document.querySelector('#listSaveBtn');
 const addBtn = document.querySelector('#addListBtn');
 const removeBtn = document.querySelector('#removeListBtn');
+const mainCover = document.querySelector('#mainCover');
 const mainArea = document.querySelector('#mainArea');
 const enabledList = document.getElementById('enabledList');
 const disabledList = document.getElementById('disabledList');

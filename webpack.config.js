@@ -1,9 +1,12 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     name : 'Trip CheckList',
+    mode: 'development',
+    devtool: 'source-map',
     entry: {
-        "indexEntry" : './src/js/index.js'
+        app: ['./src/js/index.js'],
     },
     output: {
         path: path.resolve(__dirname, 'dist/js'),
@@ -24,10 +27,71 @@ module.exports = {
                         plugins: ['@babel/plugin-proposal-class-properties']
                     }
                 }
-            }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "style-loader",
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sassOptions: {
+                                indentWidth: 4,
+                                includePaths: ["src/css/"],
+                            },
+                        },
+                    }
+                ]
+            },
+            // {
+            //     test: /\.s[ac]ss$/i,
+            //     exclude: /node_modules/,
+            //     use: [
+            //         "style-loader",
+            //         MiniCssExtractPlugin.loader,
+            //         {
+            //             loader: 'file-loader',
+            //             options: { 
+            //                 outputPath: 'dist/css/', 
+            //                 name: '[name].min.css'
+            //             }
+            //         },
+            //         {
+            //             loader: 'sass-loader',
+            //             options: { 
+            //                 sourceMap: true,
+            //             }
+            //         },
+            //     ]
+            // },
+
+            // {
+            //     test: /\.s[ac]ss$/i,
+            //     use: [
+            //         "style-loader",
+            //         MiniCssExtractPlugin.loader,
+            //         {
+            //             loader: "css-loader",
+            //             options: {
+            //                 sourceMap: true,
+            //             },
+            //         },
+            //         {
+            //             loader: "sass-loader",
+            //             options: {
+            //                 sourceMap: true,
+            //             },
+            //         },
+            //     ],
+            // },
         ]
     },
-    devtool: 'source-map',
-    // https://webpack.js.org/concepts/mode/#mode-development
-    mode: 'development'
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "index.css",
+            // chunkFilename: "[id].css",
+        }),
+    ],
 };

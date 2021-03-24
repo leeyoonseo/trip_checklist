@@ -1,0 +1,34 @@
+.app__notification {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 15px;
+  color: #333;
+  text-align: center;
+  border: 1px solid #333;
+  border-radius: get-vw(5px);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.app__notification.on {
+  display: block;
+}
+
+.app__notification:before {
+  content: '';
+  display: inline-block;
+  width: get-vw(20px);
+  height: get-vw(20px);
+  background: url("../img/icon_check-circle.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.app__notification .inner {
+  display: block;
+}
+/*# sourceMappingURL=index.css.map */

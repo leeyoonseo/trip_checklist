@@ -44,7 +44,13 @@ const isSupportedStorage = function(type){
     }
 };
 
+// TODO: 전체화면만들기
+const getFullHeight = function(){
+    return document.documentElement.clientHeight;
+};
+
 export {
+    getFullHeight,
     deepCloneObject,
     isEmpty,
     isSupportedStorage,

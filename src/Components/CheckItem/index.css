@@ -1,0 +1,31 @@
+button {
+  border: none;
+  outline: none;
+}
+
+.checklist__items {
+  position: relative;
+  margin: get-vw(4px);
+  display: inline-block;
+  padding: get-vw(5px);
+  border: get-vw(1px) dashed #333;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.checklist__items:hover {
+  color: #fff;
+  background: #666;
+}
+
+.checklist__items button {
+  position: absolute;
+  top: 0;
+  lefT: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  outline: none;
+}
+/*# sourceMappingURL=index.css.map */

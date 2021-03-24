@@ -10,71 +10,73 @@
 
 </head>
 <body>
-    <!-- block-element_modify -->
-    <h1 class="hidden">여행 체크 리스트 메인</h1>
-
-    <!-- TODO UI 네이밍 찾아봐야할것 같은데 -->
-    <div class="welcome-cover"> 
-        <span class="checklist__icon--airplane">
-            <span class="hidden">비행기 아이콘</span>
-        </span>
-        TRIP CHECKLIST APP
-    </div>
-
-    <!-- TODO 로딩 시 -->
-    <div class="progress-bar">
-    </div>
-
-    <div class="header">
-        <h2>Trip CheckList</h2>
-    </div>
-
-    <div class="container">
-        <div id="mainArea" class="main">
-            <div class="main-inner">
-                <div class="search">
-                    <label>
-                        <span class="hidden">검색바</span>
-                        <input id="searchInput" class="search-input" placeholder="검색어를 입력하세요." value="" />
-                    </label>
-                </div>
-            
-                <div class="checklist checklist__my">
-                    <span class="checklist__icon checklist__icon--my">
-                        <span class="hidden">내 아이콘</span>
-                    </span>
+    <section>
+            <!-- block-element_modify -->
+            <h1 class="hidden">여행 체크 리스트 메인</h1>
         
-                    <button id="listSaveBtn" class="checklist__button--save">
-                        <span class="hidden">저장 버튼</span>
-                    </button>
-
-                    <button id="addListBtn" class="checklist__button--add">
-                        <span class="hidden">추가 버튼</span>
-                    </button>
-
-                    <button id="removeListBtn" class="checklist__button--remove">
-                        <span class="hidden">삭제 버튼</span>
-                    </button>
+            <!-- TODO UI 네이밍 찾아봐야할것 같은데 -->
+            <div id="mainCover" class="welcome-cover"> 
+                <span class="checklist__icon--airplane">
+                    <span class="hidden">비행기 아이콘</span>
+                </span>
+                TRIP CHECKLIST APP
+            </div>
         
-                    <!-- enabled items -->  
-                    <div id="enabledList" class="checklist__list"></div>
-                </div>
-            
-                <div class="checklist checklist__all">
-                    <span class="checklist__icon checklist__icon--default"><span class="hidden">목록 아이콘</span></span>
-
-                    <!-- disabled items -->
-                    <div id="disabledList" class="checklist__list"></div>
+            <!-- TODO 로딩 시 -->
+            <div class="progress-bar">
+            </div>
+        
+            <div class="header">
+                <h2>Trip CheckList</h2>
+            </div>
+        
+            <div class="container">
+                <div id="mainArea" class="main">
+                    <div class="main-inner">
+                        <div class="search">
+                            <label>
+                                <span class="hidden">검색바</span>
+                                <input id="searchInput" class="search-input" placeholder="검색어를 입력하세요." value="" />
+                            </label>
+                        </div>
+                    
+                        <div class="checklist checklist__my">
+                            <span class="checklist__icon checklist__icon--my">
+                                <span class="hidden">내 아이콘</span>
+                            </span>
+                
+                            <button id="listSaveBtn" class="checklist__button--save">
+                                <span class="hidden">저장 버튼</span>
+                            </button>
+        
+                            <button id="addListBtn" class="checklist__button--add">
+                                <span class="hidden">추가 버튼</span>
+                            </button>
+        
+                            <button id="removeListBtn" class="checklist__button--remove">
+                                <span class="hidden">삭제 버튼</span>
+                            </button>
+                
+                            <!-- enabled items -->  
+                            <div id="enabledList" class="checklist__list"></div>
+                        </div>
+                    
+                        <div class="checklist checklist__all">
+                            <span class="checklist__icon checklist__icon--default"><span class="hidden">목록 아이콘</span></span>
+        
+                            <!-- disabled items -->
+                            <div id="disabledList" class="checklist__list"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        
+            <div class="footer">
+                author : okayoon.lee@gmail.com<br>
+                icon source : Icons made by <a href="https://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+            </div>
+    </section>
 
-    <div class="footer">
-        author : okayoon.lee@gmail.com<br>
-        icon source : Icons made by <a href="https://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-    </div>
-
-<script src="./dist/js/indexEntry.bundle.js"></script>
+    <script src="./dist/js/index.bundle.js"></script>
 </body>
 </html>
